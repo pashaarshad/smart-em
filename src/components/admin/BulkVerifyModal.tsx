@@ -13,6 +13,8 @@ interface BulkVerifyModalProps {
 export default function BulkVerifyModal({ pendingRegistrations, onClose, onVerify }: BulkVerifyModalProps) {
     const [file, setFile] = useState<File | null>(null);
     const [isProcessing, setIsProcessing] = useState(false);
+    const [pdfPassword, setPdfPassword] = useState("");
+    const [passwordError, setPasswordError] = useState("");
     const [results, setResults] = useState<{
         totalItems: number;
         matches: { id: string, teamNumber: number, eventName: string, utr: string }[];
@@ -24,6 +26,7 @@ export default function BulkVerifyModal({ pendingRegistrations, onClose, onVerif
         if (selectedFile && selectedFile.type === "application/pdf") {
             setFile(selectedFile);
             setResults(null);
+            setPasswordError("");
         } else {
             alert("Please select a PDF file");
         }
@@ -34,13 +37,23 @@ export default function BulkVerifyModal({ pendingRegistrations, onClose, onVerif
 
         try {
             setIsProcessing(true);
+            setPasswordError("");
 
             // Dynamic import to avoid SSR issues
-            const pdfjsLib = await import("pdfjs-dist");
-            pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
+            const pdfjsLib = await import("pdfjs-dist/legacy/build/pdf.mjs");
+
+            // Use legacy worker for better compatibility
+            pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/legacy/build/pdf.worker.min.mjs`;
 
             const arrayBuffer = await file.arrayBuffer();
-            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+
+            // Try to open PDF with password if provided
+            const loadingTask = pdfjsLib.getDocument({
+                data: arrayBuffer,
+                password: pdfPassword || undefined
+            });
+
+            const pdf = await loadingTask.promise;
             let fullText = "";
 
             for (let i = 1; i <= pdf.numPages; i++) {
@@ -74,9 +87,13 @@ export default function BulkVerifyModal({ pendingRegistrations, onClose, onVerif
                 unmatchedUtrs: []
             });
 
-        } catch (error) {
+        } catch (error: any) {
             console.error("PDF Processing Error:", error);
-            alert("Failed to process PDF. Make sure it's a searchable PDF (not an image scan).");
+            if (error.name === "PasswordException" || error.message?.includes("password")) {
+                setPasswordError("Incorrect password. Please try again.");
+            } else {
+                alert("Failed to process PDF. Make sure it's a valid searchable PDF.");
+            }
         } finally {
             setIsProcessing(false);
         }
@@ -130,7 +147,7 @@ export default function BulkVerifyModal({ pendingRegistrations, onClose, onVerif
                                 borderRadius: '16px',
                                 padding: '40px',
                                 background: 'rgba(255,255,255,0.02)',
-                                marginBottom: '24px'
+                                marginBottom: '16px'
                             }}>
                                 <input
                                     type="file"
@@ -148,6 +165,42 @@ export default function BulkVerifyModal({ pendingRegistrations, onClose, onVerif
                                         Only searchable PDF files supported
                                     </div>
                                 </label>
+                            </div>
+
+                            {/* Password Input for Protected PDFs */}
+                            <div style={{ marginBottom: '24px', textAlign: 'left' }}>
+                                <label style={{
+                                    display: 'block',
+                                    color: '#a1a1aa',
+                                    fontSize: '12px',
+                                    fontWeight: '600',
+                                    marginBottom: '8px',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.5px'
+                                }}>
+                                    🔐 PDF Password (if protected)
+                                </label>
+                                <input
+                                    type="password"
+                                    value={pdfPassword}
+                                    onChange={(e) => setPdfPassword(e.target.value)}
+                                    placeholder="Enter bank statement password"
+                                    style={{
+                                        width: '100%',
+                                        padding: '14px 16px',
+                                        background: 'rgba(255,255,255,0.03)',
+                                        border: passwordError ? '1px solid #ef4444' : '1px solid rgba(255,255,255,0.1)',
+                                        borderRadius: '12px',
+                                        color: '#fff',
+                                        fontSize: '15px',
+                                        outline: 'none'
+                                    }}
+                                />
+                                {passwordError && (
+                                    <p style={{ color: '#ef4444', fontSize: '12px', marginTop: '6px' }}>
+                                        {passwordError}
+                                    </p>
+                                )}
                             </div>
 
                             <button
