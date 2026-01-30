@@ -1,11 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import * as pdfjsLib from "pdfjs-dist";
 import { Registration } from "@/types/admin";
 
-// Set worker to local path or CDN
-pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
 
 interface BulkVerifyModalProps {
     pendingRegistrations: Registration[];
@@ -37,6 +34,11 @@ export default function BulkVerifyModal({ pendingRegistrations, onClose, onVerif
 
         try {
             setIsProcessing(true);
+
+            // Dynamic import to avoid SSR issues
+            const pdfjsLib = await import("pdfjs-dist");
+            pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
+
             const arrayBuffer = await file.arrayBuffer();
             const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
             let fullText = "";
