@@ -3,11 +3,12 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { signInWithPopup, User } from "firebase/auth";
-import { collection, addDoc, getDocs, Timestamp } from "firebase/firestore";
+import { collection, addDoc, getDocs, query, where, Timestamp } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { auth, db, storage, googleProvider, GOOGLE_SHEETS_URL, UPI_ID, UPI_NAME } from "@/lib/firebase";
 import { QRCodeSVG } from "qrcode.react";
 import { useAuth } from "@/context/AuthContext";
+import { createWorker } from "tesseract.js";
 
 interface RegistrationFormProps {
     eventId: string;
@@ -51,17 +52,41 @@ export default function RegistrationForm({
     const [canCompletePayment, setCanCompletePayment] = useState(false);
     const [paymentDelay, setPaymentDelay] = useState(15);
     const [screenshot, setScreenshot] = useState<File | null>(null);
+    const [isOcrProcessing, setIsOcrProcessing] = useState(false);
+    const [ocrResult, setOcrResult] = useState<{ found: boolean; text: string } | null>(null);
+    const [isUtrUnique, setIsUtrUnique] = useState<boolean | null>(null);
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files ? e.target.files[0] : null;
         if (file) {
             if (file.size > 5 * 1024 * 1024) {
                 alert("File size must be less than 5MB");
                 e.target.value = "";
                 setScreenshot(null);
+                setOcrResult(null);
                 return;
             }
             setScreenshot(file);
+            setOcrResult(null);
+
+            // Start OCR process
+            try {
+                setIsOcrProcessing(true);
+                const worker = await createWorker('eng');
+                const ret = await worker.recognize(file);
+                const text = ret.data.text;
+                await worker.terminate();
+
+                setOcrResult({
+                    found: true,
+                    text: text
+                });
+            } catch (err) {
+                console.error("OCR Error:", err);
+                setOcrResult({ found: false, text: "" });
+            } finally {
+                setIsOcrProcessing(false);
+            }
         }
     };
 
@@ -193,6 +218,11 @@ export default function RegistrationForm({
             return;
         }
 
+        if (utrNumber.length < 10) {
+            setError("Please enter a valid UTR Number");
+            return;
+        }
+
         if (!screenshot) {
             setError("Please upload the payment screenshot");
             return;
@@ -202,10 +232,38 @@ export default function RegistrationForm({
             setLoading(true);
             setError("");
 
+            // 1. Check UTR Uniqueness in Firestore
             const registrationsRef = collection(db, "registrations", eventId, "teams");
-            const snapshot = await getDocs(registrationsRef);
-            const nextTeamNumber = snapshot.size + 1;
-            const teamId = `${eventId}-${nextTeamNumber}`; // Create a unique ID for storage path
+            const utrQuery = query(registrationsRef, where("utrNumber", "==", utrNumber.trim()));
+            const utrSnapshot = await getDocs(utrQuery);
+
+            if (!utrSnapshot.empty) {
+                setError("This UTR number has already been used for registration.");
+                setLoading(false);
+                return;
+            }
+
+            // 2. OCR Verification (Double Check)
+            if (ocrResult && ocrResult.found) {
+                const normalizedOcrText = ocrResult.text.replace(/\s/g, "");
+                if (!normalizedOcrText.includes(utrNumber.trim())) {
+                    // Optional: Allow override but show warning? 
+                    // For now, let's be strict but give a clear message.
+                    const confirmOverride = window.confirm("The UTR number you entered was not found in the uploaded screenshot. Are you sure you want to proceed?");
+                    if (!confirmOverride) {
+                        setLoading(false);
+                        return;
+                    }
+                }
+            } else if (isOcrProcessing) {
+                setError("Still verifying your screenshot. Please wait a moment.");
+                setLoading(false);
+                return;
+            }
+
+            const totalSnapshot = await getDocs(registrationsRef);
+            const nextTeamNumber = totalSnapshot.size + 1;
+            const teamId = `${eventId}-${nextTeamNumber}`;
 
             // Upload Screenshot
             let screenshotUrl = "";
@@ -1118,21 +1176,68 @@ export default function RegistrationForm({
                                     }}
                                     placeholder="Enter UTR Number (Digits Only)"
                                 />
+                                {utrNumber.length >= 10 && ocrResult && ocrResult.found && (
+                                    <div style={{
+                                        fontSize: '13px',
+                                        color: ocrResult.text.replace(/\s/g, "").includes(utrNumber.trim()) ? '#10b981' : '#fca5a5',
+                                        marginBottom: '16px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '6px'
+                                    }}>
+                                        {ocrResult.text.replace(/\s/g, "").includes(utrNumber.trim()) ? (
+                                            <>
+                                                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                                </svg>
+                                                UTR verified from screenshot
+                                            </>
+                                        ) : (
+                                            <>
+                                                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                                </svg>
+                                                UTR not detected in screenshot
+                                            </>
+                                        )}
+                                    </div>
+                                )}
                                 <p className="transaction-hint">You can find the UTR Number in your UPI app&apos;s transaction history</p>
 
                                 <div style={{ marginBottom: '24px', textAlign: 'left' }}>
                                     <label className="form-label">
                                         Payment Screenshot *
                                     </label>
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        className="form-input"
-                                        onChange={handleFileChange}
-                                        style={{ padding: '12px' }}
-                                    />
+                                    <div style={{ position: 'relative' }}>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            className="form-input"
+                                            onChange={handleFileChange}
+                                            style={{ padding: '12px' }}
+                                        />
+                                        {isOcrProcessing && (
+                                            <div style={{
+                                                position: 'absolute',
+                                                right: '12px',
+                                                top: '50%',
+                                                transform: 'translateY(-50%)',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '8px',
+                                                fontSize: '12px',
+                                                color: '#d4a843'
+                                            }}>
+                                                <div className="spinner" style={{ width: '14px', height: '14px', borderWidth: '2px' }} />
+                                                Verifying...
+                                            </div>
+                                        )}
+                                    </div>
                                     <p style={{ fontSize: '12px', color: '#71717a', marginTop: '6px' }}>
-                                        Upload screenshot (Max 5MB)
+                                        {ocrResult && ocrResult.found ? (
+                                            <span style={{ color: '#10b981' }}>✓ Screenshot verified successfully</span>
+                                        ) : "Upload screenshot (Max 5MB)"}
                                     </p>
                                 </div>
 
