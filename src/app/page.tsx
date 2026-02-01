@@ -218,6 +218,12 @@ export default function Home() {
                     </svg>
                     {collegeInfo.phone}
                   </a>
+                  <a href="/index.html" target="_blank" className="flex items-center gap-3 text-[#d4a843] hover:text-[#e5b854] transition-colors mt-4 pt-4 border-t border-white/[0.06] font-semibold">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    View Project Synopsis
+                  </a>
                 </div>
               </div>
             </div>
