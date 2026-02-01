@@ -55,6 +55,7 @@ export default function Footer() {
                                 { name: "Schedule", href: "/#schedule" },
                                 { name: "Register", href: "/#register" },
                                 { name: "About", href: "/#about" },
+                                { name: "View Synopsis", href: "/index.html" },
                             ].map((link) => (
                                 <li key={link.name}>
                                     <Link href={link.href} className="text-sm text-zinc-500 hover:text-[#d4a843] transition-colors">
@@ -69,12 +70,7 @@ export default function Footer() {
                     <div>
                         <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-6">Student Council</h4>
                         <div className="space-y-4">
-                            {studentCouncil.slice(0, 3).map((member) => (
-                                <div key={member.name}>
-                                    <p className="text-xs text-[#d4a843] uppercase tracking-wide">{member.role}</p>
-                                    <p className="text-sm text-zinc-400">{member.name}</p>
-                                </div>
-                            ))}
+                            <p className="text-sm text-zinc-400">Student Council Members</p>
                         </div>
                     </div>
                 </div>
