@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart-EM: Project Synopsis</title>
+    <title>Fest Management Website - Synopsis</title>
     <style>
         :root {
             --primary: #d4a843;
@@ -44,7 +44,7 @@
 
         h1 {
             color: var(--heading);
-            font-size: 2.5rem;
+            font-size: 2rem;
             margin-bottom: 0.5rem;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -54,6 +54,8 @@
             color: var(--primary-dark);
             font-weight: 600;
             font-size: 1.1rem;
+            text-transform: uppercase;
+            margin-top: 10px;
         }
 
         h2 {
@@ -62,13 +64,14 @@
             color: var(--heading);
             margin-top: 2.5rem;
             text-transform: uppercase;
-            font-size: 1.25rem;
+            font-size: 1.1rem;
         }
 
         h3 {
             color: var(--heading);
             margin-top: 1.5rem;
-            font-size: 1.1rem;
+            font-size: 1rem;
+            font-weight: 700;
         }
 
         p {
@@ -82,6 +85,27 @@
 
         li {
             margin-bottom: 0.5rem;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            width: 100%;
+        }
+
+        th,
+        td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #fafaf9;
+            color: var(--heading);
+            font-weight: 600;
         }
 
         .figure {
@@ -125,6 +149,7 @@
             align-items: center;
             gap: 10px;
             z-index: 100;
+            text-decoration: none;
         }
 
         .print-btn:hover {
@@ -140,17 +165,28 @@
 
             body {
                 background: #fff;
+                margin: 0;
             }
 
             .container {
                 box-shadow: none;
                 padding: 0;
                 max-width: 100%;
-                margin: 0;
+                margin: 1in;
             }
 
             .figure {
                 page-break-inside: avoid;
+            }
+
+            h2 {
+                page-break-after: avoid;
+            }
+
+            /* Hide browser default headers/footers */
+            @page {
+                margin: 0;
+                size: auto;
             }
         }
     </style>
@@ -163,155 +199,220 @@
             <path d="M6 14h12v8H6z" />
         </svg> Download / Print Synopsis
     </button>
+
     <div class="container">
         <header class="header">
-            <h1>Smart Event Management System</h1>
-            <div class="subtitle">A Synopsis Submitted for Major Project (MCA/B.Tech)</div>
+            <h1>Fest Management and Online Registration Website</h1>
+            <div class="subtitle">A Synopsis for "Smart Event Management System"</div>
         </header>
 
         <h2>1. Abstract</h2>
-        <p>The "Smart Event Management System" is a robust, web-based platform designed to streamline the organization
-            of college fests. Traditional methods typically involve tedious paperwork and manual payment verification,
-            leading to inefficiencies. Our proposed system addresses these challenges with a centralized digital
-            solution featuring secure Google authentication, real-time registration, and novel Optical Character
-            Recognition (OCR) for payment verification. Built with Next.js and Firebase, it ensures efficiency and
-            scalability.</p>
+        <p>This project is developed to make the management of college fests easier and more organized. During fests,
+            handling multiple events, participant registrations, and payments manually becomes difficult and
+            time-consuming. To solve this problem, a web-based Fest Management Website is designed where all
+            fest-related activities can be managed from a single platform.</p>
+        <p>The website allows users to view all fest events, register for events online, and make payments. The frontend
+            of the application is built using React and Next.js to provide a smooth and fast user experience. The
+            backend is handled using Firebase, which stores registration details, payment information, and admin data
+            securely.</p>
+        <p>An important feature of the system is automated payment verification. The admin can upload the bank
+            statement, and the system checks the payment reference details internally and updates the payment status
+            automatically. The admin also has permission to edit participant details and download data in Excel or PDF
+            format. This system reduces manual work and improves accuracy and efficiency in fest management.</p>
 
         <h2>2. Introduction</h2>
-        <p>College fests attract thousands of participants, requiring precision in management. This project digitizes
-            the entire lifecycle from event browsing to registration. The core innovation is "Smart" verification using
-            machine learning-based OCR and PDF parsing to automate payment reconciliation, eliminating manual
-            bottlenecks.</p>
+        <p>College fests are an important part of student life and usually involve many events, participants, and
+            payments. In most colleges, fest management is still done using manual methods such as paper forms,
+            spreadsheets, or simple online forms. These methods often lead to confusion, data errors, and difficulty in
+            tracking payments.</p>
+        <p>This project aims to provide a digital solution for managing fest events and registrations efficiently. The
+            Fest Management Website acts as a single platform where students can easily register for events and admins
+            can manage everything from one place. The system is designed to be simple, user-friendly, and secure.</p>
+        <p>By using modern web technologies, this project helps reduce paperwork, save time, and make fest organization
+            smoother and more transparent.</p>
 
-        <h2>3. Problem Statement</h2>
-        <p>Current practices suffer from:</p>
+        <h2>3. Existing System</h2>
+        <p>In the existing system, fest registrations and payments are handled manually:</p>
         <ul>
-            <li><strong>Manual Data Entry:</strong> Redundancy and errors from spreadsheets.</li>
-            <li><strong>Verification Lag:</strong> Days spent cross-checking screenshots with bank statements.</li>
-            <li><strong>Duplicate Registrations:</strong> Lack of real-time uniqueness checks.</li>
+            <li>Participants fill out forms or Google Forms.</li>
+            <li>Payments are verified by manually checking bank statements.</li>
+            <li>Data is stored in Excel sheets.</li>
+            <li>Any correction or update requires manual effort.</li>
+        </ul>
+        <p>This system becomes difficult to manage when the number of participants increases.</p>
+
+        <h2>4. Limitations of the Existing System</h2>
+        <ul>
+            <li>Manual data entry leads to errors.</li>
+            <li>Payment verification takes a lot of time.</li>
+            <li>No real-time payment status update.</li>
+            <li>Data is not centrally managed.</li>
+            <li>High workload for organizers.</li>
+            <li>Risk of data loss or duplication.</li>
         </ul>
 
-        <h2>4. Existing System</h2>
+        <h2>5. Proposed System</h2>
         <ul>
-            <li><strong>Google Forms:</strong> Basic data collection.</li>
-            <li><strong>Manual Checks:</strong> Volunteers manually verifying transactions.</li>
-            <li><strong>Paper Receipts:</strong> Prone to loss and forgery.</li>
+            <li>The proposed system is a web-based Fest Management Website that automates registration and payment
+                verification. Participants can register for events and submit payment details without seeing any
+                internal ID. All internal matching and verification is handled only by the admin side.</li>
+            <li>Admins get a secure dashboard where they can manage events, view registrations, upload bank statements
+                for verification, edit participant details, and download reports. The system is designed to be simple,
+                secure, and efficient.</li>
         </ul>
 
-        <h2>5. Limitations of Existing System</h2>
-        <ul>
-            <li>High human error rate.</li>
-            <li>Time-consuming processes.</li>
-            <li>Lack of instant confirmation.</li>
-            <li>Security concerns with shared data.</li>
-        </ul>
-
-        <h2>6. Proposed System</h2>
-        <p>A comprehensive web app automating workflow:</p>
-        <ul>
-            <li><strong>Automated OCR:</strong> Scans screenshots to verify UTR numbers instantly.</li>
-            <li><strong>Duplicate Prevention:</strong> Real-time database checks for UTR uniqueness.</li>
-            <li><strong>Admin Auto-Verify:</strong> Parses bank statement PDFs to bulk approve registrations.</li>
-            <li><strong>Role-Based Access:</strong> Secure environments for Students and Admins.</li>
-        </ul>
-
-        <h2>7. Objectives of the Project</h2>
-        <ul>
-            <li>Eliminate manual paperwork.</li>
-            <li>Achieve near-100% verification accuracy.</li>
-            <li>Provide a seamless user experience.</li>
-            <li>Empower organizers with real-time monitoring.</li>
-        </ul>
-
-        <h2>8. Scope of the Project</h2>
-        <p>The system covers registration and verification for multiple event categories. It is modular, supporting
-            future extensions like QR attendance and certificate generation.</p>
-
-        <h2>9. System Architecture</h2>
         <div class="figure">
             <img src="synopsis_assets/system_architecture.png" alt="System Architecture Diagram">
-            <span class="caption">Fig 1: System Architecture & Database Design</span>
+            <span class="caption">Fig 1: System Architecture of Fest Management Website</span>
         </div>
-        <p>A serverless architecture using <strong>Next.js</strong> for the client (handling UI and OCR) and
-            <strong>Firebase</strong> for backend services (Auth, Firestore, Storage).</p>
 
-        <h2>10. Modules Description</h2>
-        <h3>1. Authentication & Registration</h3>
-        <p>Secure Google OAuth log in. Multi-step registration forms with team details and OCR-backed payment upload.
-        </p>
-        <h3>2. Payment Verification Module</h3>
-        <p>Client-side Tesseract.js processing for instant feedback. Server-side checks for data integrity.</p>
-        <h3>3. Admin Dashboard</h3>
-        <p>Tabulated views of data. "Auto Verify" tool using PDF.js to parse bank statements and update statuses.</p>
+        <h2>6. Features of the Proposed System</h2>
+        <h3>1. Event Display</h3>
+        <ul>
+            <li>All fest events are displayed on the website.</li>
+            <li>Users can view event details easily.</li>
+        </ul>
+        <h3>2. Online Registration</h3>
+        <ul>
+            <li>Participants can register through an online form.</li>
+            <li>Registration data is stored securely.</li>
+            <li>No unique ID is shown to users.</li>
+        </ul>
         <div class="figure">
             <img src="synopsis_assets/user_flow.png" style="width:70%" alt="User Flow">
-            <span class="caption">Fig 2: User Registration Flow</span>
+            <span class="caption">Fig 2: User Registration Process Flow</span>
         </div>
+
+        <h3>3. Payment Handling</h3>
+        <ul>
+            <li>Users make payment through UPI or bank transfer.</li>
+            <li>Payment reference details are collected during registration.</li>
+        </ul>
+        <h3>4. Automated Payment Verification</h3>
+        <ul>
+            <li>Admin uploads the bank statement (PDF).</li>
+            <li>System checks payment details internally using OCR and PDF parsing.</li>
+            <li>Payment status changes from Pending to Verified automatically.</li>
+        </ul>
         <div class="figure">
             <img src="synopsis_assets/admin_flow.png" style="width:70%" alt="Admin Flow">
-            <span class="caption">Fig 3: Admin Automation Flow</span>
+            <span class="caption">Fig 3: Automated Admin Verification Flow</span>
         </div>
 
-        <h2>11. Technology Stack</h2>
+        <h3>5. Admin Panel</h3>
         <ul>
-            <li><strong>Frontend:</strong> React.js, Next.js 14</li>
-            <li><strong>Backend:</strong> Firebase (Firestore, Auth, Storage)</li>
-            <li><strong>Libraries:</strong> Tesseract.js (OCR), PDF.js (Parsing)</li>
+            <li>Secure admin login.</li>
+            <li>Admin can edit participant details.</li>
+            <li>Admin can manage events and registrations.</li>
+        </ul>
+        <h3>6. Report Generation</h3>
+        <ul>
+            <li>Data can be downloaded as Excel or PDF.</li>
+            <li>Useful for documentation and records.</li>
         </ul>
 
-        <h2>12. Database Design (ERD)</h2>
+        <h2>7. Technical Specifications</h2>
+        <table>
+            <tr>
+                <th width="30%">Component</th>
+                <th>Technology</th>
+            </tr>
+            <tr>
+                <td>Frontend</td>
+                <td>React.js, Next.js 14</td>
+            </tr>
+            <tr>
+                <td>Backend</td>
+                <td>Firebase (BaaS)</td>
+            </tr>
+            <tr>
+                <td>Database</td>
+                <td>Cloud Firestore (NoSQL)</td>
+            </tr>
+            <tr>
+                <td>Authentication</td>
+                <td>Firebase Authentication (Google OAuth)</td>
+            </tr>
+            <tr>
+                <td>Storage</td>
+                <td>Firebase Cloud Storage</td>
+            </tr>
+            <tr>
+                <td>Language</td>
+                <td>TypeScript / JavaScript, CSS</td>
+            </tr>
+            <tr>
+                <td>Operating System</td>
+                <td>Windows / Linux / macOS</td>
+            </tr>
+        </table>
+
+        <h2>8. Hardware Requirements</h2>
+        <table>
+            <tr>
+                <th width="30%">Component</th>
+                <th>Requirement</th>
+            </tr>
+            <tr>
+                <td>Processor</td>
+                <td>Intel Core i3 or higher / Equivalent AMD</td>
+            </tr>
+            <tr>
+                <td>RAM</td>
+                <td>4GB Minimum (8GB Recommended)</td>
+            </tr>
+            <tr>
+                <td>Storage</td>
+                <td>256GB SSD or higher</td>
+            </tr>
+            <tr>
+                <td>Internet</td>
+                <td>Stable Broadband / 4G Connection</td>
+            </tr>
+        </table>
+
+        <h2>9. Database Design (EM Diagram)</h2>
         <div class="figure">
             <img src="synopsis_assets/er_diagram.png" style="width:80%" alt="ER Diagram">
             <span class="caption">Fig 4: Entity Relationship Diagram</span>
         </div>
 
-        <h2>13. Advantages</h2>
+        <h2>10. Advantages of the System</h2>
         <ul>
-            <li><strong>Efficiency:</strong> Reductions in processing time.</li>
-            <li><strong>Accuracy:</strong> Automated checks reduce error.</li>
-            <li><strong>Cost-Effective:</strong> Serverless architecture.</li>
+            <li>Reduces manual work.</li>
+            <li>Faster payment verification.</li>
+            <li>Easy to manage large number of participants.</li>
+            <li>Secure and centralized data storage.</li>
+            <li>Simple and user-friendly interface.</li>
         </ul>
 
-        <h2>14. Applications</h2>
-        <p>College fests, academic conferences, workshops, and sports tournaments.</p>
-
-        <h2>15. Hardware & Software Requirements</h2>
+        <h2>11. Applications</h2>
         <ul>
-            <li><strong>Hardware:</strong> i3 Processor, 4GB RAM, Internet connection.</li>
-            <li><strong>Software:</strong> Windows/Linux/macOS, Node.js v18+, Modern Browser.</li>
+            <li>College fests</li>
+            <li>Cultural programs</li>
+            <li>Technical events</li>
+            <li>Workshops and seminars</li>
         </ul>
 
-        <h2>16. Feasibility Study</h2>
+        <h2>12. Future Scope</h2>
         <ul>
-            <li><strong>Technical:</strong> Built on standard, well-documented automated technologies.</li>
-            <li><strong>Economic:</strong> Low maintenance costs due to cloud infrastructure.</li>
-            <li><strong>Operational:</strong> User-friendly interface requires minimal training.</li>
+            <li>Integration with online payment gateways (Razorpay/Stripe).</li>
+            <li>Email and SMS notifications.</li>
+            <li>QR code-based entry system.</li>
+            <li>Mobile app support (React Native).</li>
         </ul>
 
-        <h2>17. Project Timeline</h2>
-        <ul>
-            <li><strong>Week 1-2:</strong> Analysis & Design.</li>
-            <li><strong>Week 3-5:</strong> Core Development (Frontend/Backend).</li>
-            <li><strong>Week 6-7:</strong> Integration of AI/OCR Features.</li>
-            <li><strong>Week 8:</strong> Testing & Documentation.</li>
-        </ul>
+        <h2>13. Conclusion</h2>
+        <p>The Fest Management Website provides an effective solution for managing college fest activities digitally. It
+            simplifies registration, automates payment verification, and helps admins manage data efficiently. This
+            project reduces errors, saves time, and improves the overall fest organization process, making it suitable
+            for real-world college events.</p>
 
-        <h2>18. Conclusion</h2>
-        <p>The Smart Event Management System modernizes event handling. By leveraging modern web tech and intelligent
-            verification, we deliver a secure, efficient, and user-centric solution that meets all objectives.</p>
-
-        <h2>19. Future Enhancements</h2>
-        <ul>
-            <li>Mobile Application (React Native).</li>
-            <li>QR Code Entry Scanning.</li>
-            <li>Direct Payment Gateway Integration.</li>
-        </ul>
-
-        <h2>20. References</h2>
+        <h2>14. References</h2>
         <ul>
             <li>Next.js Documentation: <a href="https://nextjs.org/">nextjs.org</a></li>
             <li>Firebase Documentation: <a href="https://firebase.google.com/">firebase.google.com</a></li>
-            <li>Tesseract.js Guide: <a href="https://tesseract.projectnaptha.com/">tesseract.projectnaptha.com</a></li>
+            <li>React Official Docs: <a href="https://react.dev/">react.dev</a></li>
         </ul>
     </div>
 </body>
