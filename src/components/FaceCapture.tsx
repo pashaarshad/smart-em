@@ -122,6 +122,7 @@ export default function FaceCapture({ onCapture }: FaceCaptureProps) {
             streamRef.current = null;
         }
         setIsCameraOpen(false);
+
     };
 
     const retake = () => {
