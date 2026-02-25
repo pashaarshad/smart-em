@@ -9,6 +9,8 @@ import { auth, db, storage, googleProvider, GOOGLE_SHEETS_URL, UPI_ID, UPI_NAME 
 import { QRCodeSVG } from "qrcode.react";
 import { useAuth } from "@/context/AuthContext";
 import { createWorker } from "tesseract.js";
+import FaceCapture from "@/components/FaceCapture";
+import IdCardVerify from "@/components/IdCardVerify";
 
 interface RegistrationFormProps {
     eventId: string;
@@ -55,6 +57,9 @@ export default function RegistrationForm({
     const [isOcrProcessing, setIsOcrProcessing] = useState(false);
     const [ocrResult, setOcrResult] = useState<{ found: boolean; text: string } | null>(null);
     const [isUtrUnique, setIsUtrUnique] = useState<boolean | null>(null);
+    const [facePhoto, setFacePhoto] = useState<Blob | null>(null);
+    const [idCardFile, setIdCardFile] = useState<File | null>(null);
+    const [idCardVerified, setIdCardVerified] = useState(false);
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files ? e.target.files[0] : null;
@@ -273,6 +278,22 @@ export default function RegistrationForm({
                 screenshotUrl = await getDownloadURL(storageRef);
             }
 
+            // Upload Face Photo
+            let facePhotoUrl = "";
+            if (facePhoto) {
+                const faceRef = ref(storage, `registrations/${eventId}/${teamId}/face.jpg`);
+                await uploadBytes(faceRef, facePhoto);
+                facePhotoUrl = await getDownloadURL(faceRef);
+            }
+
+            // Upload ID Card
+            let idCardUrl = "";
+            if (idCardFile) {
+                const idRef = ref(storage, `registrations/${eventId}/${teamId}/idcard.jpg`);
+                await uploadBytes(idRef, idCardFile);
+                idCardUrl = await getDownloadURL(idRef);
+            }
+
             const registrationData = {
                 teamNumber: nextTeamNumber,
                 eventId,
@@ -284,6 +305,9 @@ export default function RegistrationForm({
                 registrationFee,
                 utrNumber,
                 screenshotUrl, // Save URL
+                facePhotoUrl,
+                idCardUrl,
+                idCardVerified,
                 paymentStatus: "pending",
                 registeredAt: Timestamp.now(),
                 userId: user?.uid || ""
@@ -1066,6 +1090,20 @@ export default function RegistrationForm({
                                         </div>
                                     ))}
                                 </div>
+
+                                {/* Face Capture */}
+                                <FaceCapture onCapture={(blob) => setFacePhoto(blob)} />
+
+                                {/* ID Card Verification */}
+                                <IdCardVerify
+                                    participantName={members[0]?.name || ""}
+                                    collegeName={collegeName}
+                                    referenceFaceBlob={facePhoto}
+                                    onVerified={(file, verified) => {
+                                        setIdCardFile(file);
+                                        setIdCardVerified(verified);
+                                    }}
+                                />
 
                                 <div className="fee-box">
                                     <span className="fee-label">
