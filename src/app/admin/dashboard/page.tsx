@@ -9,6 +9,8 @@ import { allEvents } from "@/data/events";
 // Typed Imports
 import { Registration, Member } from "@/types/admin";
 import { exportToExcel, exportToPDF } from "@/lib/admin/export";
+import { generateAndUploadQR } from "@/lib/qrCodeService";
+import { sendQREmail } from "@/lib/emailService";
 
 // Components
 import StatsCards from "@/components/admin/StatsCards";
@@ -127,10 +129,46 @@ export default function AdminDashboard() {
     const handleUpdateStatus = async (eventId: string, docId: string, status: string) => {
         try {
             const docRef = doc(db, "registrations", eventId, "teams", docId);
-            await updateDoc(docRef, { paymentStatus: status });
+            const updateData: any = { paymentStatus: status };
+            const reg = registrations.find(r => r.id === docId && r.eventId === eventId);
+
+            // Generate QR and send email if moving to 'completed' and hasn't been done
+            if (status === "completed" && reg && !reg.qrCodeUrl) {
+                try {
+                    // Update state to show processing if you want (could use a toast)
+                    const verifiedTimeStamp = new Date().toISOString();
+                    const qrUrl = await generateAndUploadQR({
+                        teamId: reg.id,
+                        eventId: reg.eventId,
+                        eventName: reg.eventName,
+                        teamNumber: reg.teamNumber,
+                        collegeName: reg.collegeName,
+                        members: reg.members,
+                        registrationFee: reg.registrationFee,
+                        verifiedAt: verifiedTimeStamp
+                    });
+
+                    updateData.qrCodeUrl = qrUrl;
+                    updateData.qrSentAt = new Date();
+
+                    await sendQREmail({
+                        to: reg.email,
+                        teamNumber: reg.teamNumber,
+                        eventName: reg.eventName,
+                        collegeName: reg.collegeName,
+                        members: reg.members,
+                        qrCodeUrl: qrUrl
+                    });
+                } catch (qrError) {
+                    console.error("Failed to generate/send QR:", qrError);
+                    alert("Status updated, but failed to generate/send QR code email.");
+                }
+            }
+
+            await updateDoc(docRef, updateData);
 
             setRegistrations(prev => prev.map(r =>
-                r.id === docId && r.eventId === eventId ? { ...r, paymentStatus: status } : r
+                r.id === docId && r.eventId === eventId ? { ...r, ...updateData } : r
             ));
 
             setStats(prev => ({
@@ -140,7 +178,7 @@ export default function AdminDashboard() {
             }));
 
             if (selectedRegistration?.id === docId) {
-                setSelectedRegistration(prev => prev ? { ...prev, paymentStatus: status } : null);
+                setSelectedRegistration(prev => prev ? { ...prev, ...updateData } : null);
             }
         } catch (error) {
             console.error("Error updating status:", error);
@@ -200,8 +238,7 @@ export default function AdminDashboard() {
         try {
             setLoading(true);
             const updatePromises = matchedItems.map(item => {
-                const docRef = doc(db, "registrations", item.eventId, "teams", item.id);
-                return updateDoc(docRef, { paymentStatus: "completed" });
+                return handleUpdateStatus(item.eventId, item.id, "completed");
             });
 
             await Promise.all(updatePromises);
