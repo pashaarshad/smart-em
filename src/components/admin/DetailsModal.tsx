@@ -218,6 +218,46 @@ export default function DetailsModal({
                                     </div>
                                 </div>
                             </div>
+
+                            {/* QR Code Section */}
+                            {registration.qrCodeUrl && (
+                                <div className="detail-group full-width" style={{ background: 'rgba(16,185,129,0.05)', borderColor: 'rgba(16,185,129,0.2)' }}>
+                                    <div className="detail-label">🎫 Entry QR Code</div>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginTop: '8px' }}>
+                                        <img
+                                            src={registration.qrCodeUrl}
+                                            alt="QR Code"
+                                            style={{ width: '120px', height: '120px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }}
+                                        />
+                                        <div>
+                                            <p style={{ color: '#34d399', fontWeight: 600, margin: '0 0 4px 0' }}>QR Sent ✓</p>
+                                            <p style={{ color: '#a1a1aa', fontSize: '12px', margin: 0 }}>
+                                                {registration.qrSentAt ? new Date(registration.qrSentAt.seconds ? registration.qrSentAt.seconds * 1000 : registration.qrSentAt).toLocaleString() : ''}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Check-in Status */}
+                            <div className="detail-group full-width" style={{
+                                background: registration.checkedIn ? 'rgba(16,185,129,0.05)' : 'rgba(255,255,255,0.02)',
+                                borderColor: registration.checkedIn ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.06)'
+                            }}>
+                                <div className="detail-label">📍 Event Day Check-in</div>
+                                <div style={{ marginTop: '6px' }}>
+                                    {registration.checkedIn ? (
+                                        <div>
+                                            <span style={{ color: '#34d399', fontWeight: 700, fontSize: '16px' }}>✅ Checked In</span>
+                                            <p style={{ color: '#a1a1aa', fontSize: '12px', margin: '4px 0 0 0' }}>
+                                                {registration.checkedInAt ? new Date(registration.checkedInAt.seconds ? registration.checkedInAt.seconds * 1000 : registration.checkedInAt).toLocaleString() : ''}
+                                            </p>
+                                        </div>
+                                    ) : (
+                                        <span style={{ color: '#71717a', fontWeight: 500 }}>Not yet checked in</span>
+                                    )}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 )}

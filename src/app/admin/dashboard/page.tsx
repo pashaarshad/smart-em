@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { collection, doc, updateDoc, getDocs, deleteDoc, addDoc } from "firebase/firestore";
+import { collection, doc, updateDoc, getDocs, deleteDoc, addDoc, onSnapshot, Timestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { allEvents } from "@/data/events";
 
@@ -29,7 +29,7 @@ export default function AdminDashboard() {
     const [selectedEvent, setSelectedEvent] = useState<string>("all");
     const [registrations, setRegistrations] = useState<Registration[]>([]);
     const [loading, setLoading] = useState(true);
-    const [stats, setStats] = useState({ total: 0, pending: 0, verified: 0 });
+    const [stats, setStats] = useState({ total: 0, pending: 0, verified: 0, checkedIn: 0 });
     const router = useRouter();
 
     // Edit mode states
@@ -63,46 +63,56 @@ export default function AdminDashboard() {
         }
     }, [router]);
 
-    // Data Fetching
+    // Real-Time Data Fetching with onSnapshot
     useEffect(() => {
         if (!isAuthenticated) return;
 
-        const fetchAllRegistrations = async () => {
-            setLoading(true);
+        setLoading(true);
+        const unsubscribes: (() => void)[] = [];
+        const eventRegsMap: Record<string, Registration[]> = {};
+
+        const computeStats = () => {
             const allRegs: Registration[] = [];
-
             for (const event of allEvents) {
-                try {
-                    const teamsRef = collection(db, "registrations", event.id, "teams");
-                    const snapshot = await getDocs(teamsRef);
-                    snapshot.forEach((docSnap) => {
-                        allRegs.push({
-                            id: docSnap.id,
-                            eventId: event.id,
-                            ...docSnap.data()
-                        } as Registration);
-                    });
-                } catch (error) {
-                    console.error(`Error fetching ${event.id}:`, error);
-                }
+                allRegs.push(...(eventRegsMap[event.id] || []));
             }
-
             allRegs.sort((a, b) => {
                 const timeA = a.registeredAt?.seconds || 0;
                 const timeB = b.registeredAt?.seconds || 0;
                 return timeB - timeA;
             });
-
             setRegistrations(allRegs);
             setStats({
                 total: allRegs.length,
                 pending: allRegs.filter(r => r.paymentStatus !== "completed").length,
-                verified: allRegs.filter(r => r.paymentStatus === "completed").length
+                verified: allRegs.filter(r => r.paymentStatus === "completed").length,
+                checkedIn: allRegs.filter(r => r.checkedIn === true).length
             });
             setLoading(false);
         };
 
-        fetchAllRegistrations();
+        for (const event of allEvents) {
+            const teamsRef = collection(db, "registrations", event.id, "teams");
+            const unsub = onSnapshot(teamsRef, (snapshot) => {
+                const regs: Registration[] = [];
+                snapshot.forEach((docSnap) => {
+                    regs.push({
+                        id: docSnap.id,
+                        eventId: event.id,
+                        ...docSnap.data()
+                    } as Registration);
+                });
+                eventRegsMap[event.id] = regs;
+                computeStats();
+            }, (error) => {
+                console.error(`Error listening to ${event.id}:`, error);
+            });
+            unsubscribes.push(unsub);
+        }
+
+        return () => {
+            unsubscribes.forEach(unsub => unsub());
+        };
     }, [isAuthenticated]);
 
     const filteredRegistrations = selectedEvent === "all"
@@ -264,6 +274,29 @@ export default function AdminDashboard() {
                         {editMode && <span className="edit-mode-badge" style={{ marginLeft: '12px', fontSize: '12px', background: 'rgba(212,168,67,0.2)', padding: '4px 8px', borderRadius: '4px' }}>✏️ Edit Mode</span>}
                     </h1>
                     <div className="header-actions">
+                        <a
+                            href="/admin/scanner"
+                            style={{
+                                background: 'linear-gradient(135deg, #d4a843 0%, #b88a2e 100%)',
+                                color: '#000',
+                                padding: '10px 16px',
+                                borderRadius: '10px',
+                                border: 'none',
+                                fontWeight: '700',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                textDecoration: 'none',
+                                fontSize: '14px',
+                                transition: 'all 0.2s ease'
+                            }}
+                        >
+                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                            </svg>
+                            QR Scanner
+                        </a>
                         <button
                             className="verify-btn"
                             onClick={() => setShowBulkVerifyModal(true)}
