@@ -235,8 +235,9 @@ export default function AdminDashboard() {
             setDeleteStatus({ isDeleting: true, error: "" });
             await deleteDoc(doc(db, "registrations", deleteContext.eventId, "teams", deleteContext.id));
             window.location.reload();
-        } catch (error) {
-            setDeleteStatus({ isDeleting: false, error: "Failed to delete." });
+        } catch (error: any) {
+            console.error("Deletion Error:", error);
+            setDeleteStatus({ isDeleting: false, error: `Failed to delete. ${error?.message || ''}` });
         }
     };
 

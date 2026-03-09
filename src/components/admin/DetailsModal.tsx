@@ -124,7 +124,7 @@ export default function DetailsModal({
                                     flex: 'unset',
                                     width: 'auto'
                                 }}
-                                onClick={() => editData && onDelete(editData)}
+                                onClick={() => registration && onDelete(registration)}
                             >
                                 Delete
                             </button>

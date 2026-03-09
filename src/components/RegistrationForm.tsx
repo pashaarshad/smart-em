@@ -55,6 +55,7 @@ export default function RegistrationForm({
     const [isOcrProcessing, setIsOcrProcessing] = useState(false);
     const [ocrResult, setOcrResult] = useState<{ found: boolean; text: string } | null>(null);
     const [isUtrUnique, setIsUtrUnique] = useState<boolean | null>(null);
+    const [manualEmail, setManualEmail] = useState("");
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files ? e.target.files[0] : null;
@@ -81,6 +82,12 @@ export default function RegistrationForm({
                     found: true,
                     text: text
                 });
+
+                // Auto-fetch UTR / Transaction ID from OCR text (typically 12 digits)
+                const utrMatch = text.match(/\b\d{12}\b/);
+                if (utrMatch) {
+                    setUtrNumber(utrMatch[0]);
+                }
             } catch (err) {
                 console.error("OCR Error:", err);
                 setOcrResult({ found: false, text: "" });
@@ -1005,6 +1012,63 @@ export default function RegistrationForm({
                                         </>
                                     )}
                                 </button>
+
+                                <div style={{ margin: "24px 0", textAlign: "center", position: "relative" }}>
+                                    <div style={{ position: "absolute", top: "50%", left: "0", right: "0", height: "1px", background: "rgba(255,255,255,0.1)", zIndex: 1 }} />
+                                    <span style={{ position: "relative", zIndex: 2, background: "#13131a", padding: "0 16px", color: "#71717a", fontSize: "14px", fontWeight: 600 }}>OR</span>
+                                </div>
+
+                                <div className="form-group" style={{ textAlign: 'left', marginBottom: 0 }}>
+                                    <label className="form-label">
+                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                        </svg>
+                                        Direct Gmail Login
+                                    </label>
+                                    <div style={{ display: 'flex', gap: '10px' }}>
+                                        <input
+                                            type="email"
+                                            className="form-input"
+                                            value={manualEmail}
+                                            onChange={(e) => setManualEmail(e.target.value)}
+                                            placeholder="your.name@gmail.com"
+                                            style={{ flex: 1, padding: "14px 18px", background: "rgba(255, 255, 255, 0.03)" }}
+                                            onKeyDown={(e) => {
+                                                if (e.key === 'Enter') {
+                                                    e.preventDefault();
+                                                    document.getElementById('manual-email-btn')?.click();
+                                                }
+                                            }}
+                                        />
+                                        <button
+                                            id="manual-email-btn"
+                                            onClick={() => {
+                                                if (!manualEmail.trim().toLowerCase().endsWith("@gmail.com")) {
+                                                    setError("Please enter a valid @gmail.com address");
+                                                    return;
+                                                }
+                                                setError("");
+                                                setUser({ email: manualEmail.trim().toLowerCase(), displayName: manualEmail.split("@")[0] } as unknown as User);
+                                                setStep("form");
+                                            }}
+                                            style={{
+                                                padding: "0 20px",
+                                                background: "rgba(212,168,67,0.15)",
+                                                border: "1px solid rgba(212,168,67,0.3)",
+                                                borderRadius: "14px",
+                                                color: "#d4a843",
+                                                fontWeight: 600,
+                                                cursor: "pointer",
+                                                transition: "all 0.2s ease"
+                                            }}
+                                        >
+                                            Next &rarr;
+                                        </button>
+                                    </div>
+                                    <p style={{ fontSize: "12px", color: "#71717a", marginTop: "8px", marginBottom: 0 }}>
+                                        * Use this alternative if Google Authentication isn't working for you. Must be a @gmail.com address.
+                                    </p>
+                                </div>
                             </div>
                         )}
 
@@ -1016,7 +1080,7 @@ export default function RegistrationForm({
                                         <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                         </svg>
-                                        Email (from Google)
+                                        Email Address
                                     </label>
                                     <input type="email" className="form-input" value={user?.email || ""} readOnly />
                                 </div>
