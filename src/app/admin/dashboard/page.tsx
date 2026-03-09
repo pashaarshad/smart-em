@@ -20,6 +20,7 @@ import DeleteModal from "@/components/admin/DeleteModal";
 import DetailsModal from "@/components/admin/DetailsModal";
 import ExportModal from "@/components/admin/ExportModal";
 import BulkVerifyModal from "@/components/admin/BulkVerifyModal";
+import AlertPanel from "@/components/admin/AlertPanel";
 import "./admin.css";
 
 const EDIT_PIN = "6565";
@@ -52,6 +53,7 @@ export default function AdminDashboard() {
 
     const [copiedUtr, setCopiedUtr] = useState<string | null>(null);
     const [showBulkVerifyModal, setShowBulkVerifyModal] = useState(false);
+    const [showAlertPanel, setShowAlertPanel] = useState(false);
 
     // Auth check
     useEffect(() => {
@@ -298,6 +300,28 @@ export default function AdminDashboard() {
                             QR Scanner
                         </a>
                         <button
+                            onClick={() => setShowAlertPanel(true)}
+                            style={{
+                                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                                color: '#000',
+                                padding: '10px 16px',
+                                borderRadius: '10px',
+                                border: 'none',
+                                fontWeight: '700',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                fontSize: '14px',
+                                transition: 'all 0.2s ease'
+                            }}
+                        >
+                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                            </svg>
+                            Alert
+                        </button>
+                        <button
                             className="verify-btn"
                             onClick={() => setShowBulkVerifyModal(true)}
                             style={{
@@ -426,6 +450,13 @@ export default function AdminDashboard() {
                     pendingRegistrations={registrations.filter(r => r.paymentStatus !== 'completed')}
                     onClose={() => setShowBulkVerifyModal(false)}
                     onVerify={handleBulkVerify}
+                />
+            )}
+
+            {showAlertPanel && (
+                <AlertPanel
+                    registrations={registrations}
+                    onClose={() => setShowAlertPanel(false)}
                 />
             )}
         </div>
