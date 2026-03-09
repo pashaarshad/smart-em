@@ -1,10 +1,14 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
-    // Allow access to the registrations folder for screenshot uploads
+    // Current rule for screenshots
     match /registrations/{allPaths=**} {
+      allow read, write: if true;
+    }
+    
+    // NEW rule to allow QR codes
+    match /qrcodes/{allPaths=**} {
       allow read, write: if true;
     }
   }
 }
-https://firebasestorage.googleapis.com/v0/b/shreshta-2026.firebasestorage.app/o?name=registrations%2Flogic-overload%2Flogic-overload-1%2Fscreenshot.jpg
