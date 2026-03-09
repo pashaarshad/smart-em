@@ -9,6 +9,60 @@ export async function POST(req: NextRequest) {
         const body = await req.json();
         const { type } = body;
 
+        if (type === "welcome") {
+            const { to, subject, teamNumber, eventName, collegeName, members } = body;
+
+            const membersList = members
+                .map((m: { name: string; phone: string }) => `<li>${m.name}</li>`)
+                .join("");
+
+            const { data, error } = await resend.emails.send({
+                from: FROM_EMAIL,
+                to: [to],
+                subject,
+                html: `
+                    <div style="font-family: 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0f; color: #e4e4e7; border-radius: 16px; overflow: hidden;">
+                        <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 32px; text-align: center;">
+                            <h1 style="color: #d4a843; margin: 0; font-size: 28px;">SHRESHTA 2026</h1>
+                            <p style="color: #a1a1aa; margin: 8px 0 0;">Seshadripuram Degree College, Mysuru</p>
+                        </div>
+                        
+                        <div style="padding: 32px;">
+                            <div style="background: rgba(212,168,67,0.1); border: 1px solid rgba(212,168,67,0.3); border-radius: 12px; padding: 16px; text-align: center; margin-bottom: 24px;">
+                                <p style="color: #d4a843; font-size: 18px; font-weight: 700; margin: 0;">🎉 Registration Received!</p>
+                            </div>
+                            
+                            <h2 style="color: #fff; margin: 0 0 16px;">Hello Team #${teamNumber},</h2>
+                            <p style="color: #a1a1aa; font-size: 15px; line-height: 1.6;">You have successfully registered for <strong style="color: #fff;">${eventName}</strong>.</p>
+                            <p style="color: #a1a1aa; font-size: 15px; line-height: 1.6; margin-bottom: 24px;">Your payment is currently <strong>Under Verification</strong>. Once verified, you will receive another email containing your QR Code & entry pass for the event day.</p>
+                            
+                            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 16px; margin-bottom: 24px;">
+                                <p style="color: #a1a1aa; margin: 0 0 6px; font-size: 13px;">College</p>
+                                <p style="color: #fff; margin: 0 0 16px; font-weight: 600;">${collegeName}</p>
+                                <p style="color: #a1a1aa; margin: 0 0 6px; font-size: 13px;">Team Members</p>
+                                <ul style="color: #fff; margin: 0; padding: 0 0 0 18px; line-height: 1.8;">${membersList}</ul>
+                            </div>
+                            
+                            <div style="background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2); border-radius: 12px; padding: 16px;">
+                                <p style="color: #60a5fa; font-size: 14px; margin: 0; font-weight: 600;">⏳ What's Next?</p>
+                                <p style="color: #a1a1aa; font-size: 13px; margin: 8px 0 0;">Please allow up to 24 hours for our team to verify your transaction. We will notify you right here.</p>
+                            </div>
+                        </div>
+                        
+                        <div style="background: rgba(255,255,255,0.03); padding: 20px; text-align: center; border-top: 1px solid rgba(255,255,255,0.06);">
+                            <p style="color: #71717a; font-size: 12px; margin: 0;">© 2026 SHRESHTA — Seshadripuram Degree College, Mysuru</p>
+                        </div>
+                    </div>
+                `,
+            });
+
+            if (error) {
+                return NextResponse.json({ error: error.message }, { status: 400 });
+            }
+
+            return NextResponse.json({ success: true, id: data?.id });
+        }
+
         if (type === "qr") {
             const { to, subject, teamNumber, eventName, collegeName, members, qrCodeUrl } = body;
 

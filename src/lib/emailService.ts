@@ -27,6 +27,14 @@ interface SendAlertEmailParams {
     message: string;
 }
 
+interface SendWelcomeEmailParams {
+    to: string;
+    eventName: string;
+    teamNumber: number;
+    collegeName: string;
+    members: { name: string; phone: string }[];
+}
+
 /**
  * Send QR code email after payment verification
  */
@@ -56,6 +64,32 @@ export async function sendQREmail(params: SendQREmailParams): Promise<boolean> {
         return true;
     } catch (error) {
         console.error("Error sending QR email:", error);
+        return false;
+    }
+}
+
+/**
+ * Send welcome email immediately after registration (before payment verification)
+ */
+export async function sendWelcomeEmail(params: SendWelcomeEmailParams): Promise<boolean> {
+    try {
+        const response = await fetch("/api/send-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                type: "welcome",
+                to: params.to,
+                subject: `🎉 Registration Received! — ${params.eventName} | SHRESHTA 2026`,
+                teamNumber: params.teamNumber,
+                eventName: params.eventName,
+                collegeName: params.collegeName,
+                members: params.members,
+            }),
+        });
+
+        return response.ok;
+    } catch (error) {
+        console.error("Error sending welcome email:", error);
         return false;
     }
 }

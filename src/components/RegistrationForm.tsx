@@ -9,6 +9,7 @@ import { auth, db, storage, googleProvider, GOOGLE_SHEETS_URL, UPI_ID, UPI_NAME 
 import { QRCodeSVG } from "qrcode.react";
 import { useAuth } from "@/context/AuthContext";
 import { createWorker } from "tesseract.js";
+import { sendWelcomeEmail } from "@/lib/emailService";
 
 interface RegistrationFormProps {
     eventId: string;
@@ -337,6 +338,20 @@ export default function RegistrationForm({
                 });
             } catch (sheetError) {
                 console.error("Google Sheets sync failed:", sheetError);
+            }
+
+            try {
+                if (user?.email || manualEmail) {
+                    await sendWelcomeEmail({
+                        to: user?.email || manualEmail.trim().toLowerCase(),
+                        eventName: eventName,
+                        teamNumber: nextTeamNumber,
+                        collegeName: collegeName,
+                        members: members,
+                    });
+                }
+            } catch (emailError) {
+                console.error("Welcome email failed:", emailError);
             }
 
             setTeamNumber(nextTeamNumber);
