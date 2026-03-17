@@ -178,6 +178,13 @@ export default function RegistrationForm({
             setUser(result.user);
             setStep("form");
         } catch (err: any) {
+            // Silently ignore user-cancelled popup errors
+            if (
+                err?.code === "auth/cancelled-popup-request" ||
+                err?.code === "auth/popup-closed-by-user"
+            ) {
+                return;
+            }
             setError(err.message || "Failed to sign in with Google");
         } finally {
             setLoading(false);

@@ -79,12 +79,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
     };
 
+    const [signingIn, setSigningIn] = useState(false);
+
     const signInWithGoogle = async () => {
+        if (signingIn) return; // prevent duplicate popups
         try {
+            setSigningIn(true);
             await signInWithPopup(auth, googleProvider);
-        } catch (error) {
+        } catch (error: any) {
+            // Silently ignore user-cancelled popup errors
+            if (
+                error?.code === "auth/cancelled-popup-request" ||
+                error?.code === "auth/popup-closed-by-user"
+            ) {
+                console.log("Popup cancelled by user");
+                return;
+            }
             console.error("Error signing in with Google:", error);
             throw error;
+        } finally {
+            setSigningIn(false);
         }
     };
 

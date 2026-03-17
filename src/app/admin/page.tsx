@@ -227,6 +227,7 @@ export default function AdminLoginPage() {
                                 onChange={(e) => setUsername(e.target.value)}
                                 placeholder="Enter username"
                                 required
+                                suppressHydrationWarning
                             />
                         </div>
 
@@ -239,10 +240,11 @@ export default function AdminLoginPage() {
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="Enter password"
                                 required
+                                suppressHydrationWarning
                             />
                         </div>
 
-                        <button type="submit" className="login-btn" disabled={loading}>
+                        <button type="submit" className="login-btn" disabled={loading} suppressHydrationWarning>
                             {loading ? (
                                 <div className="spinner" />
                             ) : (

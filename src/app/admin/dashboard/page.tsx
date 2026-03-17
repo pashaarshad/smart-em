@@ -21,6 +21,7 @@ import DetailsModal from "@/components/admin/DetailsModal";
 import ExportModal from "@/components/admin/ExportModal";
 import BulkVerifyModal from "@/components/admin/BulkVerifyModal";
 import AlertPanel from "@/components/admin/AlertPanel";
+import CertificatePanel from "@/components/admin/CertificatePanel";
 import "./admin.css";
 
 const EDIT_PIN = "6565";
@@ -54,6 +55,7 @@ export default function AdminDashboard() {
     const [copiedUtr, setCopiedUtr] = useState<string | null>(null);
     const [showBulkVerifyModal, setShowBulkVerifyModal] = useState(false);
     const [showAlertPanel, setShowAlertPanel] = useState(false);
+    const [showCertificatePanel, setShowCertificatePanel] = useState(false);
 
     // Auth check
     useEffect(() => {
@@ -323,6 +325,28 @@ export default function AdminDashboard() {
                             Alert
                         </button>
                         <button
+                            onClick={() => setShowCertificatePanel(true)}
+                            style={{
+                                background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
+                                color: '#fff',
+                                padding: '10px 16px',
+                                borderRadius: '10px',
+                                border: 'none',
+                                fontWeight: '700',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                fontSize: '14px',
+                                transition: 'all 0.2s ease'
+                            }}
+                        >
+                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                            </svg>
+                            Certificates
+                        </button>
+                        <button
                             className="verify-btn"
                             onClick={() => setShowBulkVerifyModal(true)}
                             style={{
@@ -458,6 +482,13 @@ export default function AdminDashboard() {
                 <AlertPanel
                     registrations={registrations}
                     onClose={() => setShowAlertPanel(false)}
+                />
+            )}
+
+            {showCertificatePanel && (
+                <CertificatePanel
+                    registrations={registrations}
+                    onClose={() => setShowCertificatePanel(false)}
                 />
             )}
         </div>

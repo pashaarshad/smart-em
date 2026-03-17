@@ -6,8 +6,13 @@ service firebase.storage {
       allow read, write: if true;
     }
     
-    // NEW rule to allow QR codes
+    // QR codes
     match /qrcodes/{allPaths=**} {
+      allow read, write: if true;
+    }
+
+    // Certificates
+    match /certificates/{allPaths=**} {
       allow read, write: if true;
     }
   }
