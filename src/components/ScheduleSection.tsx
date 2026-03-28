@@ -5,16 +5,16 @@ import { Calendar, Clock, MapPin, AlertCircle, Sparkles } from "lucide-react";
 
 // Inline data to ensure component works without missing "lib/eventData"
 const eventInfo = {
-    date: "February 17, 2026",
+    date: "May 15, 2026",
     day: "Tuesday",
     time: "8:30 AM onwards",
-    registrationDeadline: "February 15, 2026"
+    registrationDeadline: "May 13, 2026"
 };
 
 const rules = [
     "College ID is mandatory",
     "Reporting time - 8:30AM onwards",
-    "Register on or before 15th February 2026 for all events",
+    "Register on or before 13th May 2026 for all events",
     "Judges Decision will be considered as final",
     "Discipline should be maintained",
     "Conditions Applied for all the events"

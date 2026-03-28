@@ -1,5 +1,5 @@
 // SHRESHTA 2026 - Seshadripuram Degree College, Mysuru
-// Event Date: 17th February 2026 (Tuesday)
+// Event Date: 15th May 2026 (Friday)
 
 export interface Event {
     id: string;
@@ -41,7 +41,7 @@ export const managementEvents: Event[] = [
         rules: [
             "Team of 2 members",
             "College ID is mandatory",
-            "Register on or before 15th February 2026",
+            "Register on or before 13th May 2026",
             "Judges decision will be considered as final",
         ],
         teamSize: "2 Members",
@@ -62,7 +62,7 @@ export const managementEvents: Event[] = [
         rules: [
             "Team of 2 members",
             "College ID is mandatory",
-            "Register on or before 15th February 2026",
+            "Register on or before 13th May 2026",
             "Judges decision will be considered as final",
         ],
         teamSize: "2 Members",
@@ -83,7 +83,7 @@ export const managementEvents: Event[] = [
         rules: [
             "Team of 2 members",
             "College ID is mandatory",
-            "Register on or before 15th February 2026",
+            "Register on or before 13th May 2026",
             "Judges decision will be considered as final",
         ],
         teamSize: "2 Members",
@@ -104,7 +104,7 @@ export const managementEvents: Event[] = [
         rules: [
             "Team of 2 members",
             "College ID is mandatory",
-            "Register on or before 15th February 2026",
+            "Register on or before 13th May 2026",
             "Judges decision will be considered as final",
         ],
         teamSize: "2 Members",
@@ -129,7 +129,7 @@ export const itEvents: Event[] = [
         rules: [
             "Team of 2 members",
             "College ID is mandatory",
-            "Register on or before 15th February 2026",
+            "Register on or before 13th May 2026",
             "Judges decision will be considered as final",
         ],
         teamSize: "2 Members",
@@ -150,7 +150,7 @@ export const itEvents: Event[] = [
         rules: [
             "Team of 2 members",
             "College ID is mandatory",
-            "Register on or before 15th February 2026",
+            "Register on or before 13th May 2026",
             "Judges decision will be considered as final",
         ],
         teamSize: "2 Members",
@@ -172,7 +172,7 @@ export const itEvents: Event[] = [
         rules: [
             "Team of 4 members",
             "College ID is mandatory",
-            "Register on or before 15th February 2026",
+            "Register on or before 13th May 2026",
             "Judges decision will be considered as final",
         ],
         teamSize: "4 Members",
@@ -193,7 +193,7 @@ export const itEvents: Event[] = [
         rules: [
             "Team of 4 members",
             "College ID is mandatory",
-            "Register on or before 15th February 2026",
+            "Register on or before 13th May 2026",
             "Judges decision will be considered as final",
         ],
         teamSize: "4 Members",
@@ -218,7 +218,7 @@ export const culturalEvents: Event[] = [
         rules: [
             "Team participation",
             "College ID is mandatory",
-            "Register on or before 15th February 2026",
+            "Register on or before 13th May 2026",
             "Judges decision will be considered as final",
         ],
         teamSize: "Team",
@@ -239,7 +239,7 @@ export const culturalEvents: Event[] = [
         rules: [
             "Individual participation",
             "College ID is mandatory",
-            "Register on or before 15th February 2026",
+            "Register on or before 13th May 2026",
             "Judges decision will be considered as final",
         ],
         teamSize: "1 Person",
@@ -260,7 +260,7 @@ export const culturalEvents: Event[] = [
         rules: [
             "Solo or Group participation",
             "College ID is mandatory",
-            "Register on or before 15th February 2026",
+            "Register on or before 13th May 2026",
             "Judges decision will be considered as final",
         ],
         teamSize: "Solo/Group",
@@ -281,7 +281,7 @@ export const culturalEvents: Event[] = [
         rules: [
             "Individual participation",
             "College ID is mandatory",
-            "Register on or before 15th February 2026",
+            "Register on or before 13th May 2026",
             "Judges decision will be considered as final",
         ],
         teamSize: "1 Person",
@@ -306,7 +306,7 @@ export const sportsEvents: Event[] = [
         rules: [
             "Team of 8 + 2 players",
             "College ID is mandatory",
-            "Register on or before 15th February 2026",
+            "Register on or before 13th May 2026",
             "Judges decision will be considered as final",
         ],
         teamSize: "8 + 2 Players",
@@ -337,10 +337,10 @@ export const collegeInfo = {
     location: "Mysuru",
     eventName: "SHRESHTA",
     eventYear: "2026",
-    eventDate: "17th February 2026",
+    eventDate: "15th May 2026",
     eventDay: "Tuesday",
     reportingTime: "8:30 AM onwards",
-    registrationDeadline: "15th February 2026",
+    registrationDeadline: "13th May 2026",
     address: "#25, Hebbal Ring Road, Hebbal, Mysuru–570017",
     phone: "+91 96119 81857",
     website: "https://www.sdcmysore.ac.in",

@@ -189,7 +189,7 @@ export async function generateCertificateImage(data: CertificateData): Promise<B
     ctx.fillText(`Team #${data.teamNumber}`, W / 2, 640);
 
     // ── Date ──
-    const eventDate = data.eventDate || "17th February 2026";
+    const eventDate = data.eventDate || "15th May 2026";
     ctx.fillStyle = "#a1a1aa";
     ctx.font = "400 17px 'Segoe UI', sans-serif";
     ctx.fillText(`held on  ${eventDate}  at Seshadripuram Degree College, Mysuru`, W / 2, 690);
