@@ -64,6 +64,12 @@ export default function AdminDashboard() {
             router.push("/admin");
         } else {
             setIsAuthenticated(true);
+            // Auto-filter for coordinator
+            const role = sessionStorage.getItem("adminRole");
+            const eventId = sessionStorage.getItem("adminEventId");
+            if (role === "coordinator" && eventId) {
+                setSelectedEvent(eventId);
+            }
         }
     }, [router]);
 
@@ -268,6 +274,10 @@ export default function AdminDashboard() {
         }
     };
 
+    const adminRole = typeof window !== 'undefined' ? sessionStorage.getItem("adminRole") : "admin";
+    const adminEventName = typeof window !== 'undefined' ? sessionStorage.getItem("adminEventName") : null;
+    const isCoordinator = adminRole === "coordinator";
+
     if (!isAuthenticated) return null;
 
     return (
@@ -275,7 +285,8 @@ export default function AdminDashboard() {
             <header className="dashboard-header">
                 <div className="header-inner">
                     <h1 className="header-title">
-                        <span>SHRESHTA</span> Admin
+                        <span>SHRESHTA</span> {isCoordinator ? adminEventName : 'Admin'}
+                        {isCoordinator && <span style={{ marginLeft: '10px', fontSize: '11px', background: 'rgba(59,130,246,0.15)', color: '#60a5fa', padding: '4px 10px', borderRadius: '6px', fontWeight: 600 }}>Coordinator</span>}
                         {editMode && <span className="edit-mode-badge" style={{ marginLeft: '12px', fontSize: '12px', background: 'rgba(212,168,67,0.2)', padding: '4px 8px', borderRadius: '4px' }}>✏️ Edit Mode</span>}
                     </h1>
                     <div className="header-actions">
@@ -382,7 +393,12 @@ export default function AdminDashboard() {
                 <div className="filter-section" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '16px' }}>
                     <div>
                         <div className="filter-label">Filter by Event:</div>
-                        <select className="filter-select" value={selectedEvent} onChange={(e) => setSelectedEvent(e.target.value)}>
+                        <select
+                            className="filter-select"
+                            value={selectedEvent}
+                            onChange={(e) => setSelectedEvent(e.target.value)}
+                            disabled={isCoordinator}
+                        >
                             <option value="all">All Events</option>
                             {allEvents.map((e) => <option key={e.id} value={e.id}>{e.title}</option>)}
                         </select>
