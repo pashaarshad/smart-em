@@ -278,6 +278,14 @@ export default function AdminDashboard() {
     const adminEventName = typeof window !== 'undefined' ? sessionStorage.getItem("adminEventName") : null;
     const isCoordinator = adminRole === "coordinator";
 
+    // Compute stats for display — coordinators see only their event's stats
+    const displayStats = isCoordinator ? {
+        total: filteredRegistrations.length,
+        pending: filteredRegistrations.filter(r => r.paymentStatus !== "completed").length,
+        verified: filteredRegistrations.filter(r => r.paymentStatus === "completed").length,
+        checkedIn: filteredRegistrations.filter(r => r.checkedIn === true).length,
+    } : stats;
+
     if (!isAuthenticated) return null;
 
     return (
@@ -335,6 +343,7 @@ export default function AdminDashboard() {
                             </svg>
                             Alert
                         </button>
+                        {!isCoordinator && (
                         <button
                             onClick={() => setShowCertificatePanel(true)}
                             style={{
@@ -357,6 +366,8 @@ export default function AdminDashboard() {
                             </svg>
                             Certificates
                         </button>
+                        )}
+                        {!isCoordinator && (
                         <button
                             className="verify-btn"
                             onClick={() => setShowBulkVerifyModal(true)}
@@ -379,16 +390,17 @@ export default function AdminDashboard() {
                             </svg>
                             Auto Verify
                         </button>
-                        <button className={`edit-btn ${editMode ? 'active' : ''}`} onClick={() => editMode ? setEditMode(false) : setShowPinModal(true)}>
+                        )}
+                        {!isCoordinator && <button className={`edit-btn ${editMode ? 'active' : ''}`} onClick={() => editMode ? setEditMode(false) : setShowPinModal(true)}>
                             {editMode ? "Exit" : "Edit"}
-                        </button>
-                        <button className="logout-btn" onClick={() => { sessionStorage.removeItem("adminLoggedIn"); router.push("/admin"); }}>Logout</button>
+                        </button>}
+                        <button className="logout-btn" onClick={() => { sessionStorage.removeItem("adminLoggedIn"); sessionStorage.removeItem("adminRole"); sessionStorage.removeItem("adminEventId"); sessionStorage.removeItem("adminEventName"); router.push("/admin"); }}>Logout</button>
                     </div>
                 </div>
             </header>
 
             <div className="dashboard-content">
-                <StatsCards stats={stats} />
+                <StatsCards stats={displayStats} />
 
                 <div className="filter-section" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '16px' }}>
                     <div>
