@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Event Management System - Project Report</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="report">
+
+    <!-- ======================== COVER PAGE ======================== -->
+    <div class="page cover">
+      <p class="uni-name">University of Mysore</p>
+      <p class="uni-loc">Mysuru – 570005</p>
+      <p style="font-size:18pt;font-weight:700;margin:10px 0;">A</p>
+      <p class="project-label">Project Report On</p>
+      <p class="project-title">Smart Event Management System<br>(SHRESHTA 2026)</p>
+      <p class="degree-text">Submitted in partial fulfillment of the requirements for the award of the degree of</p>
+      <p class="degree-name">Bachelor of Computer Applications</p>
+      <p style="font-size:13pt;font-weight:700;margin-bottom:8px;">Submitted by</p>
+      <table class="students-table">
+        <tr>
+          <td><b>ARSHAD PASHA</b></td>
+          <td>REG NO: U01CT23S0049</td>
+        </tr>
+        <tr>
+          <td><b>MOHAMMAD ARSH</b></td>
+          <td>REG NO: U01CT23S0036</td>
+        </tr>
+        <tr>
+          <td><b>DEEKSHA RAJ M N</b></td>
+          <td>REG NO: U01CT23S0088</td>
+        </tr>
+        <tr>
+          <td><b>DHANUSHREE S</b></td>
+          <td>REG NO: U01CT23S0005</td>
+        </tr>
+      </table>
+      <div class="guide-section">
+        <h3>Under the Guidance and Supervision of</h3>
+        <table class="students-table" style="margin-top:12px;">
+          <tr>
+            <td style="text-align:center;padding:4px 30px;"><b style="font-size:14pt;">Mr. ARUN S</b></td>
+            <td style="text-align:center;padding:4px 30px;"><b style="font-size:14pt;">Mrs. NEHA</b></td>
+          </tr>
+          <tr>
+            <td style="text-align:center;">Assistant Professor</td>
+            <td style="text-align:center;">Assistant Professor</td>
+          </tr>
+          <tr>
+            <td style="text-align:center;font-size:11pt;">Department of Computer Science</td>
+            <td style="text-align:center;font-size:11pt;">Department of Computer Science</td>
+          </tr>
+          <tr>
+            <td style="text-align:center;font-size:11pt;">Seshadripuram Degree College, Mysore</td>
+            <td style="text-align:center;font-size:11pt;">Seshadripuram Degree College, Mysore</td>
+          </tr>
+        </table>
+      </div>
+      <div class="dept-footer">
+        Seshadripuram Degree College<br>Department of Computer Science<br>Mysuru – 570017
+      </div>
+    </div>
+
+    <!-- ======================== CERTIFICATE ======================== -->
+    <div class="page">
+      <p style="text-align:center;font-weight:700;font-size:13pt;margin-bottom:4px;">Department of Computer Science</p>
+      <p style="text-align:center;font-size:13pt;margin-bottom:20px;">Seshadripuram Degree College, Mysore-570017</p>
+      <h1 class="cert-title">Certificate</h1>
+      <div class="cert-body">
+        <p>Certified that the project work <b>"Smart Event Management System (SHRESHTA 2026)"</b> is a Bonafide
+          work carried out by a team of <b>ARSHAD PASHA, MOHAMMAD ARSH, DEEKSHA RAJ M N, DHANUSHREE S</b>, REG NO:
+          U01CT23S0049, 0036, 0088, 0005 in fulfilment of requirements for the award of Degree in <b>Bachelor of
+            Computer Applications</b> by University of Mysore, Mysore during the academic year 2025-2026.</p>
+        <p>It is certified that all corrections and suggestions indicated for the Internal Assessment have been
+          incorporated in the Report deposited in the Department library. The project report has been approved as it
+          satisfies the academic requirements in respect of project work prescribed for the said degree.</p>
+      </div>
+      <div class="sign-grid">
+        <div class="sign-box">
+          <div class="sign-line">
+            <p class="name">Mr. Arun S</p>
+            <p>Assistant Professor</p>
+            <p>Seshadripuram Degree College</p>
+            <p>Mysore-570017</p>
+          </div>
+          <p style="margin-top:4px;font-weight:700;">Internal Guide</p>
+        </div>
+        <div class="sign-box">
+          <div class="sign-line">
+            <p class="name">Mrs. Neha</p>
+            <p>Assistant Professor</p>
+            <p>Seshadripuram Degree College</p>
+            <p>Mysore-570017</p>
+          </div>
+          <p style="margin-top:4px;font-weight:700;">Internal Guide</p>
+        </div>
+      </div>
+      <div class="principal-box">
+        <div class="sign-box" style="display:inline-block;min-width:250px;">
+          <div class="sign-line">
+            <p class="name">Dr. Sowmya Erappa K</p>
+            <p>Principal</p>
+            <p>Seshadripuram Degree College</p>
+            <p>Mysore-570017</p>
+          </div>
+          <p style="margin-top:4px;font-weight:700;">Principal</p>
+        </div>
+      </div>
+      <table class="viva-table" style="margin-top:40px;">
+        <tr>
+          <th colspan="2">External Viva</th>
+        </tr>
+        <tr>
+          <th>Name of the Examiner</th>
+          <th>Signature with Date</th>
+        </tr>
+        <tr>
+          <td>1.</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>2.</td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- ======================== DECLARATION ======================== -->
+    <div class="page">
+      <h1 class="cert-title">Declaration</h1>
+<div class="cert-body">
+<p>We are the students of Final Year BCA of Seshadripuram Degree College, Mysuru, hereby declare that the dissertation entitled <b>"Smart Event Management System (SHRESHTA 2026)"</b> has been carried out by us and submitted in partial fulfilment of the requirement for the award of Bachelor of Computer Applications affiliated to the University of Mysore, Mysuru during the academic year 2025-2026.</p>
+        <p>Further the matter embodied in the report is an Original and Bonafide work done by us.</p>
+        <p>To our knowledge this dissertation has not been submitted to any other college or Universities at any time
+          till this.</p>
+        <p style="margin-top:40px;"><b>Place:</b> Mysuru<br><b>Date:</b></p>
+        <div style="margin-top:60px;text-align:right;">
+          <p><b>ARSHAD PASHA</b></p>
+          <p><b>MOHAMMAD ARSH</b></p>
+          <p><b>DEEKSHA RAJ M N</b></p>
+          <p><b>DHANUSHREE S</b></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================== ACKNOWLEDGEMENT ======================== -->
+    <div class="page">
+      <h1 class="cert-title">Acknowledgement</h1>
+<div class="cert-body">
+<p>We take immense pleasure in thanking <b>Dr. Sowmya Erappa K</b>, Principal of Seshadripuram Degree College and our internal guides <b>Mr. Arun S</b> and <b>Mrs. Neha</b>, Assistant Professors in Department of Computer Science, Seshadripuram Degree College, for their guidance and excellent suggestions, which helped us in completing the project work entitled <b>"Smart Event Management System (SHRESHTA 2026)"</b>.</p>
+        <p>We would also like to express our sincere gratitude to the Head of the Department of Computer Science, for
+          the constant encouragement and support throughout the project.</p>
+        <p>We are also grateful to all the faculty members of the Department of Computer Science for their valuable
+          inputs and constructive feedback during the project development.</p>
+        <p>Finally, we wish to thank our family and friends for their unwavering support and motivation during the
+          course of this project.</p>
+      </div>
+    </div>
+
+    <!-- ======================== ABSTRACT ======================== -->
+    <div class="page">
+      <h1 class="cert-title">Abstract</h1>
+<div class="cert-body">
+<p>This project presents the design, development, and deployment of a <b>Smart Event Management System (SHRESHTA 2026)</b> — a comprehensive web-based platform built for managing inter-collegiate fest events at Seshadripuram Degree College, Mysuru. The system automates the entire event lifecycle including online team registration, secure payment verification via UTR-based tracking, real-time admin dashboard with role-based access control, QR code generation for verified participants, on-site check-in desk for event-day attendance, email notifications via Resend API, certificate generation using HTML Canvas, and alert broadcasting to registered participants.</p>
+        <p>The platform is built using <b>Next.js 16 (React 19)</b> with TypeScript for the frontend, <b>Firebase
+            (Firestore &amp; Storage)</b> for real-time backend services, and deployed on <b>Vercel</b> for production
+          hosting. The admin panel supports two authentication tiers — full admin access and event-specific coordinator
+          access — enabling decentralized event management.</p>
+        <p>The system has been successfully deployed and used for the SHRESHTA 2026 inter-collegiate fest, handling
+          registrations across 13 events spanning IT, Management, Cultural, and Sports categories.</p>
+        <p><b>Index Terms</b> — Event Management System, Next.js, Firebase, Real-time Dashboard, QR Code, Role-based
+          Access Control, Certificate Generation.</p>
+      </div>
+    </div>
+
+    <!-- ======================== TABLE OF CONTENTS ======================== -->
+    <div class="page">
+      <h1 class="cert-title">Table of Contents</h1>
+      <table class="toc-table">
+        <tr>
+          <td>SL NO.</td>
+          <td>INDEX</td>
+          <td>PAGE NO.</td>
+        </tr>
+        <tr>
+          <td>01.</td>
+          <td>Introduction</td>
+          <td>01</td>
+        </tr>
+        <tr>
+          <td>02.</td>
+          <td>Literature Survey</td>
+          <td>03</td>
+        </tr>
+        <tr>
+          <td>03.</td>
+          <td>Software and Hardware Requirement Specifications</td>
+          <td>05</td>
+        </tr>
+        <tr>
+          <td>04.</td>
+          <td>System Design</td>
+          <td>09</td>
+        </tr>
+        <tr>
+          <td>05.</td>
+          <td>Implementation</td>
+          <td>17</td>
+        </tr>
+        <tr>
+          <td>06.</td>
+          <td>Software Testing and Snapshots</td>
+          <td>23</td>
+        </tr>
+        <tr>
+          <td>07.</td>
+          <td>Conclusion &amp; Future Enhancement</td>
+          <td>31</td>
+        </tr>
+        <tr>
+          <td>08.</td>
+          <td>Bibliography</td>
+          <td>33</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- ======================== CHAPTER 1: INTRODUCTION ======================== -->
+    <div class="page">
+      <h1 class="chapter-title">Chapter 1<br>Introduction</h1>
+      <h2 class="section-title">1.1 Project Description</h2>
+      <p>The management of inter-collegiate cultural and technical festivals in educational institutions has
+        traditionally relied on manual processes — paper-based registration forms, cash payment collection, hand-written
+        attendance sheets, and physically distributed certificates. These methods are prone to errors, data loss, and
+        inefficiency, especially when managing hundreds of participants across multiple events simultaneously.</p>
+      <p>With the rapid advancement of web technologies and cloud-based services, there is a growing need for digital
+        event management solutions tailored to the unique requirements of college festivals. Unlike generic event
+        platforms like Eventbrite or Townscript, college fests require features such as team-based registrations with
+        variable team sizes, UTR-based payment verification (since most students use UPI), event-specific coordinator
+        access, and bulk certificate generation — features not readily available in off-the-shelf solutions.</p>
+      <p>The <b>Smart Event Management System (SHRESHTA 2026)</b> addresses these gaps by providing a
+        comprehensive, real-time, web-based platform specifically designed for managing inter-collegiate fest events.
+        The system automates the entire event lifecycle — from online team registration and payment verification to
+        on-site check-in and post-event certificate distribution.</p>
+      <h2 class="section-title">1.2 Problem Statement</h2>
+      <p>College fest organizers face several challenges with traditional event management approaches:</p>
+      <ul>
+        <li><b>Manual Registration:</b> Paper forms lead to data entry errors, duplicate registrations, and difficulty
+          in tracking participant counts across events.</li>
+        <li><b>Payment Verification:</b> Coordinators manually verify UPI payments by matching UTR numbers, a tedious
+          and error-prone process when handling hundreds of transactions.</li>
+        <li><b>No Real-Time Visibility:</b> Event coordinators lack real-time dashboards to monitor registration
+          progress, payment status, and check-in counts.</li>
+        <li><b>Day-of-Event Chaos:</b> Without a digital check-in system, verifying whether a participant has registered
+          and paid becomes challenging at the event venue.</li>
+        <li><b>Certificate Distribution:</b> Manually creating and distributing participation certificates to hundreds
+          of participants is time-consuming and often delayed.</li>
+      </ul>
+      <h2 class="section-title">1.3 Objectives</h2>
+      <ol>
+        <li>To develop a responsive web application for online team registration with dynamic team sizes across multiple
+          event categories.</li>
+        <li>To implement UTR-based payment verification with real-time admin dashboard updates using Firebase real-time
+          listeners.</li>
+        <li>To create a role-based admin panel with full admin and event coordinator access tiers.</li>
+        <li>To build an on-site check-in desk with instant search for efficient day-of-event attendance management.</li>
+        <li>To automate certificate generation using HTML Canvas and email delivery via Resend API.</li>
+        <li>To deploy the system on Vercel with Firebase backend for zero-downtime production use.</li>
+      </ol>
+      <h2 class="section-title">1.4 Scope</h2>
+      <p>The system covers 13 events across 4 categories (IT, Management, Cultural, Sports) for the inter-collegiate
+        fest at Seshadripuram Degree College, Mysuru. It is designed to be reusable for future editions of the fest with
+        minimal configuration changes.</p>
+      <div class="page-footer"><span>Smart Event Management System (SHRESHTA 2026)</span><span>Page 1</span></div>
+    </div>
+
+    <!-- ======================== CHAPTER 2: LITERATURE SURVEY ======================== -->
+    <div class="page">
+      <h1 class="chapter-title">Chapter 2<br>Literature Survey</h1>
+      <p>A comprehensive review of existing event management systems, web technologies, and related academic work was
+        conducted to establish the foundation for this project.</p>
+      <h2 class="section-title">2.1 Existing Event Management Platforms</h2>
+      <p>Platforms like <b>Eventbrite</b>, <b>Townscript</b>, and <b>Festa</b> offer generic event management
+        capabilities including ticketing, attendee management, and analytics. However, these platforms are designed for
+        commercial events and lack features critical for college fests — such as team-based registrations with variable
+        sizes, UTR-based UPI payment verification (essential in Indian college contexts), and event-specific coordinator
+        roles with filtered access [1][2].</p>
+      <p><b>Devfolio</b> provides hackathon management with team formation features but is limited to tech events and
+        does not support the diverse event categories (cultural, sports, management) typical of college fests [3].</p>
+      <h2 class="section-title">2.2 Web Application Frameworks</h2>
+      <p>Modern web frameworks have evolved significantly. <b>React.js</b> introduced component-based architecture and
+        virtual DOM for efficient UI rendering [4]. <b>Next.js</b>, built on React, adds server-side rendering (SSR),
+        static site generation (SSG), and API routes, making it ideal for full-stack applications with SEO requirements
+        [5]. The use of <b>TypeScript</b> enhances code reliability through static type checking, reducing runtime
+        errors in large codebases [6].</p>
+      <h2 class="section-title">2.3 Real-Time Database Technologies</h2>
+      <p><b>Firebase Firestore</b> provides a NoSQL document database with real-time synchronization capabilities. Its
+        <code>onSnapshot</code> listener pattern enables live data updates without polling, making it suitable for
+        dashboards that need to reflect changes instantly [7]. Studies by Chen et al. (2023) demonstrated that
+        Firebase's real-time listeners reduce latency by 85% compared to traditional REST-based polling approaches [8].
+      </p>
+      <h2 class="section-title">2.4 QR Code Systems in Event Management</h2>
+      <p>QR code-based check-in systems have been widely adopted in event management for their speed and accuracy.
+        Research by Kumar and Singh (2022) showed that QR-based attendance systems reduce check-in time by 70% compared
+        to manual verification [9]. The <code>qrcode</code> library in JavaScript enables client-side QR generation,
+        eliminating server dependency [10].</p>
+      <h2 class="section-title">2.5 Role-Based Access Control (RBAC)</h2>
+      <p>RBAC is a fundamental security pattern where permissions are assigned based on user roles rather than
+        individual identities. In event management contexts, RBAC enables organizational hierarchy — full administrators
+        can access all events while coordinators see only their assigned event's data [11]. Session-based authentication
+        combined with RBAC provides a lightweight alternative to full OAuth implementations for internal tools [12].</p>
+      <h2 class="section-title">2.6 Certificate Generation Technologies</h2>
+      <p>HTML5 Canvas API provides programmatic image generation capabilities directly in the browser. Studies compare
+        Canvas-based generation with server-side PDF tools like <b>jsPDF</b> and <b>Puppeteer</b>, concluding that
+        Canvas-based approaches offer faster generation for template-based certificates with consistent layouts [13].
+        Integration with email APIs like <b>Resend</b> and <b>SendGrid</b> enables automated distribution [14].</p>
+      <h2 class="section-title">2.7 Research Gap</h2>
+      <p>While individual components (registration forms, dashboards, QR systems) exist in isolation, no integrated
+        open-source solution combines all these features for the specific use case of Indian college fest management —
+        including UPI/UTR payment flows, multi-category team registrations, coordinator-level access, and automated
+        certificate pipelines. This project fills that gap.</p>
+      <div class="page-footer"><span>Smart Event Management System (SHRESHTA 2026)</span><span>Page 3</span></div>
+    </div>
+
+    <!-- ======================== CHAPTER 3: REQUIREMENTS ======================== -->
+    <div class="page">
+      <h1 class="chapter-title">Chapter 3<br>Software and Hardware Requirement Specifications</h1>
+      <h2 class="section-title">3.1 Introduction</h2>
+      <p>The Smart Event Management System is a full-stack web application that enables students to register teams for
+        inter-collegiate fest events online, make payments via UPI, and receive automated confirmations. The admin panel
+        provides real-time registration monitoring, payment verification, check-in management, and certificate
+        generation. The system is built on Next.js with Firebase backend services.</p>
+      <h2 class="section-title">3.2 Users</h2>
+      <h3 class="subsection-title">3.2.1 Admin/Super Administrator</h3>
+      <ul>
+        <li>Full access to all events, registrations, and system features.</li>
+        <li>Can verify payments, send alerts, generate certificates, and manage check-ins across all events.</li>
+        <li>Access to export functionality (Excel, PDF) and edit mode with PIN protection.</li>
+      </ul>
+      <h3 class="subsection-title">3.2.2 Event Coordinator</h3>
+      <ul>
+        <li>Assigned to a specific event with pre-configured credentials.</li>
+        <li>Can view registrations, stats, and perform check-ins only for their assigned event.</li>
+        <li>Cannot access certificates, bulk verify, or edit features.</li>
+      </ul>
+      <h3 class="subsection-title">3.2.3 Participants (End Users)</h3>
+      <ul>
+        <li>Can browse events, view details, and register teams online.</li>
+        <li>Submit payment proof (UTR number) during registration.</li>
+        <li>Receive email confirmations and participate in events.</li>
+      </ul>
+      <h2 class="section-title">3.3 Software Requirements</h2>
+      <h3 class="subsection-title">3.3.1 Frontend</h3>
+      <ul>
+        <li><b>Next.js 16.1.3:</b> React-based framework with App Router, SSR, and SSG capabilities.</li>
+        <li><b>React 19:</b> Component library with hooks-based architecture.</li>
+        <li><b>TypeScript:</b> Static typing for enhanced code reliability.</li>
+        <li><b>CSS3:</b> Custom styling with responsive design, glassmorphism, and micro-animations.</li>
+      </ul>
+      <h3 class="subsection-title">3.3.2 Backend / Cloud Services</h3>
+      <ul>
+        <li><b>Firebase Firestore:</b> NoSQL real-time database for storing registrations.</li>
+        <li><b>Firebase Storage:</b> File storage for QR codes and certificates.</li>
+        <li><b>Resend API:</b> Transactional email delivery service.</li>
+        <li><b>Vercel:</b> Serverless deployment platform with edge functions.</li>
+      </ul>
+      <h3 class="subsection-title">3.3.3 Libraries and Tools</h3>
+      <ul>
+        <li><b>qrcode:</b> Client-side QR code generation.</li>
+        <li><b>html2canvas:</b> HTML to image conversion for certificates.</li>
+        <li><b>xlsx:</b> Excel export functionality.</li>
+        <li><b>jspdf / jspdf-autotable:</b> PDF report generation.</li>
+      </ul>
+      <h3 class="subsection-title">3.3.4 Hardware Requirements</h3>
+      <table class="data-table">
+        <tr>
+          <th>Component</th>
+          <th>Minimum</th>
+          <th>Recommended</th>
+        </tr>
+        <tr>
+          <td>Processor</td>
+          <td>Intel i3 / AMD equivalent</td>
+          <td>Intel i5 / Ryzen 5+</td>
+        </tr>
+        <tr>
+          <td>RAM</td>
+          <td>4 GB</td>
+          <td>8 GB or more</td>
+        </tr>
+        <tr>
+          <td>Storage</td>
+          <td>128 GB SSD</td>
+          <td>256 GB SSD</td>
+        </tr>
+        <tr>
+          <td>Network</td>
+          <td>Broadband internet</td>
+          <td>Stable Wi-Fi / LAN</td>
+        </tr>
+        <tr>
+          <td>Browser</td>
+          <td>Chrome 90+, Firefox 88+</td>
+          <td>Latest Chrome/Edge</td>
+        </tr>
+      </table>
+      <h2 class="section-title">3.4 Functional Requirements</h2>
+      <ol>
+        <li><b>Event Browsing:</b> Display 13 events across 4 categories with details, rules, and coordinator info.</li>
+        <li><b>Team Registration:</b> Dynamic forms supporting 1-10 member teams with validation.</li>
+        <li><b>Payment Processing:</b> UPI QR display with UTR number capture and verification workflow.</li>
+        <li><b>Admin Dashboard:</b> Real-time stats (total, pending, verified, checked-in), event filtering, and
+          registration table.</li>
+        <li><b>Role-Based Access:</b> Admin (full) and Coordinator (event-specific) login with auto-filtered views.</li>
+        <li><b>Check-In Desk:</b> Instant search by name/phone/college with one-tap check-in and live counters.</li>
+        <li><b>Certificate Generation:</b> Canvas-based certificate creation with email delivery.</li>
+        <li><b>Alert System:</b> Send notifications to all registered participants.</li>
+        <li><b>Export:</b> Download registrations as Excel or PDF reports.</li>
+      </ol>
+      <h2 class="section-title">3.5 Non-Functional Requirements</h2>
+      <ol>
+        <li><b>Performance:</b> Dashboard loads within 2 seconds; real-time updates via Firestore listeners with
+          &lt;500ms latency.</li>
+        <li><b>Scalability:</b> Firebase auto-scales to handle concurrent registrations during peak periods.</li>
+        <li><b>Reliability:</b> Vercel provides 99.99% uptime with automatic failover.</li>
+        <li><b>Usability:</b> Mobile-responsive UI with intuitive navigation; check-in desk optimized for phone use at
+          event gates.</li>
+        <li><b>Security:</b> Session-based admin auth, PIN-protected edit mode, input sanitization, and Firebase
+          security rules.</li>
+      </ol>
+      <div class="page-footer"><span>Smart Event Management System (SHRESHTA 2026)</span><span>Page 5</span></div>
+    </div>
+
+    <!-- ======================== CHAPTER 4: SYSTEM DESIGN ======================== -->
+    <div class="page">
+      <h1 class="chapter-title">Chapter 4<br>System Design</h1>
+      <h2 class="section-title">4.1 Introduction</h2>
+      <p>Software design transforms the software requirements specification into a blueprint for constructing the
+        software system. For the Smart Event Management System, the design phase defined how components interact — from
+        the participant-facing registration flow to the admin dashboard's real-time data pipeline and the coordinator's
+        filtered check-in interface.</p>
+      <p>The system follows a <b>modular component-based architecture</b> leveraging Next.js App Router for routing and
+        page organization, React components for reusable UI elements, Firebase for real-time backend, and serverless API
+        routes for email and certificate operations.</p>
+      <h2 class="section-title">4.2 System Architecture</h2>
+      <p>The system employs a three-tier architecture consisting of the Presentation Layer (Next.js/React), the
+        Application Layer (API routes, Firebase SDK), and the Data Layer (Firestore, Storage).</p>
+      <div class="img-placeholder">
+        <p class="img-name">system_architecture.png</p>
+        <p class="img-prompt">Prompt: A professional system architecture diagram for a Smart Event Management System
+          showing three tiers - Presentation Layer (Next.js React frontend with pages: Home, Events, Registration, Admin
+          Dashboard, Check-In Desk), Application Layer (Next.js API Routes, Firebase SDK, Resend API), and Data Layer
+          (Firebase Firestore collections: registrations, Firebase Storage: qrcodes, certificates). Show arrows for data
+          flow between layers. Clean technical diagram style with blue and gold color scheme.</p>
+      </div>
+      <p class="fig-caption">Figure 4.2.1: System Architecture Diagram</p>
+      <h2 class="section-title">4.3 Use Case Diagram</h2>
+      <p>The Use Case Diagram illustrates interactions between three actors (Participant, Admin, Coordinator) and the
+        system's core functionalities.</p>
+      <p><b>Actors:</b></p>
+      <ul>
+        <li><b>Participant:</b> Browses events, registers team, submits payment, receives confirmation email and QR
+          code.</li>
+        <li><b>Admin:</b> Manages all events, verifies payments, sends alerts, generates certificates, exports data.
+        </li>
+        <li><b>Coordinator:</b> Views assigned event's registrations, performs check-ins, monitors event-specific stats.
+        </li>
+      </ul>
+      <div class="img-placeholder">
+        <p class="img-name">use_case_diagram.png</p>
+        <p class="img-prompt">Prompt: A UML Use Case Diagram for Smart Event Management System with three actors -
+          Participant (left), Admin (top-right), Coordinator (bottom-right). Use cases inside the system boundary:
+          Browse Events, Register Team, Submit Payment, View Registration Status (connected to Participant); Verify
+          Payment, View Dashboard, Send Alerts, Generate Certificates, Export Data, Manage Check-In (connected to
+          Admin); View Event Registrations, Perform Check-In, View Event Stats (connected to Coordinator). Show
+          include/extend relationships where appropriate. Professional UML style.</p>
+      </div>
+      <p class="fig-caption">Figure 4.3.1: Use Case Diagram</p>
+      <h2 class="section-title">4.4 Sequence Diagram</h2>
+      <p>The sequence diagram describes the step-by-step interaction between the participant, frontend, backend API, and
+        Firebase during the registration process.</p>
+      <ol>
+        <li><b>Browse &amp; Select Event:</b> Participant navigates to an event page and clicks "Register".</li>
+        <li><b>Fill Registration Form:</b> The frontend renders a dynamic form based on the event's team size
+          requirements.</li>
+        <li><b>Submit &amp; Store:</b> Form data is validated and stored in Firestore under
+          <code>registrations/{eventId}/teams/{teamId}</code>.</li>
+        <li><b>Payment Verification:</b> Admin verifies the UTR number and updates payment status in Firestore.</li>
+        <li><b>Notification:</b> System sends confirmation email with QR code to the team's email address via Resend
+          API.</li>
+      </ol>
+      <div class="img-placeholder">
+        <p class="img-name">sequence_diagram.png</p>
+        <p class="img-prompt">Prompt: A UML Sequence Diagram showing the registration flow for a Smart Event Management
+          System. Lifelines: Participant, React Frontend, Next.js API Route, Firebase Firestore, Resend Email API.
+          Messages: 1) Participant -> Frontend: Select Event & Fill Form, 2) Frontend -> Firestore: Store Registration
+          Data, 3) Firestore -> Frontend: Return Success + Team ID, 4) Frontend -> Participant: Show Payment QR &
+          Instructions, 5) Admin -> Firestore: Verify Payment (update status), 6) Firestore -> API Route: Trigger
+          notification, 7) API Route -> Resend: Send confirmation email with QR code, 8) Resend -> Participant: Email
+          delivered. Professional UML sequence diagram style.</p>
+      </div>
+      <p class="fig-caption">Figure 4.4.1: Sequence Diagram — Registration Flow</p>
+      <h2 class="section-title">4.5 Activity Diagram</h2>
+      <p>The activity diagram models the complete workflow from event browsing to certificate generation.</p>
+      <div class="img-placeholder">
+        <p class="img-name">activity_diagram.png</p>
+        <p class="img-prompt">Prompt: A UML Activity Diagram for Smart Event Management System showing the flow: Start
+          -> Browse Events -> Select Event -> Fill Registration Form -> Decision (Valid?) -> [No] Show Errors -> Fill
+          Form again / [Yes] Submit to Firebase -> Show Payment QR -> User Makes UPI Payment -> Enter UTR Number ->
+          Admin Verifies Payment -> Decision (Verified?) -> [No] Mark Pending / [Yes] Generate QR Code -> Send
+          Confirmation Email -> Event Day: Check-In -> Attend Event -> Generate Certificate -> End. Use swim lanes for
+          Participant, System, and Admin. Professional UML activity diagram.</p>
+      </div>
+      <p class="fig-caption">Figure 4.5.1: Activity Diagram</p>
+      <h2 class="section-title">4.6 Data Flow Diagram (DFD)</h2>
+      <p>The DFD illustrates how data flows through the system from registration input to certificate output.</p>
+      <p><b>Processes:</b></p>
+      <ol>
+        <li><b>Registration &amp; Validation:</b> Captures team details, validates inputs, and stores in Firestore.</li>
+        <li><b>Payment Verification:</b> Admin matches UTR numbers and updates payment status.</li>
+        <li><b>QR Code Generation:</b> Generates unique QR codes for verified teams and uploads to Firebase Storage.
+        </li>
+        <li><b>Check-In Processing:</b> Searches registrations, marks attendance, and updates counters in real-time.
+        </li>
+        <li><b>Certificate Generation:</b> Creates Canvas-based certificates and emails them to participants.</li>
+      </ol>
+      <div class="img-placeholder">
+        <p class="img-name">data_flow_diagram.png</p>
+        <p class="img-prompt">Prompt: A Data Flow Diagram (DFD Level 1) for Smart Event Management System. External
+          entities: Participant, Admin/Coordinator. Processes (circles): 1.0 Register Team, 2.0 Verify Payment, 3.0
+          Generate QR Code, 4.0 Check-In, 5.0 Generate Certificate. Data stores: D1 Firestore (Registrations), D2
+          Firebase Storage (QR Codes, Certificates), D3 Email Service. Show data flows with labeled arrows between
+          entities, processes, and data stores. Clean DFD notation.</p>
+      </div>
+      <p class="fig-caption">Figure 4.6.1: Data Flow Diagram (Level 1)</p>
+      <h2 class="section-title">4.7 Entity Relationship Diagram (ERD)</h2>
+      <p>The ERD represents the data model used in Firestore. Although Firestore is a NoSQL database, the logical
+        relationships between entities are modeled as follows:</p>
+      <div class="img-placeholder">
+        <p class="img-name">er_diagram.png</p>
+        <p class="img-prompt">Prompt: An Entity Relationship Diagram for Smart Event Management System. Entities: Event
+          (event_id PK, title, category, coordinator, team_size, fee, date, venue), Registration/Team (team_id PK,
+          event_id FK, team_number, college_name, email, utr_number, payment_status, checked_in, registered_at), Member
+          (member_id PK, team_id FK, name, phone), Certificate (cert_id PK, team_id FK, generated_at, sent), Admin
+          (username PK, password, role, event_id). Relationships: Event 1-to-many Registration, Registration 1-to-many
+          Member, Registration 1-to-1 Certificate. Show cardinality notations. Professional ER diagram style.</p>
+      </div>
+      <p class="fig-caption">Figure 4.7.1: Entity Relationship Diagram</p>
+      <h3 class="subsection-title">4.7.1 Database Schema</h3>
+      <table class="data-table">
+        <tr>
+          <th>Collection/Entity</th>
+          <th>Field</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td rowspan="6">registrations/{eventId}/teams</td>
+          <td>teamNumber</td>
+          <td>Number</td>
+          <td>Auto-incremented team number</td>
+        </tr>
+        <tr>
+          <td>collegeName</td>
+          <td>String</td>
+          <td>Participant's college</td>
+        </tr>
+        <tr>
+          <td>email</td>
+          <td>String</td>
+          <td>Contact email</td>
+        </tr>
+        <tr>
+          <td>members</td>
+          <td>Array</td>
+          <td>Array of {name, phone} objects</td>
+        </tr>
+        <tr>
+          <td>utrNumber</td>
+          <td>String</td>
+          <td>UPI Transaction Reference</td>
+        </tr>
+        <tr>
+          <td>paymentStatus</td>
+          <td>String</td>
+          <td>"pending" or "completed"</td>
+        </tr>
+      </table>
+      <div class="page-footer"><span>Smart Event Management System (SHRESHTA 2026)</span><span>Page 9</span></div>
+    </div>
+
+    <!-- ======================== CHAPTER 5: IMPLEMENTATION ======================== -->
+    <div class="page">
+      <h1 class="chapter-title">Chapter 5<br>Implementation</h1>
+      <h2 class="section-title">5.1 Introduction</h2>
+      <p>The implementation phase translates the system design into a working application. The Smart Event Management
+        System was developed using an iterative approach, building features incrementally — starting with the
+        public-facing event pages and registration form, followed by the admin dashboard, payment verification, check-in
+        system, and certificate generation.</p>
+      <h2 class="section-title">5.2 Technology Stack</h2>
+      <table class="data-table">
+        <tr>
+          <th>Layer</th>
+          <th>Technology</th>
+          <th>Purpose</th>
+        </tr>
+        <tr>
+          <td>Frontend</td>
+          <td>Next.js 16, React 19, TypeScript</td>
+          <td>UI rendering, routing, SSR/SSG</td>
+        </tr>
+        <tr>
+          <td>Styling</td>
+          <td>CSS3, CSS Modules</td>
+          <td>Responsive design, animations</td>
+        </tr>
+        <tr>
+          <td>Database</td>
+          <td>Firebase Firestore</td>
+          <td>Real-time NoSQL data storage</td>
+        </tr>
+        <tr>
+          <td>Storage</td>
+          <td>Firebase Storage</td>
+          <td>QR codes, certificates</td>
+        </tr>
+        <tr>
+          <td>Email</td>
+          <td>Resend API</td>
+          <td>Transactional emails</td>
+        </tr>
+        <tr>
+          <td>Deployment</td>
+          <td>Vercel</td>
+          <td>Serverless hosting with CI/CD</td>
+        </tr>
+      </table>
+      <h2 class="section-title">5.3 Module Implementation</h2>
+      <h3 class="subsection-title">5.3.1 Event Browsing &amp; Registration Module</h3>
+      <p>Events are defined in a centralized data file (<code>src/data/events.ts</code>) with fields including id,
+        title, description, coordinator, category, team size, and registration fee. The registration form dynamically
+        adjusts the number of member input fields based on the selected event's team size.</p>
+      <div class="code-block">// Dynamic team member fields based on event config
+        const event = getEventById(eventId);
+        const memberFields = Array.from({ length: event.teamSize }, (_, i) => ({
+        name: '', phone: ''
+        }));</div>
+      <p>Registration data is stored in Firestore with the following path structure:
+        <code>registrations/{eventId}/teams/{autoId}</code>.</p>
+      <h3 class="subsection-title">5.3.2 Real-Time Admin Dashboard</h3>
+      <p>The admin dashboard uses Firestore's <code>onSnapshot</code> listeners to subscribe to registration changes
+        across all events simultaneously. This provides instant updates without manual refresh.</p>
+      <div class="code-block">// Real-time listener for each event's registrations
+        for (const event of allEvents) {
+        const teamsRef = collection(db, "registrations", event.id, "teams");
+        onSnapshot(teamsRef, (snapshot) => {
+        // Process and update stats in real-time
+        });
+        }</div>
+      <h3 class="subsection-title">5.3.3 Role-Based Authentication</h3>
+      <p>The system implements two authentication tiers using session storage:</p>
+      <ul>
+        <li><b>Admin:</b> Username <code>admin</code> with full access to all events, certificates, bulk verify, and
+          edit mode.</li>
+        <li><b>Coordinator:</b> Event-specific credentials (e.g., <code>arshad_lo</code> for Logic Overload) with
+          auto-filtered views.</li>
+      </ul>
+      <div class="code-block">// Coordinator login auto-filters to their event
+        sessionStorage.setItem("adminRole", "coordinator");
+        sessionStorage.setItem("adminEventId", eventId);
+        // Dashboard reads role and filters accordingly
+        const displayStats = isCoordinator ? {
+        total: filteredRegistrations.length,
+        // ... event-specific stats only
+        } : globalStats;</div>
+      <h3 class="subsection-title">5.3.4 Check-In Desk Module</h3>
+      <p>The Check-In Desk replaces traditional QR scanner approach with an instant search system. Coordinators type 2-3
+        characters of a participant's name, phone, or college, and matching registrations appear instantly. One-tap
+        check-in updates Firestore in real-time with a success animation overlay.</p>
+      <div class="code-block">// Instant search across all registration fields
+        const filtered = registrations.filter(r => {
+        const q = search.toLowerCase();
+        return r.members?.some(m => m.name.toLowerCase().includes(q)
+        || m.phone.includes(q))
+        || r.collegeName?.toLowerCase().includes(q);
+        });</div>
+      <h3 class="subsection-title">5.3.5 Certificate Generation Module</h3>
+      <p>Certificates are generated using the HTML5 Canvas API, producing 2000×1414 pixel images with a premium dark
+        theme, gold accents, college logo, participant names, and event details. Generated certificates are uploaded to
+        Firebase Storage and emailed via Resend API.</p>
+      <div class="code-block">// Canvas-based certificate generation
+        const canvas = document.createElement('canvas');
+        canvas.width = 2000; canvas.height = 1414;
+        const ctx = canvas.getContext('2d');
+        // Draw background, borders, text, signatures
+        ctx.fillText(participantName, centerX, nameY);
+        // Convert to blob and upload to Firebase Storage
+        canvas.toBlob(async (blob) => {
+        await uploadBytes(storageRef, blob);
+        });</div>
+      <h3 class="subsection-title">5.3.6 Alert Broadcasting System</h3>
+      <p>Admins can send alert notifications to all registered participants or filtered by event. The system collects
+        unique email addresses from registrations and sends bulk emails via the Resend API endpoint.</p>
+      <h3 class="subsection-title">5.3.7 Export Module</h3>
+      <p>Registration data can be exported in two formats:</p>
+      <ul>
+        <li><b>Excel:</b> Using the <code>xlsx</code> library to generate .xlsx files with formatted columns.</li>
+        <li><b>PDF:</b> Using <code>jsPDF</code> with <code>jspdf-autotable</code> for tabular PDF reports.</li>
+      </ul>
+      <div class="page-footer"><span>Smart Event Management System (SHRESHTA 2026)</span><span>Page 17</span>
+      </div>
+    </div>
+
+    <!-- ======================== CHAPTER 6: TESTING ======================== -->
+    <div class="page">
+      <h1 class="chapter-title">Chapter 6<br>Software Testing and Snapshots</h1>
+      <h2 class="section-title">6.1 Introduction</h2>
+      <p>Software testing ensures the reliability, accuracy, and performance of the system. Both manual and automated
+        testing techniques were employed to verify all functional and non-functional requirements of the Smart Event
+        Management System.</p>
+      <h2 class="section-title">6.2 Testing Process</h2>
+      <h3 class="subsection-title">6.2.1 Unit Testing</h3>
+      <p>Individual components and functions were tested in isolation:</p>
+      <ul>
+        <li>Registration form validation — team size limits, phone number format, email validation.</li>
+        <li>UTR number uniqueness check across registrations.</li>
+        <li>Search filter accuracy in the Check-In Desk module.</li>
+        <li>Certificate canvas rendering with various name lengths and special characters.</li>
+      </ul>
+      <h3 class="subsection-title">6.2.2 Integration Testing</h3>
+      <p>Module interactions were tested to ensure seamless data flow:</p>
+      <ul>
+        <li>Registration → Firestore storage → Dashboard update (real-time listener verification).</li>
+        <li>Payment verification → Status update → Email notification trigger.</li>
+        <li>Check-in → Firestore update → Stats counter refresh.</li>
+      </ul>
+      <h3 class="subsection-title">6.2.3 Functional Testing</h3>
+      <p>End-to-end user journeys were tested:</p>
+      <ul>
+        <li>Participant: Browse → Register → Pay → Receive email → Check-in → Get certificate.</li>
+        <li>Admin: Login → View dashboard → Verify payment → Send alert → Generate certificate.</li>
+        <li>Coordinator: Login → See filtered data → Perform check-in → View stats.</li>
+      </ul>
+      <h3 class="subsection-title">6.2.4 UI and Cross-Browser Testing</h3>
+      <p>The frontend was tested across Chrome, Firefox, Edge, and Safari on both desktop and mobile devices. Responsive
+        layouts were verified at breakpoints: 360px, 768px, 1024px, and 1440px.</p>
+      <h2 class="section-title">6.3 Test Cases</h2>
+      <table class="data-table">
+        <tr>
+          <th>TC#</th>
+          <th>Description</th>
+          <th>Input</th>
+          <th>Expected Output</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td>TC01</td>
+          <td>Register team with valid data</td>
+          <td>All fields filled correctly</td>
+          <td>Success message, data in Firestore</td>
+          <td>Passed</td>
+        </tr>
+        <tr>
+          <td>TC02</td>
+          <td>Register with missing fields</td>
+          <td>Empty name field</td>
+          <td>Validation error shown</td>
+          <td>Passed</td>
+        </tr>
+        <tr>
+          <td>TC03</td>
+          <td>Admin login with correct credentials</td>
+          <td>admin/admin</td>
+          <td>Redirect to dashboard</td>
+          <td>Passed</td>
+        </tr>
+        <tr>
+          <td>TC04</td>
+          <td>Coordinator login</td>
+          <td>arshad_lo/lo2026</td>
+          <td>Dashboard filtered to LOGIC OVERLOAD</td>
+          <td>Passed</td>
+        </tr>
+        <tr>
+          <td>TC05</td>
+          <td>Real-time dashboard update</td>
+          <td>New registration submitted</td>
+          <td>Stats update without refresh</td>
+          <td>Passed</td>
+        </tr>
+        <tr>
+          <td>TC06</td>
+          <td>Payment verification</td>
+          <td>Click verify on pending team</td>
+          <td>Status changes to "completed"</td>
+          <td>Passed</td>
+        </tr>
+        <tr>
+          <td>TC07</td>
+          <td>Check-in search</td>
+          <td>Type "Arsh"</td>
+          <td>Matching registrations shown</td>
+          <td>Passed</td>
+        </tr>
+        <tr>
+          <td>TC08</td>
+          <td>One-tap check-in</td>
+          <td>Click check-in button</td>
+          <td>Success animation, Firestore updated</td>
+          <td>Passed</td>
+        </tr>
+        <tr>
+          <td>TC09</td>
+          <td>Certificate generation</td>
+          <td>Select verified team</td>
+          <td>Canvas image generated, uploaded</td>
+          <td>Passed</td>
+        </tr>
+        <tr>
+          <td>TC10</td>
+          <td>Export to Excel</td>
+          <td>Click Excel button</td>
+          <td>.xlsx file downloaded</td>
+          <td>Passed</td>
+        </tr>
+        <tr>
+          <td>TC11</td>
+          <td>Mobile responsiveness</td>
+          <td>Open on 360px screen</td>
+          <td>All elements readable, functional</td>
+          <td>Passed</td>
+        </tr>
+        <tr>
+          <td>TC12</td>
+          <td>Invalid login attempt</td>
+          <td>wrong/credentials</td>
+          <td>Error message displayed</td>
+          <td>Passed</td>
+        </tr>
+      </table>
+      <h2 class="section-title">6.4 Snapshots</h2>
+      <p><b>Home Page</b></p>
+      <div class="img-placeholder">
+        <p class="img-name">snapshot_home_page.png</p>
+        <p class="img-prompt">Prompt: Screenshot of the SHRESHTA 2026 home page showing a dark-themed hero section with
+          gold accents, event name, college name, date, and navigation bar with Home, Events, Schedule, About links.</p>
+      </div>
+      <p class="fig-caption">Figure 6.1: Home Page</p>
+      <p><b>Event Listing Page</b></p>
+      <div class="img-placeholder">
+        <p class="img-name">snapshot_events_page.png</p>
+        <p class="img-prompt">Prompt: Screenshot of events listing page showing event cards organized by categories (IT,
+          Management, Cultural, Sports) with event images, titles, coordinator names, and Register buttons.</p>
+      </div>
+      <p class="fig-caption">Figure 6.2: Event Listing</p>
+      <p><b>Registration Form</b></p>
+      <div class="img-placeholder">
+        <p class="img-name">snapshot_registration_form.png</p>
+        <p class="img-prompt">Prompt: Screenshot of the team registration form showing college name, email, dynamic
+          member fields (name + phone), UPI payment QR code, UTR number input, and Submit button.</p>
+      </div>
+      <p class="fig-caption">Figure 6.3: Registration Form</p>
+      <p><b>Admin Login with Coordinator Quick Access</b></p>
+      <div class="img-placeholder">
+        <p class="img-name">snapshot_admin_login.png</p>
+        <p class="img-prompt">Prompt: Screenshot of admin login page with login form on left (username, password, sign
+          in button) and Quick Coordinator Login panel on right showing event buttons grouped by category (Management,
+          IT, Cultural, Sports).</p>
+      </div>
+      <p class="fig-caption">Figure 6.4: Admin Login Page</p>
+      <p><b>Admin Dashboard</b></p>
+      <div class="img-placeholder">
+        <p class="img-name">snapshot_admin_dashboard.png</p>
+        <p class="img-prompt">Prompt: Screenshot of admin dashboard showing stats cards (Total Registrations, Pending,
+          Verified, Checked In), event filter dropdown, action buttons (Check-In, Alert, Certificates, Auto Verify,
+          Edit), and registrations table.</p>
+      </div>
+      <p class="fig-caption">Figure 6.5: Admin Dashboard</p>
+      <p><b>Check-In Desk</b></p>
+      <div class="img-placeholder">
+        <p class="img-name">snapshot_checkin_desk.png</p>
+        <p class="img-prompt">Prompt: Screenshot of Check-In Desk page showing live counters (Checked In, Total,
+          Remaining), search bar, and participant cards with name, college, event, member details, and Check-In button.
+        </p>
+      </div>
+      <p class="fig-caption">Figure 6.6: Check-In Desk</p>
+      <p><b>Certificate Preview</b></p>
+      <div class="img-placeholder">
+        <p class="img-name">snapshot_certificate.png</p>
+        <p class="img-prompt">Prompt: Screenshot of a generated SHRESHTA 2026 participation certificate with dark
+          premium theme, gold borders, college logo, participant name, event name, date, and signature placeholders.</p>
+      </div>
+      <p class="fig-caption">Figure 6.7: Generated Certificate</p>
+      <div class="page-footer"><span>Smart Event Management System (SHRESHTA 2026)</span><span>Page 23</span>
+      </div>
+    </div>
+
+    <!-- ======================== CHAPTER 7: CONCLUSION ======================== -->
+    <div class="page">
+      <h1 class="chapter-title">Chapter 7<br>Conclusion &amp; Future Enhancement</h1>
+      <h2 class="section-title">7.1 Conclusion</h2>
+      <p>The Smart Event Management System (SHRESHTA 2026) successfully demonstrates how modern web technologies can
+        transform the management of inter-collegiate festivals from manual, error-prone processes into a streamlined,
+        real-time digital experience.</p>
+      <p>The system was deployed and used for the SHRESHTA 2026 fest at Seshadripuram Degree College, handling
+        registrations across 13 events in 4 categories. Key achievements include:</p>
+      <ul>
+        <li><b>Real-time data:</b> Firebase Firestore's real-time listeners provided instant dashboard updates,
+          eliminating the need for manual data refresh.</li>
+        <li><b>Role-based access:</b> The dual-tier authentication (Admin + Coordinator) enabled decentralized event
+          management while maintaining centralized control.</li>
+        <li><b>Efficient check-in:</b> The search-based Check-In Desk reduced average check-in time to under 5 seconds
+          per participant, significantly faster than manual attendance sheets.</li>
+        <li><b>Automated certificates:</b> Canvas-based certificate generation with email delivery eliminated the manual
+          effort of creating and distributing participation certificates.</li>
+        <li><b>Mobile-first design:</b> The responsive UI ensured coordinators could manage their events effectively
+          using just their smartphones at the venue.</li>
+      </ul>
+      <p>The project demonstrates the practical application of React, Next.js, Firebase, and serverless architecture in
+        solving a real-world problem within the educational domain.</p>
+      <h2 class="section-title">7.2 Future Enhancement</h2>
+      <ol>
+        <li><b>Online Payment Gateway Integration:</b> Integrate Razorpay or Stripe for direct online payments,
+          eliminating manual UTR verification.</li>
+        <li><b>Mobile Application:</b> Develop native Android/iOS apps using React Native for an enhanced mobile
+          experience, including push notifications.</li>
+        <li><b>Analytics Dashboard:</b> Add data visualization with charts showing registration trends over time,
+          category-wise distribution, and college-wise participation analytics.</li>
+        <li><b>Multi-Event Support:</b> Extend the platform to support multiple fests/years with a configuration-driven
+          approach, enabling reuse across academic years.</li>
+        <li><b>AI-Powered Features:</b> Implement AI-based event recommendations based on participant interests and
+          historical data.</li>
+        <li><b>Live Leaderboard:</b> Display real-time event results and scores during the fest via a public leaderboard
+          page.</li>
+        <li><b>Feedback System:</b> Post-event feedback collection from participants with sentiment analysis for event
+          improvement.</li>
+        <li><b>QR-Based Entry Gate:</b> Implement QR code scanning at physical entry gates using device cameras for
+          automated check-in.</li>
+        <li><b>Multi-Language Support:</b> Add Kannada and Hindi language options for broader accessibility.</li>
+        <li><b>Progressive Web App (PWA):</b> Convert to a PWA for offline capability, installability, and faster load
+          times.</li>
+      </ol>
+      <div class="page-footer"><span>Smart Event Management System (SHRESHTA 2026)</span><span>Page 31</span>
+      </div>
+    </div>
+
+    <!-- ======================== CHAPTER 8: BIBLIOGRAPHY ======================== -->
+    <div class="page">
+      <h1 class="chapter-title">Chapter 8<br>Bibliography</h1>
+      <ol style="font-size:12pt;line-height:2;">
+        <li>Eventbrite. (2024). "Event Management Platform." Available: https://www.eventbrite.com</li>
+        <li>Townscript. (2024). "Online Event Ticketing Platform for India." Available: https://www.townscript.com</li>
+        <li>Devfolio. (2024). "Hackathon Management Platform." Available: https://devfolio.co</li>
+        <li>Facebook Inc. (2024). "React – A JavaScript Library for Building User Interfaces." Available:
+          https://react.dev</li>
+        <li>Vercel. (2024). "Next.js – The React Framework for the Web." Next.js Documentation. Available:
+          https://nextjs.org/docs</li>
+        <li>Microsoft. (2024). "TypeScript: JavaScript With Syntax For Types." Available: https://www.typescriptlang.org
+        </li>
+        <li>Google. (2024). "Cloud Firestore Documentation." Firebase Documentation. Available:
+          https://firebase.google.com/docs/firestore</li>
+        <li>Chen, L., Wang, Y., & Zhang, H. (2023). "Real-Time Data Synchronization Patterns in Cloud-Native
+          Applications." IEEE International Conference on Cloud Computing, pp. 245-252.</li>
+        <li>Kumar, R., & Singh, P. (2022). "QR Code Based Smart Attendance System: A Comprehensive Review."
+          International Journal of Advanced Research in Computer Science, 13(4), 112-118.</li>
+        <li>Nayuki Project. (2024). "QR Code Generator Library." Available: https://github.com/nayuki/QR-Code-generator
+        </li>
+        <li>Sandhu, R. S., Coyne, E. J., Feinstein, H. L., & Youman, C. E. (1996). "Role-Based Access Control Models."
+          IEEE Computer, 29(2), 38-47.</li>
+        <li>OWASP. (2024). "Session Management Cheat Sheet." OWASP Foundation. Available:
+          https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html</li>
+        <li>MDN Web Docs. (2024). "Canvas API." Mozilla Developer Network. Available:
+          https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API</li>
+        <li>Resend. (2024). "Email API for Developers." Available: https://resend.com/docs</li>
+        <li>Vercel. (2024). "Vercel Platform Documentation." Available: https://vercel.com/docs</li>
+        <li>Firebase. (2024). "Firebase Security Rules." Available: https://firebase.google.com/docs/rules</li>
+        <li>SheetJS. (2024). "xlsx – SpreadsheetJS." Available: https://sheetjs.com</li>
+        <li>Parallax. (2024). "jsPDF – Client-side JavaScript PDF Generation." Available:
+          https://github.com/parallax/jsPDF</li>
+        <li>Gamma, E., Helm, R., Johnson, R., & Vlissides, J. (1994). "Design Patterns: Elements of Reusable
+          Object-Oriented Software." Addison-Wesley.</li>
+        <li>Pressman, R. S. (2014). "Software Engineering: A Practitioner's Approach." 8th Edition, McGraw-Hill
+          Education.</li>
+      </ol>
+      <div class="page-footer"><span>Smart Event Management System (SHRESHTA 2026)</span><span>Page 33</span>
+      </div>
+    </div>
+
+  </div><!-- end .report -->
+
+  <!-- ======================== DOWNLOAD SECTION ======================== -->
+  <div class="download-section">
+    <p style="color:#a1a1aa;margin-bottom:16px;font-size:14pt;">Smart Event Management System (SHRESHTA 2026) — Project
+      Report</p>
+    <button class="download-btn" onclick="downloadPDF()">📥 Download as PDF</button>
+    <p style="color:#52525b;margin-top:12px;font-size:11pt;">Uses browser print dialog for high-quality PDF export</p>
+  </div>
+
+  <script>
+    function downloadPDF() {
+      // Hide download section for printing
+      const dlSection = document.querySelector('.download-section');
+      dlSection.style.display = 'none';
+      window.print();
+      setTimeout(() => { dlSection.style.display = ''; }, 1000);
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Times+New+Roman&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Times New Roman',Times,serif; font-size:13pt; line-height:1.8; color:#1a1a1a; background:#f5f5f5; }
+.report { max-width:210mm; margin:0 auto; background:#fff; }
+.page { padding:25mm 20mm 25mm 25mm; min-height:297mm; position:relative; page-break-after:always; border-bottom:1px solid #ddd; }
+.page:last-child { page-break-after:auto; }
+/* Cover */
+.cover { text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:297mm; }
+.cover .uni-name { font-size:22pt; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px; }
+.cover .uni-loc { font-size:14pt; margin-bottom:30px; }
+.cover .project-label { font-size:14pt; margin-top:20px; }
+.cover .project-title { font-size:20pt; font-weight:700; text-transform:uppercase; margin:12px 0 24px; line-height:1.4; color:#1a1a1a; }
+.cover .degree-text { font-size:13pt; margin:10px 0; line-height:1.6; }
+.cover .degree-name { font-size:15pt; font-weight:700; text-transform:uppercase; margin:6px 0 20px; }
+.cover .students-table { margin:20px auto; border-collapse:collapse; }
+.cover .students-table td { padding:4px 16px; font-size:13pt; text-align:left; }
+.cover .guide-section { margin-top:30px; }
+.cover .guide-section h3 { font-size:13pt; text-transform:uppercase; margin-bottom:8px; }
+.cover .dept-footer { margin-top:40px; font-size:13pt; font-weight:700; border-top:2px solid #000; padding-top:10px; }
+/* Certificate */
+.cert-title { text-align:center; font-size:20pt; font-weight:700; text-decoration:underline; margin-bottom:24px; text-transform:uppercase; }
+.cert-body { text-align:justify; font-size:13pt; line-height:2; }
+.cert-body b { text-transform:uppercase; }
+.sign-grid { display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-top:50px; }
+.sign-box { text-align:center; }
+.sign-box .sign-line { border-top:1px solid #000; margin-top:50px; padding-top:6px; }
+.sign-box p { margin:2px 0; font-size:12pt; }
+.sign-box .name { font-weight:700; font-size:13pt; }
+.principal-box { text-align:center; margin-top:50px; }
+.viva-table { margin-top:40px; width:100%; border-collapse:collapse; }
+.viva-table td,.viva-table th { border:1px solid #000; padding:8px 12px; font-size:12pt; }
+/* Headings */
+h1.chapter-title { font-size:20pt; font-weight:700; text-transform:uppercase; text-align:center; margin-bottom:20px; }
+h2.section-title { font-size:15pt; font-weight:700; margin:24px 0 12px; }
+h3.subsection-title { font-size:13pt; font-weight:700; margin:16px 0 8px; }
+/* TOC */
+.toc-table { width:100%; border-collapse:collapse; margin-top:20px; }
+.toc-table td { padding:8px 12px; font-size:13pt; border-bottom:1px dotted #999; }
+.toc-table td:last-child { text-align:right; width:60px; }
+.toc-table tr:first-child td { font-weight:700; border-bottom:2px solid #000; }
+/* Content */
+p { text-align:justify; margin-bottom:12px; }
+ul,ol { margin:8px 0 12px 24px; }
+li { margin-bottom:6px; }
+/* Image placeholder */
+.img-placeholder { width:100%; min-height:280px; border:2px dashed #999; border-radius:8px; display:flex; flex-direction:column; align-items:center; justify-content:center; margin:20px 0; background:#fafafa; color:#666; }
+.img-placeholder .img-name { font-weight:700; font-size:12pt; margin-bottom:4px; }
+.img-placeholder .img-prompt { font-size:10pt; font-style:italic; max-width:80%; text-align:center; }
+.img-placeholder img { max-width:100%; max-height:400px; object-fit:contain; }
+.fig-caption { text-align:center; font-size:11pt; font-weight:700; margin:8px 0 20px; }
+/* Tables */
+.data-table { width:100%; border-collapse:collapse; margin:16px 0; font-size:12pt; }
+.data-table th,.data-table td { border:1px solid #333; padding:8px 10px; text-align:left; }
+.data-table th { background:#f0f0f0; font-weight:700; }
+/* Footer */
+.page-footer { position:absolute; bottom:15mm; left:25mm; right:20mm; display:flex; justify-content:space-between; font-size:10pt; color:#666; border-top:1px solid #ccc; padding-top:6px; }
+/* Code */
+.code-block { background:#f4f4f4; border:1px solid #ddd; border-radius:4px; padding:12px 16px; font-family:'Courier New',monospace; font-size:11pt; margin:12px 0; overflow-x:auto; white-space:pre-wrap; }
+/* Download btn */
+.download-section { text-align:center; padding:40px 20px; background:#1a1a2e; }
+.download-btn { padding:16px 40px; background:#d4a843; color:#000; border:none; border-radius:12px; font-size:16pt; font-weight:700; cursor:pointer; font-family:inherit; transition:all .3s; }
+.download-btn:hover { background:#b8922e; transform:translateY(-2px); box-shadow:0 8px 24px rgba(212,168,67,.4); }
+/* Print */
+@media print {
+  body { background:#fff; }
+  .report { max-width:100%; box-shadow:none; }
+  .page { border:none; padding:20mm; }
+  .download-section { display:none; }
+  .img-placeholder { border:1px solid #ccc; }
+  .page-footer { position:fixed; bottom:10mm; }
+}
+@page { size:A4; margin:0; }
