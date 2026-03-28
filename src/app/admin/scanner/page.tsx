@@ -1,172 +1,677 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { doc, getDoc, updateDoc, Timestamp } from "firebase/firestore";
+import { collection, onSnapshot, doc, updateDoc, Timestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import QRScanner from "@/components/admin/QRScanner";
+import { allEvents } from "@/data/events";
+import { Registration } from "@/types/admin";
 import Link from "next/link";
-import "../dashboard/admin.css";
 
-interface ScanResult {
-    status: "success" | "already_checked_in" | "not_found" | "error" | "pending";
-    message: string;
-    teamData?: any;
-}
-
-export default function ScannerPage() {
+export default function CheckInPage() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [scanResult, setScanResult] = useState<ScanResult | null>(null);
-    const [isVerifying, setIsVerifying] = useState(false);
+    const [registrations, setRegistrations] = useState<Registration[]>([]);
+    const [search, setSearch] = useState("");
+    const [checkingIn, setCheckingIn] = useState<string | null>(null);
+    const [lastCheckedIn, setLastCheckedIn] = useState<Registration | null>(null);
+    const [showSuccess, setShowSuccess] = useState(false);
+    const [isCoordinator, setIsCoordinator] = useState(false);
+    const [coordEventId, setCoordEventId] = useState<string | null>(null);
+    const [coordEventName, setCoordEventName] = useState<string | null>(null);
+    const searchRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
 
+    // Auth
     useEffect(() => {
         const isLoggedIn = sessionStorage.getItem("adminLoggedIn");
         if (isLoggedIn !== "true") {
             router.push("/admin");
         } else {
             setIsAuthenticated(true);
+            const role = sessionStorage.getItem("adminRole");
+            const eventId = sessionStorage.getItem("adminEventId");
+            const eventName = sessionStorage.getItem("adminEventName");
+            if (role === "coordinator" && eventId) {
+                setIsCoordinator(true);
+                setCoordEventId(eventId);
+                setCoordEventName(eventName);
+            }
         }
     }, [router]);
 
-    const handleScan = async (decodedText: string) => {
-        if (isVerifying) return;
-        setIsVerifying(true);
-        setScanResult({ status: "pending", message: "Verifying QR Code..." });
+    // Real-time data
+    useEffect(() => {
+        if (!isAuthenticated) return;
+        const unsubscribes: (() => void)[] = [];
+        const eventRegsMap: Record<string, Registration[]> = {};
 
+        const eventsToFetch = isCoordinator && coordEventId
+            ? allEvents.filter(e => e.id === coordEventId)
+            : allEvents;
+
+        for (const event of eventsToFetch) {
+            const teamsRef = collection(db, "registrations", event.id, "teams");
+            const unsub = onSnapshot(teamsRef, (snapshot) => {
+                const regs: Registration[] = [];
+                snapshot.forEach((docSnap) => {
+                    regs.push({ id: docSnap.id, eventId: event.id, ...docSnap.data() } as Registration);
+                });
+                eventRegsMap[event.id] = regs;
+                const allRegs: Registration[] = [];
+                for (const ev of eventsToFetch) {
+                    allRegs.push(...(eventRegsMap[ev.id] || []));
+                }
+                setRegistrations(allRegs);
+            });
+            unsubscribes.push(unsub);
+        }
+
+        return () => unsubscribes.forEach(u => u());
+    }, [isAuthenticated, isCoordinator, coordEventId]);
+
+    // Focus search on load
+    useEffect(() => {
+        if (isAuthenticated) searchRef.current?.focus();
+    }, [isAuthenticated]);
+
+    // Search filter
+    const filtered = search.length >= 2
+        ? registrations.filter(r => {
+            const q = search.toLowerCase();
+            const memberMatch = r.members?.some(m =>
+                m.name.toLowerCase().includes(q) || m.phone.includes(q)
+            );
+            return (
+                memberMatch ||
+                r.email?.toLowerCase().includes(q) ||
+                r.collegeName?.toLowerCase().includes(q) ||
+                r.eventName?.toLowerCase().includes(q) ||
+                String(r.teamNumber).includes(q)
+            );
+        })
+        : [];
+
+    // Sort: not checked in first, then by name
+    const sorted = [...filtered].sort((a, b) => {
+        if (a.checkedIn && !b.checkedIn) return 1;
+        if (!a.checkedIn && b.checkedIn) return -1;
+        return (a.members?.[0]?.name || "").localeCompare(b.members?.[0]?.name || "");
+    });
+
+    const totalCheckedIn = registrations.filter(r => r.checkedIn).length;
+    const totalRegs = registrations.length;
+
+    const handleCheckIn = async (reg: Registration) => {
+        setCheckingIn(reg.id);
         try {
-            // Parse QR Data
-            let data;
-            try {
-                data = JSON.parse(decodedText);
-            } catch {
-                throw new Error("Invalid QR Code format.");
-            }
-
-            if (!data.id || !data.eid) {
-                throw new Error("Invalid SHRESHTA QR Code.");
-            }
-
-            // Fetch registration from Firestore
-            const docRef = doc(db, "registrations", data.eid, "teams", data.id);
-            const docSnap = await getDoc(docRef);
-
-            if (!docSnap.exists()) {
-                setScanResult({ status: "not_found", message: "Registration not found in database." });
-                setIsVerifying(false);
-                return;
-            }
-
-            const regData = docSnap.data();
-
-            if (regData.checkedIn) {
-                setScanResult({
-                    status: "already_checked_in",
-                    message: `Team is already checked in. (Checked in at: ${regData.checkedInAt?.toDate().toLocaleString()})`,
-                    teamData: regData
-                });
-            } else {
-                // Check in the team
-                await updateDoc(docRef, {
-                    checkedIn: true,
-                    checkedInAt: Timestamp.now(),
-                });
-
-                setScanResult({
-                    status: "success",
-                    message: "Check-in successful!",
-                    teamData: regData
-                });
-            }
-        } catch (err: any) {
-            console.error("Scan Error:", err);
-            setScanResult({ status: "error", message: err.message || "An error occurred while scanning." });
+            const docRef = doc(db, "registrations", reg.eventId, "teams", reg.id);
+            await updateDoc(docRef, {
+                checkedIn: true,
+                checkedInAt: Timestamp.now(),
+            });
+            setLastCheckedIn(reg);
+            setShowSuccess(true);
+            setSearch("");
+            setTimeout(() => {
+                setShowSuccess(false);
+                searchRef.current?.focus();
+            }, 2500);
+        } catch (err) {
+            console.error("Check-in failed:", err);
+            alert("Check-in failed. Please try again.");
         } finally {
-            setIsVerifying(false);
+            setCheckingIn(null);
+        }
+    };
+
+    const handleUndoCheckIn = async (reg: Registration) => {
+        try {
+            const docRef = doc(db, "registrations", reg.eventId, "teams", reg.id);
+            await updateDoc(docRef, {
+                checkedIn: false,
+                checkedInAt: null,
+            });
+        } catch (err) {
+            console.error("Undo failed:", err);
         }
     };
 
     if (!isAuthenticated) return null;
 
     return (
-        <div className="admin-container">
-            <header className="admin-header">
-                <div>
-                    <h1 className="admin-title">QR Scanner</h1>
-                    <p className="admin-subtitle">Event Day Check-in</p>
+        <>
+            <style jsx>{`
+                .checkin-page {
+                    min-height: 100vh;
+                    background: #08080c;
+                    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+                }
+
+                .checkin-header {
+                    background: linear-gradient(180deg, rgba(20,20,28,0.95) 0%, rgba(8,8,12,0.95) 100%);
+                    border-bottom: 1px solid rgba(255,255,255,0.04);
+                    padding: 16px 24px;
+                    position: sticky;
+                    top: 0;
+                    z-index: 100;
+                    backdrop-filter: blur(12px);
+                }
+
+                .header-row {
+                    max-width: 700px;
+                    margin: 0 auto;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                }
+
+                .header-left h1 {
+                    margin: 0;
+                    font-size: 20px;
+                    font-weight: 800;
+                    color: #fff;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                }
+
+                .header-left p {
+                    margin: 2px 0 0;
+                    font-size: 12px;
+                    color: #52525b;
+                }
+
+                .back-btn {
+                    padding: 8px 16px;
+                    background: rgba(255,255,255,0.04);
+                    border: 1px solid rgba(255,255,255,0.08);
+                    border-radius: 10px;
+                    color: #a1a1aa;
+                    font-size: 13px;
+                    font-weight: 600;
+                    text-decoration: none;
+                    transition: all 0.2s;
+                }
+
+                .back-btn:hover {
+                    background: rgba(255,255,255,0.08);
+                    color: #fff;
+                }
+
+                .checkin-body {
+                    max-width: 700px;
+                    margin: 0 auto;
+                    padding: 24px 20px 80px;
+                }
+
+                /* Live Counter */
+                .live-counter {
+                    display: flex;
+                    gap: 12px;
+                    margin-bottom: 20px;
+                }
+
+                .counter-card {
+                    flex: 1;
+                    padding: 16px;
+                    border-radius: 14px;
+                    text-align: center;
+                }
+
+                .counter-num {
+                    font-size: 32px;
+                    font-weight: 800;
+                    margin: 0;
+                    line-height: 1;
+                }
+
+                .counter-label {
+                    font-size: 11px;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.8px;
+                    margin: 6px 0 0;
+                }
+
+                /* Search */
+                .search-box {
+                    position: relative;
+                    margin-bottom: 20px;
+                }
+
+                .search-icon {
+                    position: absolute;
+                    left: 18px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: #52525b;
+                    pointer-events: none;
+                }
+
+                .search-input {
+                    width: 100%;
+                    padding: 18px 18px 18px 52px;
+                    background: rgba(255,255,255,0.03);
+                    border: 2px solid rgba(212,168,67,0.2);
+                    border-radius: 16px;
+                    font-size: 17px;
+                    color: #fff;
+                    outline: none;
+                    transition: all 0.2s;
+                    font-family: inherit;
+                }
+
+                .search-input:focus {
+                    border-color: rgba(212,168,67,0.5);
+                    background: rgba(255,255,255,0.05);
+                    box-shadow: 0 0 0 4px rgba(212,168,67,0.08);
+                }
+
+                .search-input::placeholder {
+                    color: #3f3f46;
+                }
+
+                .search-hint {
+                    text-align: center;
+                    color: #3f3f46;
+                    font-size: 13px;
+                    margin-top: 12px;
+                }
+
+                /* Results */
+                .results-list {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                }
+
+                .result-card {
+                    background: rgba(255,255,255,0.02);
+                    border: 1px solid rgba(255,255,255,0.06);
+                    border-radius: 16px;
+                    padding: 18px 20px;
+                    transition: all 0.2s;
+                }
+
+                .result-card:hover {
+                    background: rgba(255,255,255,0.04);
+                }
+
+                .result-card.checked {
+                    opacity: 0.55;
+                    border-color: rgba(16,185,129,0.2);
+                }
+
+                .result-top {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    margin-bottom: 10px;
+                }
+
+                .result-name {
+                    font-size: 17px;
+                    font-weight: 700;
+                    color: #fff;
+                    margin: 0 0 2px;
+                }
+
+                .result-college {
+                    font-size: 13px;
+                    color: #71717a;
+                    margin: 0;
+                }
+
+                .result-badge {
+                    padding: 4px 10px;
+                    border-radius: 6px;
+                    font-size: 11px;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 0.3px;
+                    white-space: nowrap;
+                }
+
+                .result-meta {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 14px;
+                    margin-bottom: 12px;
+                    font-size: 12.5px;
+                    color: #71717a;
+                }
+
+                .result-meta span {
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+                }
+
+                .members-list {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 6px;
+                    margin-bottom: 14px;
+                }
+
+                .member-chip {
+                    padding: 4px 10px;
+                    background: rgba(255,255,255,0.04);
+                    border: 1px solid rgba(255,255,255,0.06);
+                    border-radius: 6px;
+                    font-size: 12px;
+                    color: #a1a1aa;
+                }
+
+                .checkin-btn {
+                    width: 100%;
+                    padding: 14px;
+                    border: none;
+                    border-radius: 12px;
+                    font-size: 15px;
+                    font-weight: 700;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                    transition: all 0.25s;
+                    font-family: inherit;
+                }
+
+                .checkin-btn.primary {
+                    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                    color: #fff;
+                }
+
+                .checkin-btn.primary:hover {
+                    transform: translateY(-1px);
+                    box-shadow: 0 8px 24px rgba(16,185,129,0.3);
+                }
+
+                .checkin-btn.warning {
+                    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+                    color: #000;
+                }
+
+                .checkin-btn.warning:hover {
+                    transform: translateY(-1px);
+                    box-shadow: 0 8px 24px rgba(245,158,11,0.3);
+                }
+
+                .checkin-btn.done {
+                    background: rgba(16,185,129,0.08);
+                    border: 1px solid rgba(16,185,129,0.2);
+                    color: #34d399;
+                    cursor: default;
+                }
+
+                .undo-btn {
+                    margin-top: 6px;
+                    width: 100%;
+                    padding: 8px;
+                    background: transparent;
+                    border: 1px solid rgba(239,68,68,0.2);
+                    border-radius: 8px;
+                    color: #f87171;
+                    font-size: 12px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                    font-family: inherit;
+                }
+
+                .undo-btn:hover {
+                    background: rgba(239,68,68,0.08);
+                }
+
+                /* Success overlay */
+                .success-overlay {
+                    position: fixed;
+                    inset: 0;
+                    z-index: 9999;
+                    background: rgba(0,0,0,0.8);
+                    backdrop-filter: blur(8px);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    animation: fadeIn 0.2s ease;
+                }
+
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+
+                .success-card {
+                    text-align: center;
+                    padding: 48px 40px;
+                    animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+                }
+
+                @keyframes popIn {
+                    from { transform: scale(0.7); opacity: 0; }
+                    to { transform: scale(1); opacity: 1; }
+                }
+
+                .success-check {
+                    width: 100px;
+                    height: 100px;
+                    margin: 0 auto 24px;
+                    background: linear-gradient(135deg, rgba(16,185,129,0.2) 0%, rgba(16,185,129,0.05) 100%);
+                    border: 3px solid #10b981;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 48px;
+                    animation: checkBounce 0.6s 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+                }
+
+                @keyframes checkBounce {
+                    from { transform: scale(0); }
+                    to { transform: scale(1); }
+                }
+
+                .success-title {
+                    font-size: 28px;
+                    font-weight: 800;
+                    color: #34d399;
+                    margin: 0 0 8px;
+                }
+
+                .success-name {
+                    font-size: 20px;
+                    font-weight: 700;
+                    color: #fff;
+                    margin: 0 0 4px;
+                }
+
+                .success-detail {
+                    font-size: 14px;
+                    color: #71717a;
+                    margin: 0;
+                }
+
+                .spinner-sm {
+                    width: 18px;
+                    height: 18px;
+                    border: 2.5px solid rgba(255,255,255,0.2);
+                    border-top-color: #fff;
+                    border-radius: 50%;
+                    animation: spin 0.7s linear infinite;
+                }
+
+                @keyframes spin {
+                    to { transform: rotate(360deg); }
+                }
+
+                .no-results {
+                    text-align: center;
+                    padding: 40px 20px;
+                    color: #3f3f46;
+                }
+
+                .no-results p {
+                    font-size: 14px;
+                    margin: 8px 0 0;
+                }
+
+                @media (max-width: 600px) {
+                    .checkin-body { padding: 16px 12px 80px; }
+                    .search-input { font-size: 16px; padding: 16px 16px 16px 48px; }
+                    .counter-num { font-size: 26px; }
+                }
+            `}</style>
+
+            <div className="checkin-page">
+                {/* Header */}
+                <div className="checkin-header">
+                    <div className="header-row">
+                        <div className="header-left">
+                            <h1>
+                                🎫 Check-In Desk
+                            </h1>
+                            <p>{isCoordinator ? coordEventName : "All Events"} • SHRESHTA 2026</p>
+                        </div>
+                        <Link href="/admin/dashboard" className="back-btn">
+                            ← Dashboard
+                        </Link>
+                    </div>
                 </div>
-                <Link href="/admin/dashboard" className="secondary-btn" style={{ textDecoration: 'none' }}>
-                    Dashboard
-                </Link>
-            </header>
 
-            <div className="admin-content" style={{ maxWidth: '600px', margin: '0 auto', paddingTop: '40px' }}>
-                <div style={{ background: '#13131a', padding: '30px', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '16px' }}>
-                    <h2 style={{ color: '#fff', fontSize: '20px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <svg width="24" height="24" fill="none" stroke="#d4a843" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                <div className="checkin-body">
+                    {/* Live Counter */}
+                    <div className="live-counter">
+                        <div className="counter-card" style={{ background: "rgba(16,185,129,0.08)", border: "1px solid rgba(16,185,129,0.2)" }}>
+                            <p className="counter-num" style={{ color: "#34d399" }}>{totalCheckedIn}</p>
+                            <p className="counter-label" style={{ color: "#6ee7b7" }}>Checked In</p>
+                        </div>
+                        <div className="counter-card" style={{ background: "rgba(59,130,246,0.08)", border: "1px solid rgba(59,130,246,0.2)" }}>
+                            <p className="counter-num" style={{ color: "#60a5fa" }}>{totalRegs}</p>
+                            <p className="counter-label" style={{ color: "#93c5fd" }}>Total</p>
+                        </div>
+                        <div className="counter-card" style={{ background: "rgba(212,168,67,0.08)", border: "1px solid rgba(212,168,67,0.2)" }}>
+                            <p className="counter-num" style={{ color: "#d4a843" }}>{totalRegs - totalCheckedIn}</p>
+                            <p className="counter-label" style={{ color: "#d4a843" }}>Remaining</p>
+                        </div>
+                    </div>
+
+                    {/* Search */}
+                    <div className="search-box">
+                        <svg className="search-icon" width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
-                        Scan Participant QR
-                    </h2>
+                        <input
+                            ref={searchRef}
+                            type="text"
+                            className="search-input"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            placeholder="Type name, phone, or college..."
+                            autoComplete="off"
+                        />
+                    </div>
 
-                    <QRScanner onScan={handleScan} />
+                    {/* Results */}
+                    {search.length < 2 ? (
+                        <div className="search-hint">
+                            Type at least 2 characters to search participants
+                        </div>
+                    ) : sorted.length === 0 ? (
+                        <div className="no-results">
+                            <span style={{ fontSize: "40px" }}>🔍</span>
+                            <p>No participants found for &quot;{search}&quot;</p>
+                        </div>
+                    ) : (
+                        <div className="results-list">
+                            {sorted.map((reg) => {
+                                const isChecked = reg.checkedIn;
+                                const isVerified = reg.paymentStatus === "completed";
+                                const mainName = reg.members?.[0]?.name || "Unknown";
 
-                    {scanResult && (
-                        <div style={{
-                            marginTop: '24px',
-                            padding: '20px',
-                            borderRadius: '12px',
-                            background: scanResult.status === 'success' ? 'rgba(16,185,129,0.1)' :
-                                scanResult.status === 'already_checked_in' ? 'rgba(245,158,11,0.1)' :
-                                    scanResult.status === 'pending' ? 'rgba(255,255,255,0.05)' :
-                                        'rgba(239,68,68,0.1)',
-                            border: `1px solid ${scanResult.status === 'success' ? 'rgba(16,185,129,0.3)' :
-                                    scanResult.status === 'already_checked_in' ? 'rgba(245,158,11,0.3)' :
-                                        scanResult.status === 'pending' ? 'rgba(255,255,255,0.1)' :
-                                            'rgba(239,68,68,0.3)'}`
-                        }}>
-                            <h3 style={{
-                                margin: '0 0 8px 0',
-                                fontSize: '18px',
-                                color: scanResult.status === 'success' ? '#34d399' :
-                                    scanResult.status === 'already_checked_in' ? '#fbbf24' :
-                                        scanResult.status === 'pending' ? '#a1a1aa' :
-                                            '#f87171'
-                            }}>
-                                {scanResult.status === 'success' ? '✅ Verified' :
-                                    scanResult.status === 'already_checked_in' ? '⚠️ Already Scanned' :
-                                        scanResult.status === 'pending' ? '⏳ Verifying...' :
-                                            '❌ Error'}
-                            </h3>
-                            <p style={{ color: '#e4e4e7', fontSize: '15px', margin: '0' }}>{scanResult.message}</p>
+                                return (
+                                    <div key={`${reg.eventId}-${reg.id}`} className={`result-card ${isChecked ? "checked" : ""}`}>
+                                        <div className="result-top">
+                                            <div>
+                                                <p className="result-name">{mainName}</p>
+                                                <p className="result-college">{reg.collegeName}</p>
+                                            </div>
+                                            <span
+                                                className="result-badge"
+                                                style={{
+                                                    background: isVerified ? "rgba(16,185,129,0.12)" : "rgba(245,158,11,0.12)",
+                                                    color: isVerified ? "#34d399" : "#fbbf24",
+                                                    border: `1px solid ${isVerified ? "rgba(16,185,129,0.3)" : "rgba(245,158,11,0.3)"}`,
+                                                }}
+                                            >
+                                                {isVerified ? "✓ Verified" : "⏳ Pending"}
+                                            </span>
+                                        </div>
 
-                            {scanResult.teamData && (
-                                <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-                                    <p style={{ color: '#a1a1aa', margin: '0 0 8px 0', fontSize: '13px' }}>Team Details:</p>
-                                    <p style={{ margin: '0 0 4px 0', color: '#fff' }}><strong>Event:</strong> {scanResult.teamData.eventName}</p>
-                                    <p style={{ margin: '0 0 4px 0', color: '#fff' }}><strong>College:</strong> {scanResult.teamData.collegeName}</p>
-                                    <p style={{ margin: '0', color: '#fff' }}><strong>Members:</strong> {scanResult.teamData.members?.map((m: any) => m.name).join(', ')}</p>
-                                </div>
-                            )}
+                                        <div className="result-meta">
+                                            <span>🎪 {reg.eventName}</span>
+                                            <span>👥 Team #{reg.teamNumber}</span>
+                                            <span>📧 {reg.email}</span>
+                                        </div>
 
-                            <button
-                                onClick={() => setScanResult(null)}
-                                style={{
-                                    marginTop: '16px',
-                                    padding: '8px 16px',
-                                    background: 'rgba(0,0,0,0.2)',
-                                    border: '1px solid rgba(255,255,255,0.1)',
-                                    borderRadius: '8px',
-                                    color: '#e4e4e7',
-                                    cursor: 'pointer'
-                                }}
-                            >
-                                Clear Result
-                            </button>
+                                        <div className="members-list">
+                                            {reg.members?.map((m, i) => (
+                                                <span key={i} className="member-chip">
+                                                    {m.name} • {m.phone}
+                                                </span>
+                                            ))}
+                                        </div>
+
+                                        {isChecked ? (
+                                            <>
+                                                <button className="checkin-btn done" disabled>
+                                                    ✅ Already Checked In
+                                                    {reg.checkedInAt && (
+                                                        <span style={{ fontSize: "12px", opacity: 0.7, marginLeft: "4px" }}>
+                                                            ({new Date(reg.checkedInAt.seconds * 1000).toLocaleTimeString()})
+                                                        </span>
+                                                    )}
+                                                </button>
+                                                <button className="undo-btn" onClick={() => handleUndoCheckIn(reg)}>
+                                                    ↩ Undo Check-In
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <button
+                                                className={`checkin-btn ${isVerified ? "primary" : "warning"}`}
+                                                onClick={() => handleCheckIn(reg)}
+                                                disabled={checkingIn === reg.id}
+                                            >
+                                                {checkingIn === reg.id ? (
+                                                    <><div className="spinner-sm" /> Checking In...</>
+                                                ) : isVerified ? (
+                                                    <>✅ Check In</>
+                                                ) : (
+                                                    <>⚠️ Check In (Payment Pending)</>
+                                                )}
+                                            </button>
+                                        )}
+                                    </div>
+                                );
+                            })}
                         </div>
                     )}
                 </div>
+
+                {/* Success Overlay */}
+                {showSuccess && lastCheckedIn && (
+                    <div className="success-overlay">
+                        <div className="success-card">
+                            <div className="success-check">✓</div>
+                            <p className="success-title">Checked In!</p>
+                            <p className="success-name">{lastCheckedIn.members?.[0]?.name}</p>
+                            <p className="success-detail">{lastCheckedIn.eventName} • Team #{lastCheckedIn.teamNumber}</p>
+                            <p className="success-detail">{lastCheckedIn.collegeName}</p>
+                        </div>
+                    </div>
+                )}
             </div>
-        </div>
+        </>
     );
 }
