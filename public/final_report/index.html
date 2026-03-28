@@ -810,59 +810,108 @@
           <td>Passed</td>
         </tr>
       </table>
-      <h2 class="section-title">6.4 Snapshots</h2>
-      <p><b>Home Page</b></p>
-      <div class="img-placeholder">
-        <p class="img-name">snapshot_home_page.png</p>
-        <p class="img-prompt">Prompt: Screenshot of the SHRESHTA 2026 home page showing a dark-themed hero section with
-          gold accents, event name, college name, date, and navigation bar with Home, Events, Schedule, About links.</p>
+      <h2 class="section-title">6.4 System Snapshots and Workflow Explanations</h2>
+
+      <p><b>1. Home Page</b></p>
+      <div class="img-placeholder" style="border:none; min-height:auto; background:transparent; padding:10px 0;">
+        <img src="snapshot_home_page.png" alt="Home Page Snapshot" style="max-height: 450px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.1); max-width: 100%;">
       </div>
-      <p class="fig-caption">Figure 6.1: Home Page</p>
-      <p><b>Event Listing Page</b></p>
-      <div class="img-placeholder">
-        <p class="img-name">snapshot_events_page.png</p>
-        <p class="img-prompt">Prompt: Screenshot of events listing page showing event cards organized by categories (IT,
-          Management, Cultural, Sports) with event images, titles, coordinator names, and Register buttons.</p>
+      <p class="fig-caption" style="margin-top: 5px;">Figure 6.1: Home Page</p>
+      <p style="margin-bottom: 24px;"><b>Explanation:</b> The Home Page serves as the first point of interaction for participants. We implemented a visually striking dark theme with gold accents to represent the premium quality of the SHRESHTA fest. It features a live countdown timer ensuring students know exactly when the event starts, creating a sense of urgency. The simple navigation structure focuses primarily on guiding users directly to event browsing and registration.</p>
+
+      <p><b>2. Event Listing Page</b></p>
+      <div class="img-placeholder" style="border:none; min-height:auto; background:transparent; padding:10px 0;">
+        <img src="snapshot_events_page.png" alt="Event Listing" style="max-height: 450px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.1); max-width: 100%;">
       </div>
-      <p class="fig-caption">Figure 6.2: Event Listing</p>
-      <p><b>Registration Form</b></p>
-      <div class="img-placeholder">
-        <p class="img-name">snapshot_registration_form.png</p>
-        <p class="img-prompt">Prompt: Screenshot of the team registration form showing college name, email, dynamic
-          member fields (name + phone), UPI payment QR code, UTR number input, and Submit button.</p>
+      <p class="fig-caption" style="margin-top: 5px;">Figure 6.2: Event Listing Categories</p>
+      <p style="margin-bottom: 24px;"><b>Explanation:</b> This page organizes all 13 events into logical categories (IT, Management, Cultural, Sports). We utilized card-based UI design so users can quickly see event names, coordinators, and click "Register" directly. This minimizes cognitive load and makes finding specific events very efficient.</p>
+
+      <h3 class="subsection-title">6.4.1 Registration Workflow</h3>
+      <p><b>Step 1: Selecting Event & Initial Details</b></p>
+      <div class="img-placeholder" style="border:none; min-height:auto; background:transparent; padding:10px 0;">
+        <img src="register_sttep1.png" alt="Registration Step 1" style="max-height: 450px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.1); max-width: 100%;">
       </div>
-      <p class="fig-caption">Figure 6.3: Registration Form</p>
-      <p><b>Admin Login with Coordinator Quick Access</b></p>
-      <div class="img-placeholder">
-        <p class="img-name">snapshot_admin_login.png</p>
-        <p class="img-prompt">Prompt: Screenshot of admin login page with login form on left (username, password, sign
-          in button) and Quick Coordinator Login panel on right showing event buttons grouped by category (Management,
-          IT, Cultural, Sports).</p>
+      <p class="fig-caption" style="margin-top: 5px;">Figure 6.3: Registration Form Entry</p>
+      <p style="margin-bottom: 24px;"><b>Explanation:</b> The first step of the registration demands basic team details smoothly. By asking for College Name and Email first, we establish the primary contact channel. The form dynamically adapts to the selected event's rules (e.g., maximum team size limitations), preventing invalid registrations immediately.</p>
+
+      <p><b>Step 2: Adding Team Members</b></p>
+      <div class="img-placeholder" style="border:none; min-height:auto; background:transparent; padding:10px 0;">
+        <img src="Reg_step2.png" alt="Registration Step 2" style="max-height: 450px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.1); max-width: 100%;">
       </div>
-      <p class="fig-caption">Figure 6.4: Admin Login Page</p>
-      <p><b>Admin Dashboard</b></p>
-      <div class="img-placeholder">
-        <p class="img-name">snapshot_admin_dashboard.png</p>
-        <p class="img-prompt">Prompt: Screenshot of admin dashboard showing stats cards (Total Registrations, Pending,
-          Verified, Checked In), event filter dropdown, action buttons (Check-In, Alert, Certificates, Auto Verify,
-          Edit), and registrations table.</p>
+      <p class="fig-caption" style="margin-top: 5px;">Figure 6.4: Adding Participants</p>
+      <p style="margin-bottom: 24px;"><b>Explanation:</b> A dynamic UI lets users add exactly the required number of participants. We ensure mobile numbers are collected here to facilitate SMS/WhatsApp alerts if required. Client-side validation ensures fields are not left empty before proceeding.</p>
+
+      <p><b>Step 3: Payments and UTR Verification</b></p>
+      <div class="img-placeholder" style="border:none; min-height:auto; background:transparent; padding:10px 0; display:flex; gap:10px; overflow-x:auto;">
+        <img src="reg_step3.png" alt="Payment Flow 1" style="height: 300px; border: 1px solid #ddd;">
+        <img src="reg_4.png" alt="Payment Flow 2" style="height: 300px; border: 1px solid #ddd;">
       </div>
-      <p class="fig-caption">Figure 6.5: Admin Dashboard</p>
-      <p><b>Check-In Desk</b></p>
-      <div class="img-placeholder">
-        <p class="img-name">snapshot_checkin_desk.png</p>
-        <p class="img-prompt">Prompt: Screenshot of Check-In Desk page showing live counters (Checked In, Total,
-          Remaining), search bar, and participant cards with name, college, event, member details, and Check-In button.
-        </p>
+      <p class="fig-caption" style="margin-top: 5px;">Figure 6.5: Payment and UTR Entry</p>
+      <p style="margin-bottom: 24px;"><b>Explanation:</b> To avoid high gateway charges, we integrated a direct UPI QR workflow. Participants scan the generated QR code, pay the exact fee required for their team, and input the resulting UTR (Unique Transaction Reference) number. This bridges physical payments with digital tracking efficiently.</p>
+
+      <p><b>Step 4: Submission and Confirmation</b></p>
+      <div class="img-placeholder" style="border:none; min-height:auto; background:transparent; padding:10px 0; display:flex; gap:10px; overflow-x:auto;">
+        <img src="reg_5.png" alt="Success 1" style="height: 300px; border: 1px solid #ddd;">
+        <img src="reg_6.png" alt="Success 2" style="height: 300px; border: 1px solid #ddd;">
       </div>
-      <p class="fig-caption">Figure 6.6: Check-In Desk</p>
-      <p><b>Certificate Preview</b></p>
-      <div class="img-placeholder">
-        <p class="img-name">snapshot_certificate.png</p>
-        <p class="img-prompt">Prompt: Screenshot of a generated SHRESHTA 2026 participation certificate with dark
-          premium theme, gold borders, college logo, participant name, event name, date, and signature placeholders.</p>
+      <p class="fig-caption" style="margin-top: 5px;">Figure 6.6: Registration Completion</p>
+      <p style="margin-bottom: 24px;"><b>Explanation:</b> Upon clicking submit, backend validations via Firebase secure the transaction, preventing duplications. A success animation immediately assures the user that their data was successfully recorded, moving their status to "Pending Verification" in the Admin panel.</p>
+
+      <h3 class="subsection-title">6.4.2 Admin & Coordinator Dashboard Workflow</h3>
+
+      <p><b>Admin Login Panel</b></p>
+      <div class="img-placeholder" style="border:none; min-height:auto; background:transparent; padding:10px 0;">
+        <img src="admin.png" alt="Admin Login" style="max-height: 450px; border: 1px solid #ddd; max-width: 100%;">
       </div>
-      <p class="fig-caption">Figure 6.7: Generated Certificate</p>
+      <p class="fig-caption" style="margin-top: 5px;">Figure 6.7: Secure Admin Login</p>
+      <p style="margin-bottom: 24px;"><b>Explanation:</b> We separated access into "Super Admins" and "Event Coordinators". The login interface provides quick-access buttons for coordinators so they can directly dive into their specific event's data without needing complex credentials, greatly speeding up operations on the fest day.</p>
+
+      <p><b>Main Admin Dashboard</b></p>
+      <div class="img-placeholder" style="border:none; min-height:auto; background:transparent; padding:10px 0;">
+        <img src="admin_0_main_page.png" alt="Admin Dashboard" style="max-height: 450px; border: 1px solid #ddd; max-width: 100%;">
+      </div>
+      <p class="fig-caption" style="margin-top: 5px;">Figure 6.8: Centralized Dashboard Hub</p>
+      <p style="margin-bottom: 24px;"><b>Explanation:</b> The core control panel. It aggregates data into high-level statistics (Total, Pending, Verified, Checked-in). This allows administrators to grasp the fest's scale at a glance. Real-time Firebase listeners mean this page updates instantly as new teams register, requiring zero page reloads.</p>
+
+      <p><b>Coordinator Dashboard View</b></p>
+      <div class="img-placeholder" style="border:none; min-height:auto; background:transparent; padding:10px 0;">
+        <img src="admin_as_coodinator.png" alt="Coordinator View" style="max-height: 450px; border: 1px solid #ddd; max-width: 100%;">
+      </div>
+      <p class="fig-caption" style="margin-top: 5px;">Figure 6.9: Coordinator Specific Dashboard</p>
+      <p style="margin-bottom: 24px;"><b>Explanation:</b> Unlike the master admin, coordinators only see registrations for their assigned event. This enforces data isolation and reduces clutter, ensuring the Photography coordinator doesn't accidentally alter data for the Coding Debugging event.</p>
+
+      <h3 class="subsection-title">6.4.3 Data Export functionality (Excel/PDF)</h3>
+      <div class="img-placeholder" style="border:none; min-height:auto; background:transparent; padding:10px 0; display:flex; gap:10px; overflow-x:auto;">
+        <img src="excel_or_pdf.png" alt="Export Options" style="height: 300px; border: 1px solid #ddd;">
+        <img src="excel_data_into_excel.png" alt="Excel Export" style="height: 300px; border: 1px solid #ddd;">
+        <img src="pdf_data_as_extraion.png" alt="PDF Export" style="height: 300px; border: 1px solid #ddd;">
+      </div>
+      <p class="fig-caption" style="margin-top: 5px;">Figure 6.10: Data Extraction to Excel & PDF</p>
+      <p style="margin-bottom: 24px;"><b>Explanation:</b> Web applications trap data within the browser. We implemented robust Excel (XLSX) and PDF extraction routines so college authorities can print out physical manifestos or distribute files into traditional campus archives. This makes the modern web system fully compatible with university paperwork standards.</p>
+
+      <h3 class="subsection-title">6.4.4 Real-time Check-In Desk</h3>
+      <div class="img-placeholder" style="border:none; min-height:auto; background:transparent; padding:10px 0; display:flex; flex-direction: column; gap:10px;">
+        <img src="cheeck_in_desk.png" alt="Check In Desk" style="max-height: 400px; border: 1px solid #ddd; max-width:100%;">
+        <img src="checki_in_desk_pending.png" alt="Pending Filter" style="max-height: 400px; border: 1px solid #ddd; max-width:100%;">
+      </div>
+      <p class="fig-caption" style="margin-top: 5px;">Figure 6.11: Check-in Interface and "Show Pending" Tools</p>
+      <p style="margin-bottom: 24px;"><b>Explanation:</b> During the physical fest, massive crowds require lightning-fast verification. We designed a search-as-you-type fuzzy filtering interface. We also created a specific "Show Pending" view so volunteers instantly see who is missing, and can click "Auto Mail" or "Call" directly from this dashboard to hasten late arrivals.</p>
+      
+      <h3 class="subsection-title">6.4.5 Automated Email Verification & Certificates</h3>
+      <div class="img-placeholder" style="border:none; min-height:auto; background:transparent; padding:10px 0; display:flex; flex-wrap: wrap; gap:10px; justify-content:center;">
+        <img src="email_sender.png" alt="Trigger Emails" style="height: 250px; border: 1px solid #ddd;">
+        <img src="email_recived.png" alt="Verification Email Received" style="height: 250px; border: 1px solid #ddd;">
+      </div>
+      <p class="fig-caption" style="margin-top: 5px;">Figure 6.12: Automated Email Delivery via Resend API</p>
+      <p style="margin-bottom: 24px;"><b>Explanation:</b> When Admins click "Verify" on an incoming registration, our Next.js backend securely fires a request to the Resend Email API. This guarantees participants receive a beautiful, branded HTML verification email confirming their slot.</p>
+
+      <div class="img-placeholder" style="border:none; min-height:auto; background:transparent; padding:10px 0; display:flex; flex-wrap:wrap; gap:10px; justify-content:center;">
+        <img src="certificate_generaor.png" alt="Generator Tool" style="height: 250px; border: 1px solid #ddd;">
+        <img src="certificate_sended.png" alt="Certificate Sent" style="height: 250px; border: 1px solid #ddd;">
+        <img src="Certifive_in_gmail_recived.png" alt="Certificate Email" style="height: 250px; border: 1px solid #ddd;">
+      </div>
+      <p class="fig-caption" style="margin-top: 5px;">Figure 6.13: Canvas Certificate Generation & Dispatch</p>
+      <p style="margin-bottom: 24px;"><b>Explanation:</b> At the event's conclusion, issuing physical certificates is tedious. Our system uses a hidden HTML5 Canvas to render a high-resolution, personalized certificate overlaying dynamic text onto an imported template. It then attaches this image directly into a final email, completing the digital loop autonomously.</p>
       <div class="page-footer"><span>Smart Event Management System (SHRESHTA 2026)</span><span>Page 23</span>
       </div>
     </div>
