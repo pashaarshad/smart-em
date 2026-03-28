@@ -16,7 +16,7 @@
       <p class="uni-name">UNIVERSITY OF MYSORE</p>
       <p class="uni-loc" style="font-weight:700;">MYSURU - 570005</p>
       <img src="university_of_mysore_logo.jpg" alt="University of Mysore" style="height:120px; margin: 10px 0;">
-      <p style="font-size:14pt; margin-top:10px; text-decoration: underline;">Project Synopsis on</p>
+      <p style="font-size:14pt; margin-top:10px; text-decoration: underline;">Project Report On</p>
       <p class="project-title" style="margin-top: 10px; margin-bottom: 20px;">Smart Event Management System<br>(SHRESHTA 2026)</p>
       <p class="degree-text" style="text-decoration:underline;">Submitted in partial fulfilment of the requirements for the award of degree of</p>
       <p class="degree-name">BACHELOR OF COMPUTER APPLICATIONS</p>
@@ -452,13 +452,8 @@
       <h2 class="section-title">4.2 System Architecture</h2>
       <p>The system employs a three-tier architecture consisting of the Presentation Layer (Next.js/React), the
         Application Layer (API routes, Firebase SDK), and the Data Layer (Firestore, Storage).</p>
-      <div class="img-placeholder">
-        <p class="img-name">system_architecture.png</p>
-        <p class="img-prompt">Prompt: A professional system architecture diagram for a Smart Event Management System
-          showing three tiers - Presentation Layer (Next.js React frontend with pages: Home, Events, Registration, Admin
-          Dashboard, Check-In Desk), Application Layer (Next.js API Routes, Firebase SDK, Resend API), and Data Layer
-          (Firebase Firestore collections: registrations, Firebase Storage: qrcodes, certificates). Show arrows for data
-          flow between layers. Clean technical diagram style with blue and gold color scheme.</p>
+      <div class="img-placeholder" style="border:none; min-height:auto; background:transparent; padding: 10px 0;">
+        <img src="system_architecture.png" alt="System Architecture Diagram" style="max-height: 450px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
       </div>
       <p class="fig-caption">Figure 4.2.1: System Architecture Diagram</p>
       <h2 class="section-title">4.3 Use Case Diagram</h2>
@@ -473,14 +468,8 @@
         <li><b>Coordinator:</b> Views assigned event's registrations, performs check-ins, monitors event-specific stats.
         </li>
       </ul>
-      <div class="img-placeholder">
-        <p class="img-name">use_case_diagram.png</p>
-        <p class="img-prompt">Prompt: A UML Use Case Diagram for Smart Event Management System with three actors -
-          Participant (left), Admin (top-right), Coordinator (bottom-right). Use cases inside the system boundary:
-          Browse Events, Register Team, Submit Payment, View Registration Status (connected to Participant); Verify
-          Payment, View Dashboard, Send Alerts, Generate Certificates, Export Data, Manage Check-In (connected to
-          Admin); View Event Registrations, Perform Check-In, View Event Stats (connected to Coordinator). Show
-          include/extend relationships where appropriate. Professional UML style.</p>
+      <div class="img-placeholder" style="border:none; min-height:auto; background:transparent; padding: 10px 0;">
+        <img src="use_case_diagram.png" alt="Use Case Diagram" style="max-height: 450px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
       </div>
       <p class="fig-caption">Figure 4.3.1: Use Case Diagram</p>
       <h2 class="section-title">4.4 Sequence Diagram</h2>
@@ -496,27 +485,14 @@
         <li><b>Notification:</b> System sends confirmation email with QR code to the team's email address via Resend
           API.</li>
       </ol>
-      <div class="img-placeholder">
-        <p class="img-name">sequence_diagram.png</p>
-        <p class="img-prompt">Prompt: A UML Sequence Diagram showing the registration flow for a Smart Event Management
-          System. Lifelines: Participant, React Frontend, Next.js API Route, Firebase Firestore, Resend Email API.
-          Messages: 1) Participant -> Frontend: Select Event & Fill Form, 2) Frontend -> Firestore: Store Registration
-          Data, 3) Firestore -> Frontend: Return Success + Team ID, 4) Frontend -> Participant: Show Payment QR &
-          Instructions, 5) Admin -> Firestore: Verify Payment (update status), 6) Firestore -> API Route: Trigger
-          notification, 7) API Route -> Resend: Send confirmation email with QR code, 8) Resend -> Participant: Email
-          delivered. Professional UML sequence diagram style.</p>
+      <div class="img-placeholder" style="border:none; min-height:auto; background:transparent; padding: 10px 0;">
+        <img src="sequence_diagram.png" alt="Sequence Diagram" style="max-height: 450px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
       </div>
       <p class="fig-caption">Figure 4.4.1: Sequence Diagram — Registration Flow</p>
       <h2 class="section-title">4.5 Activity Diagram</h2>
       <p>The activity diagram models the complete workflow from event browsing to certificate generation.</p>
-      <div class="img-placeholder">
-        <p class="img-name">activity_diagram.png</p>
-        <p class="img-prompt">Prompt: A UML Activity Diagram for Smart Event Management System showing the flow: Start
-          -> Browse Events -> Select Event -> Fill Registration Form -> Decision (Valid?) -> [No] Show Errors -> Fill
-          Form again / [Yes] Submit to Firebase -> Show Payment QR -> User Makes UPI Payment -> Enter UTR Number ->
-          Admin Verifies Payment -> Decision (Verified?) -> [No] Mark Pending / [Yes] Generate QR Code -> Send
-          Confirmation Email -> Event Day: Check-In -> Attend Event -> Generate Certificate -> End. Use swim lanes for
-          Participant, System, and Admin. Professional UML activity diagram.</p>
+      <div class="img-placeholder" style="border:none; min-height:auto; background:transparent; padding: 10px 0;">
+        <img src="activity_diagram.png" alt="Activity Diagram" style="max-height: 450px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
       </div>
       <p class="fig-caption">Figure 4.5.1: Activity Diagram</p>
       <h2 class="section-title">4.6 Data Flow Diagram (DFD)</h2>
@@ -531,26 +507,15 @@
         </li>
         <li><b>Certificate Generation:</b> Creates Canvas-based certificates and emails them to participants.</li>
       </ol>
-      <div class="img-placeholder">
-        <p class="img-name">data_flow_diagram.png</p>
-        <p class="img-prompt">Prompt: A Data Flow Diagram (DFD Level 1) for Smart Event Management System. External
-          entities: Participant, Admin/Coordinator. Processes (circles): 1.0 Register Team, 2.0 Verify Payment, 3.0
-          Generate QR Code, 4.0 Check-In, 5.0 Generate Certificate. Data stores: D1 Firestore (Registrations), D2
-          Firebase Storage (QR Codes, Certificates), D3 Email Service. Show data flows with labeled arrows between
-          entities, processes, and data stores. Clean DFD notation.</p>
+      <div class="img-placeholder" style="border:none; min-height:auto; background:transparent; padding: 10px 0;">
+        <img src="data_flow_diagram.png" alt="Data Flow Diagram" style="max-height: 450px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
       </div>
       <p class="fig-caption">Figure 4.6.1: Data Flow Diagram (Level 1)</p>
       <h2 class="section-title">4.7 Entity Relationship Diagram (ERD)</h2>
       <p>The ERD represents the data model used in Firestore. Although Firestore is a NoSQL database, the logical
         relationships between entities are modeled as follows:</p>
-      <div class="img-placeholder">
-        <p class="img-name">er_diagram.png</p>
-        <p class="img-prompt">Prompt: An Entity Relationship Diagram for Smart Event Management System. Entities: Event
-          (event_id PK, title, category, coordinator, team_size, fee, date, venue), Registration/Team (team_id PK,
-          event_id FK, team_number, college_name, email, utr_number, payment_status, checked_in, registered_at), Member
-          (member_id PK, team_id FK, name, phone), Certificate (cert_id PK, team_id FK, generated_at, sent), Admin
-          (username PK, password, role, event_id). Relationships: Event 1-to-many Registration, Registration 1-to-many
-          Member, Registration 1-to-1 Certificate. Show cardinality notations. Professional ER diagram style.</p>
+      <div class="img-placeholder" style="border:none; min-height:auto; background:transparent; padding: 10px 0;">
+        <img src="er_diagram.png" alt="Entity Relationship Diagram" style="max-height: 450px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
       </div>
       <p class="fig-caption">Figure 4.7.1: Entity Relationship Diagram</p>
       <h3 class="subsection-title">4.7.1 Database Schema</h3>
