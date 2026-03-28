@@ -20,6 +20,8 @@ export default function CheckInPage() {
     const [coordEventName, setCoordEventName] = useState<string | null>(null);
     const searchRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
+    const [showUncheckedIn, setShowUncheckedIn] = useState(false);
+    const [sendingEmail, setSendingEmail] = useState<string | null>(null);
 
     // Auth
     useEffect(() => {
@@ -75,21 +77,25 @@ export default function CheckInPage() {
     }, [isAuthenticated]);
 
     // Search filter
-    const filtered = search.length >= 2
-        ? registrations.filter(r => {
-            const q = search.toLowerCase();
-            const memberMatch = r.members?.some(m =>
-                m.name.toLowerCase().includes(q) || m.phone.includes(q)
-            );
-            return (
-                memberMatch ||
-                r.email?.toLowerCase().includes(q) ||
-                r.collegeName?.toLowerCase().includes(q) ||
-                r.eventName?.toLowerCase().includes(q) ||
-                String(r.teamNumber).includes(q)
-            );
-        })
-        : [];
+    const filtered = registrations.filter(r => {
+        if (showUncheckedIn && r.checkedIn) return false;
+
+        if (search.length < 2) {
+            return showUncheckedIn ? true : false;
+        }
+
+        const q = search.toLowerCase();
+        const memberMatch = r.members?.some(m =>
+            m.name.toLowerCase().includes(q) || m.phone.includes(q)
+        );
+        return (
+            memberMatch ||
+            r.email?.toLowerCase().includes(q) ||
+            r.collegeName?.toLowerCase().includes(q) ||
+            r.eventName?.toLowerCase().includes(q) ||
+            String(r.teamNumber).includes(q)
+        );
+    });
 
     // Sort: not checked in first, then by name
     const sorted = [...filtered].sort((a, b) => {
@@ -133,6 +139,30 @@ export default function CheckInPage() {
             });
         } catch (err) {
             console.error("Undo failed:", err);
+        }
+    };
+
+    const handleSendReminder = async (reg: Registration) => {
+        setSendingEmail(reg.id);
+        try {
+            const res = await fetch("/api/send-email", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    type: "reminder",
+                    to: reg.email,
+                    subject: `Urgent Reminder: SHRESHTA 2026 - ${reg.eventName || 'Event'}`,
+                    participantName: reg.members?.[0]?.name || "Participant",
+                    eventName: reg.eventName || 'Event'
+                }),
+            });
+            if (!res.ok) throw new Error("Failed to send");
+            alert("Auto-reminder sent successfully to " + reg.email);
+        } catch (err: any) {
+            console.error(err);
+            alert("Failed to send reminder email. Please ensure Resend API is active.");
+        } finally {
+            setSendingEmail(null);
         }
     };
 
@@ -557,31 +587,50 @@ export default function CheckInPage() {
                         </div>
                     </div>
 
-                    {/* Search */}
-                    <div className="search-box">
-                        <svg className="search-icon" width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                        <input
-                            ref={searchRef}
-                            type="text"
-                            className="search-input"
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                            placeholder="Type name, phone, or college..."
-                            autoComplete="off"
-                        />
+                    {/* Search & Actions */}
+                    <div className="search-actions" style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+                        <div className="search-box" style={{ flex: 1, margin: 0 }}>
+                            <svg className="search-icon" width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                            <input
+                                ref={searchRef}
+                                type="text"
+                                className="search-input"
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                placeholder="Type name, phone, or college..."
+                                autoComplete="off"
+                            />
+                        </div>
+                        <button
+                            onClick={() => setShowUncheckedIn(!showUncheckedIn)}
+                            style={{
+                                padding: "0 20px",
+                                background: showUncheckedIn ? "rgba(212,168,67,0.15)" : "rgba(255,255,255,0.03)",
+                                color: showUncheckedIn ? "#d4a843" : "#a1a1aa",
+                                border: `2px solid ${showUncheckedIn ? "rgba(212,168,67,0.4)" : "rgba(255,255,255,0.06)"}`,
+                                borderRadius: "16px",
+                                cursor: "pointer",
+                                minWidth: "max-content",
+                                fontWeight: 600,
+                                fontSize: "15px",
+                                transition: "all 0.2s"
+                            }}
+                        >
+                            {showUncheckedIn ? "✓ Pending" : "Show Pending"}
+                        </button>
                     </div>
 
                     {/* Results */}
-                    {search.length < 2 ? (
+                    {search.length < 2 && !showUncheckedIn ? (
                         <div className="search-hint">
-                            Type at least 2 characters to search participants
+                            Type at least 2 characters to search participants or click "Show Pending"
                         </div>
                     ) : sorted.length === 0 ? (
                         <div className="no-results">
                             <span style={{ fontSize: "40px" }}>🔍</span>
-                            <p>No participants found for &quot;{search}&quot;</p>
+                            <p>No participants found.</p>
                         </div>
                     ) : (
                         <div className="results-list">
@@ -638,19 +687,68 @@ export default function CheckInPage() {
                                                 </button>
                                             </>
                                         ) : (
-                                            <button
-                                                className={`checkin-btn ${isVerified ? "primary" : "warning"}`}
-                                                onClick={() => handleCheckIn(reg)}
-                                                disabled={checkingIn === reg.id}
-                                            >
-                                                {checkingIn === reg.id ? (
-                                                    <><div className="spinner-sm" /> Checking In...</>
-                                                ) : isVerified ? (
-                                                    <>✅ Check In</>
-                                                ) : (
-                                                    <>⚠️ Check In (Payment Pending)</>
-                                                )}
-                                            </button>
+                                            <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
+                                                <button
+                                                    className={`checkin-btn ${isVerified ? "primary" : "warning"}`}
+                                                    onClick={() => handleCheckIn(reg)}
+                                                    disabled={checkingIn === reg.id}
+                                                    style={{ flex: 1, margin: 0 }}
+                                                >
+                                                    {checkingIn === reg.id ? (
+                                                        <><div className="spinner-sm" /> Checking In...</>
+                                                    ) : isVerified ? (
+                                                        <>✅ Check In</>
+                                                    ) : (
+                                                        <>⚠️ Check In <span style={{fontSize: '11px', opacity: 0.8}}>(Payment Pending)</span></>
+                                                    )}
+                                                </button>
+
+                                                <button
+                                                    onClick={() => handleSendReminder(reg)}
+                                                    disabled={sendingEmail === reg.id}
+                                                    style={{
+                                                        padding: "0 16px",
+                                                        background: "rgba(59,130,246,0.1)",
+                                                        color: "#60a5fa",
+                                                        border: "1px solid rgba(59,130,246,0.2)",
+                                                        borderRadius: "12px",
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        justifyContent: "center",
+                                                        fontFamily: "inherit",
+                                                        fontSize: "14px",
+                                                        fontWeight: 600,
+                                                        cursor: sendingEmail === reg.id ? "not-allowed" : "pointer",
+                                                        transition: "all 0.2s",
+                                                        opacity: sendingEmail === reg.id ? 0.7 : 1
+                                                    }}
+                                                    title="Send Auto Reminder via Email API"
+                                                >
+                                                    {sendingEmail === reg.id ? "Sending..." : "📧 Auto Mail"}
+                                                </button>
+
+                                                <a
+                                                    href={`tel:${reg.members?.[0]?.phone}`}
+                                                    style={{
+                                                        padding: "0 16px",
+                                                        background: "rgba(16,185,129,0.1)",
+                                                        color: "#34d399",
+                                                        border: "1px solid rgba(16,185,129,0.2)",
+                                                        borderRadius: "12px",
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        justifyContent: "center",
+                                                        textDecoration: "none",
+                                                        fontSize: "14px",
+                                                        fontWeight: 600,
+                                                        cursor: "pointer",
+                                                        transition: "all 0.2s"
+                                                    }}
+                                                    title="Call Participant"
+                                                >
+                                                    📞 Call
+                                                </a>
+                                            </div>
                                         )}
                                     </div>
                                 );

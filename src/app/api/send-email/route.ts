@@ -103,7 +103,7 @@ export async function POST(req: NextRequest) {
                             </div>
                             
                             <div style="background: rgba(212,168,67,0.1); border: 1px solid rgba(212,168,67,0.2); border-radius: 12px; padding: 16px; text-align: center;">
-                                <p style="color: #d4a843; font-weight: 600; margin: 0;">📅 Feb 17, 2026 | ⏰ Reporting: 8:30 AM</p>
+                                <p style="color: #d4a843; font-weight: 600; margin: 0;">📅 May 15, 2026 | ⏰ Reporting: 8:30 AM</p>
                                 <p style="color: #a1a1aa; font-size: 13px; margin: 8px 0 0;">SDC Campus, Hebbal Ring Road, Mysuru</p>
                             </div>
                         </div>
@@ -139,6 +139,35 @@ export async function POST(req: NextRequest) {
                             <p style="color: #a1a1aa;">Thank you for participating in <strong style="color: #d4a843;">${eventName}</strong> at SHRESHTA 2026.</p>
                             <p style="color: #a1a1aa;">Your certificate is attached below:</p>
                             <a href="${certificateUrl}" style="display: inline-block; margin: 20px 0; padding: 14px 32px; background: linear-gradient(135deg, #d4a843, #b88a2e); color: #000; text-decoration: none; border-radius: 10px; font-weight: 700;">Download Certificate</a>
+                        </div>
+                    </div>
+                `,
+            });
+
+            if (error) {
+                return NextResponse.json({ error: error.message }, { status: 400 });
+            }
+
+            return NextResponse.json({ success: true, id: data?.id });
+        }
+
+        if (type === "reminder") {
+            const { to, subject, participantName, eventName } = body;
+
+            const { data, error } = await resend.emails.send({
+                from: FROM_EMAIL,
+                to: [to],
+                subject,
+                html: `
+                    <div style="font-family: 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0f; color: #e4e4e7; border-radius: 16px; overflow: hidden;">
+                        <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 32px; text-align: center;">
+                            <h1 style="color: #d4a843; margin: 0;">⏱️ Hurry Up!</h1>
+                            <p style="color: #a1a1aa; margin: 8px 0 0;">${eventName} — SHRESHTA 2026</p>
+                        </div>
+                        <div style="padding: 32px; text-align: center;">
+                            <p style="color: #fff; font-size: 18px;">Hi <strong>${participantName}</strong>,</p>
+                            <p style="color: #a1a1aa; margin-top: 16px; font-size: 16px;">We are waiting for you at the <strong style="color: #d4a843;">${eventName}</strong> event.</p>
+                            <p style="color: #a1a1aa; margin-top: 24px; line-height: 1.6;">Please arrive at the venue as soon as possible, as the event is starting soon. Have your QR Code ready for check-in.</p>
                         </div>
                     </div>
                 `,
