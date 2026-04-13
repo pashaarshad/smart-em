@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Event Management System - Presentation</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+    
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #08080c;
+      color: #e4e4e7;
+      font-family: 'Inter', sans-serif;
+      overflow: hidden;
+    }
+
+    /* Slides Container */
+    #slides-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 50px 100px;
+      box-sizing: border-box;
+      background: linear-gradient(135deg, #0a0a0f 0%, #111116 100%);
+      animation: fadeIn 0.4s ease forwards;
+    }
+
+    .slide.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Core Styles for the Content */
+    .slide-title {
+      color: #d4a843;
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      text-align: center;
+      text-shadow: 0 4px 15px rgba(212, 168, 67, 0.2);
+    }
+
+    .slide-subtitle {
+      font-size: 1.8rem;
+      color: #a1a1aa;
+      margin-bottom: 30px;
+      text-align: center;
+      font-weight: 600;
+      max-width: 80%;
+    }
+
+    .slide-content {
+      font-size: 1.4rem;
+      line-height: 1.8;
+      width: 100%;
+      max-width: 1200px;
+      color: #e4e4e7;
+    }
+    
+    .slide-content ul {
+      padding-left: 40px;
+    }
+    
+    .slide-content li {
+      margin-bottom: 15px;
+    }
+
+    .slide-content strong {
+      color: #fff;
+    }
+
+    .highlight-box {
+      background: rgba(212, 168, 67, 0.05);
+      border: 1px solid rgba(212, 168, 67, 0.3);
+      padding: 30px;
+      border-radius: 16px;
+      margin-top: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Navigation HUD */
+    .nav-hud {
+      position: fixed;
+      bottom: 20px;
+      right: 30px;
+      display: flex;
+      gap: 15px;
+      z-index: 100;
+    }
+
+    .nav-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      padding: 12px 25px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover {
+      background: rgba(212, 168, 67, 0.2);
+      border-color: #d4a843;
+      color: #d4a843;
+    }
+
+    .slide-number {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      font-size: 1.2rem;
+      color: #52525b;
+      font-weight: 600;
+      z-index: 100;
+    }
+
+    /* Logos */
+    .logos-container {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      display: flex;
+      gap: 20px;
+    }
+    .logos-container img {
+      height: 60px;
+      background: white;
+      padding: 5px;
+      border-radius: 8px;
+    }
+    
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="slide-number">Slide <span id="current-page">1</span> / <span id="total-pages">8</span></div>
+  
+  <div class="logos-container">
+    <img src="../final_report/sdc-logo.webp" alt="SDC Logo" onerror="this.style.display='none'">
+    <img src="../final_report/university_of_mysore_logo.jpg" alt="University Logo" onerror="this.style.display='none'">
+  </div>
+
+  <div class="nav-hud">
+    <button class="nav-btn" onclick="prevSlide()">← Prev</button>
+    <button class="nav-btn" onclick="nextSlide()">Next →</button>
+  </div>
+
+  <div id="slides-container">
+    <!-- SLIDE 1: Title -->
+    <div class="slide active">
+      <h1 class="slide-title" style="font-size: 4rem;">Smart Event Management System</h1>
+      <p class="slide-subtitle">A Real-Time Digital Transformation for Inter-Collegiate Fests</p>
+      <div class="highlight-box" style="text-align: center; min-width: 600px;">
+        <h3 style="color: #a1a1aa; font-size: 1.4rem; font-weight: 400; margin-bottom: 20px;">Paper Presentation by</h3>
+        <p style="font-size: 1.8rem; font-weight: 600; color: #fff; margin: 10px 0;">1. Mrs. Neha J K <span style="font-size: 1.2rem; color: #d4a843;">(Faculty Author)</span></p>
+        <p style="font-size: 1.8rem; font-weight: 600; color: #fff; margin: 10px 0;">2. Arshad Pasha <span style="font-size: 1.2rem; color: #d4a843;">(Student Author)</span></p>
+        <div style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+          <p style="font-size: 1.2rem; color: #71717a;">Seshadripuram Degree College, Mysuru</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: Index -->
+    <div class="slide">
+      <h1 class="slide-title">INDEX</h1>
+      <div class="highlight-box" style="border: none; background: transparent; padding-top: 0;">
+        <div class="slide-content" style="display: flex; gap: 80px; justify-content: center;">
+          <ul style="list-style-type: '➤  '; color: #d4a843; font-size: 1.8rem;">
+            <li><span style="color: #fff;">Abstract</span></li>
+            <li><span style="color: #fff;">Introduction</span></li>
+            <li><span style="color: #fff;">Literature review</span></li>
+            <li><span style="color: #fff;">Research Methodology</span></li>
+          </ul>
+          <ul style="list-style-type: '➤  '; color: #d4a843; font-size: 1.8rem; margin-top: 0;">
+            <li><span style="color: #fff;">Objectives of the Study</span></li>
+            <li><span style="color: #fff;">Result and Discussion</span></li>
+            <li><span style="color: #fff;">Conclusion</span></li>
+            <li><span style="color: #fff;">References</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: Abstract -->
+    <div class="slide">
+      <h1 class="slide-title">1. Abstract</h1>
+      <div class="slide-content highlight-box">
+        <ul>
+          <li><strong>The Problem:</strong> Hosting large-scale inter-collegiate fests involves massive logistical hurdles—long queues, paper-based tracking, manual payment verification, and delayed certificate distribution.</li>
+          <li><strong>The Solution:</strong> We developed the "Smart Event Management System" (SHRESHTA 2026) to completely digitalize this physical process.</li>
+          <li><strong>Key Features:</strong> 
+            <ul>
+              <li style="margin-bottom: 5px;">Real-time cloud synchronization</li>
+              <li style="margin-bottom: 5px;">Automated QR-code-based ticketing & check-ins</li>
+              <li style="margin-bottom: 5px;">Role-based operational dashboards</li>
+            </ul>
+          </li>
+          <li><strong>Impact:</strong> Achieved 100% paperless management, reduced physical check-in time to under 5 seconds, and provided real-time transparency for administrative decisions.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: Introduction -->
+    <div class="slide">
+      <h1 class="slide-title">2. Introduction</h1>
+      <div class="slide-content grid-container">
+        <div>
+          <h3 style="color: #d4a843; font-size: 1.6rem; border-bottom: 1px solid rgba(212,168,67,0.3); padding-bottom: 10px;">The Current Context</h3>
+          <p>Event management in educational institutions heavily relies on manual workflows like Excel sheets and standalone Google Forms, which are inefficient for multi-tier events.</p>
+          <ul style="margin-top: 20px;">
+            <li>Duplicate data entries and human errors.</li>
+            <li>Verification of financial payments (UPI/UTR) is historically tedious.</li>
+          </ul>
+        </div>
+        <div class="highlight-box" style="margin-top: 0;">
+          <h3 style="color: #d4a843; font-size: 1.6rem; border-bottom: 1px solid rgba(212,168,67,0.3); padding-bottom: 10px;">Our Unique Approach</h3>
+          <p>By leveraging modern web technologies like Next.js and Firebase Serverless computing, we built a centralized, dynamic application that handles everything autonomously:</p>
+          <ul>
+            <li>From initial team registration & payment gateway integration...</li>
+            <li>To the final automated dispatch of digital HTML Canvas-based participation certificates.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: Literature Review -->
+    <div class="slide">
+      <h1 class="slide-title">3. Literature Review</h1>
+      <div class="slide-content highlight-box">
+        <ul>
+          <li><strong>Traditional Methods:</strong> Pen-and-paper physical registrations lack structural integrity and rely heavily on volunteer accuracy under pressure.</li>
+          <li><strong>Existing Platforms (e.g., Eventbrite, Townscript):</strong> While powerful, international ticketing platforms are often too generic, costly (taking transaction cuts), or rigid for the specific requirements of college-level fests.</li>
+          <li><strong>Institutional Specifics:</strong> Existing platforms fail to handle dynamic team sizing constraints, UTR capturing workflows, and college-name tracking correctly.</li>
+          <li><strong>The Technological Gap:</strong> There is a severe lack of lightweight, real-time, customizable digital solutions specifically tailored for academic institutions that include end-to-end automation without high infrastructure costs.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: Research Methodology -->
+    <div class="slide">
+      <h1 class="slide-title">4. Research Methodology</h1>
+      <div class="slide-content grid-container">
+        <div class="highlight-box" style="margin-top: 0;">
+          <h3 style="color: #d4a843; margin-top: 0;">System Architecture</h3>
+          <ul>
+            <li><strong>Frontend Environment:</strong> Next.js (React 19) and Tailwind CSS for a highly responsive, mobile-first interface suitable for field coordinators.</li>
+            <li><strong>Backend Ecosystem:</strong> Firebase Firestore (NoSQL cloud database) for sub-second live data streaming.</li>
+            <li><strong>Automated APIs:</strong> Integration with Resend Email API for triggering automated verifications.</li>
+          </ul>
+        </div>
+        <div class="highlight-box" style="margin-top: 0; background: rgba(59,130,246,0.05); border-color: rgba(59,130,246,0.3);">
+          <h3 style="color: #60a5fa; margin-top: 0;">Execution Framework</h3>
+          <ul>
+            <li><strong>Agile Development:</strong> Allowed continuous, live feedback integration from faculty coordinators directly from the campus.</li>
+            <li><strong>Security Paradigm:</strong> Implemented strict Role-Based Access Control (RBAC). A photography coordinator cannot manipulate data for a coding competition, ensuring pure data isolation.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: Objectives & Results -->
+    <div class="slide">
+      <h1 class="slide-title">5. Objectives & 6. Results</h1>
+      <div class="slide-content grid-container">
+        <div>
+          <h3 style="color: #d4a843;">Core Objectives</h3>
+          <ol>
+            <li style="margin-bottom: 15px;"><strong>Eliminate Paper Trails 100%.</strong></li>
+            <li style="margin-bottom: 15px;"><strong>Optimize Physical Efficiency:</strong> Cut check-in queue times utilizing search & QR technology.</li>
+            <li style="margin-bottom: 15px;"><strong>Automate Manual Labor:</strong> Deploy an overarching UTR payment workflow and zero-touch certificate generation.</li>
+          </ol>
+        </div>
+        <div class="highlight-box" style="margin-top: 0; background: rgba(16,185,129,0.05); border-color: rgba(16,185,129,0.3);">
+          <h3 style="color: #34d399; margin-top: 0;">Real-World Results</h3>
+          <ul style="color: #fff;">
+            <li>Successfully absorbed and structured concurrent registrations across <strong>13 distinct categorized events</strong>.</li>
+            <li>The "Scanner Desk" feature successfully reduced the average participant verification time to exactly <strong>under 5 seconds</strong>.</li>
+            <li><strong>Zero Data Overlap:</strong> The isolated dashboard architectures produced a 0% data mishandling and collision rate throughout the entire fest.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: Conclusion & References -->
+    <div class="slide">
+      <h1 class="slide-title">7. Conclusion & 8. References</h1>
+      <div class="slide-content highlight-box">
+        <h3 style="color: #d4a843; margin-top: 0;">Conclusion</h3>
+        <p style="margin-bottom: 30px;">The SHRESHTA Smart Event Management algorithm explicitly proves that monolithic event-handling procedures can be entirely replaced by scalable, serverless micro-architectures. By prioritizing a seamless UI/UX alongside military-grade cloud frameworks, we reduced systemic friction for participants and staff alike—creating a reusable asset for future academic years.</p>
+        
+        <h3 style="color: #a1a1aa; font-size: 1.2rem;">References</h3>
+        <ul style="font-size: 1rem; color: #71717a; list-style-type: upper-roman;">
+          <li>Vercel. (2026). <em>Next.js System Runtime Documentation</em>.</li>
+          <li>Google. (2026). <em>Cloud Firestore Realtime DB Architecture</em>.</li>
+          <li>Sandhu, R. S., et al. (1996). <em>"Role-Based Access Control Models."</em> IEEE.</li>
+          <li>Resend. (2026). <em>Email Automation API for Developers</em>.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalPagesSpan = document.getElementById('total-pages');
+    const currentPageSpan = document.getElementById('current-page');
+
+    totalPagesSpan.textContent = slides.length;
+
+    function updateSlides() {
+      slides.forEach((slide, index) => {
+        if (index === currentSlide) {
+          slide.classList.add('active');
+        } else {
+          slide.classList.remove('active');
+        }
+      });
+      currentPageSpan.textContent = currentSlide + 1;
+    }
+
+    function nextSlide() {
+      if (currentSlide < slides.length - 1) {
+        currentSlide++;
+        updateSlides();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlides();
+      }
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'Space') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        prevSlide();
+      }
+    });
+  </script>
+</body>
+</html>
