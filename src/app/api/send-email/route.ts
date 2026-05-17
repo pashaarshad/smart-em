@@ -18,6 +18,8 @@ const transporter = nodemailer.createTransport({
 });
 
 async function sendEmailHandler(options: any) {
+    let zohoError = null;
+
     if (process.env.ZOHO_PASSWORD) {
         try {
             const info = await transporter.sendMail({
@@ -29,16 +31,29 @@ async function sendEmailHandler(options: any) {
             return { data: { id: info.messageId }, error: null };
         } catch (err: any) {
             console.error("Zoho SMTP Error, falling back to Resend:", err);
+            zohoError = err.message || "Unknown Zoho Error";
         }
     }
     
     // Override the "from" to use Resend's specifically verified address
-    return await resend.emails.send({
+    const resendResult = await resend.emails.send({
         from: RESEND_FROM_EMAIL,
         to: options.to,
         subject: options.subject,
         html: options.html
     });
+
+    if (resendResult.error) {
+        // Return both errors so we know exactly why both failed
+        return { 
+            data: null, 
+            error: { 
+                message: `Resend Error: ${resendResult.error.message} | Zoho Error: ${zohoError || "Not attempted"}` 
+            } 
+        };
+    }
+
+    return resendResult;
 }
 
 export async function POST(req: NextRequest) {
