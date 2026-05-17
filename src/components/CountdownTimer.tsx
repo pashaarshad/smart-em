@@ -10,7 +10,7 @@ interface TimeUnit {
 
 const CountdownTimer = () => {
     // Event date: May 15, 2026, 8:30 AM IST
-    const targetDate = new Date("2026-05-15T08:30:00+05:30").getTime();
+    const targetDate = new Date("2026-05-24T00:00:00+05:30").getTime();
     const [timeLeft, setTimeLeft] = useState<TimeUnit[]>([
         { value: 0, label: "Days" },
         { value: 0, label: "Hours" },
