@@ -1,8 +1,36 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
 const resend = new Resend(process.env.RESEND_API_KEY || "re_YOUR_API_KEY_HERE");
 const FROM_EMAIL = process.env.FROM_EMAIL || "SHRESHTA 2026 <events@arshadpasha.tech>";
+
+const transporter = nodemailer.createTransport({
+    host: process.env.ZOHO_HOST || "smtppro.zoho.in",
+    port: 465,
+    secure: true,
+    auth: {
+        user: process.env.ZOHO_EMAIL || "arshad@arshadpasha.tech",
+        pass: process.env.ZOHO_PASSWORD || "", 
+    },
+});
+
+async function sendEmailHandler(options: any) {
+    if (process.env.ZOHO_PASSWORD) {
+        try {
+            const info = await transporter.sendMail({
+                from: options.from || FROM_EMAIL,
+                to: options.to,
+                subject: options.subject,
+                html: options.html,
+            });
+            return { data: { id: info.messageId }, error: null };
+        } catch (err: any) {
+            console.error("Zoho SMTP Error, falling back to Resend:", err);
+        }
+    }
+    return await resend.emails.send(options);
+}
 
 export async function POST(req: NextRequest) {
     try {
@@ -16,7 +44,7 @@ export async function POST(req: NextRequest) {
                 .map((m: { name: string; phone: string }) => `<li>${m.name}</li>`)
                 .join("");
 
-            const { data, error } = await resend.emails.send({
+            const { data, error } = await sendEmailHandler({
                 from: FROM_EMAIL,
                 to: [to],
                 subject,
@@ -70,7 +98,7 @@ export async function POST(req: NextRequest) {
                 .map((m: { name: string; phone: string }, i: number) => `<li>${m.name} — ${m.phone}</li>`)
                 .join("");
 
-            const { data, error } = await resend.emails.send({
+            const { data, error } = await sendEmailHandler({
                 from: FROM_EMAIL,
                 to: [to],
                 subject,
@@ -125,7 +153,7 @@ export async function POST(req: NextRequest) {
         if (type === "certificate") {
             const { to, subject, participantName, eventName, certificateUrl } = body;
 
-            const { data, error } = await resend.emails.send({
+            const { data, error } = await sendEmailHandler({
                 from: FROM_EMAIL,
                 to: [to],
                 subject,
@@ -154,7 +182,7 @@ export async function POST(req: NextRequest) {
         if (type === "reminder") {
             const { to, subject, participantName, eventName } = body;
 
-            const { data, error } = await resend.emails.send({
+            const { data, error } = await sendEmailHandler({
                 from: FROM_EMAIL,
                 to: [to],
                 subject,
@@ -185,7 +213,7 @@ export async function POST(req: NextRequest) {
 
             const recipients = Array.isArray(to) ? to : [to];
 
-            const { data, error } = await resend.emails.send({
+            const { data, error } = await sendEmailHandler({
                 from: FROM_EMAIL,
                 to: recipients,
                 subject,

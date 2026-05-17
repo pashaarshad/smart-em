@@ -3,14 +3,14 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { signInWithPopup, User } from "firebase/auth";
-import { collection, addDoc, getDocs, query, where, Timestamp } from "firebase/firestore";
+import { collection, addDoc, getDocs, query, where, Timestamp, collectionGroup } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { auth, db, storage, googleProvider, GOOGLE_SHEETS_URL, UPI_ID, UPI_NAME } from "@/lib/firebase";
 import { QRCodeSVG } from "qrcode.react";
 import { useAuth } from "@/context/AuthContext";
 import { createWorker } from "tesseract.js";
 import { sendWelcomeEmail } from "@/lib/emailService";
-
+import { allEvents } from "@/data/events";
 interface RegistrationFormProps {
     eventId: string;
     eventName: string;
@@ -247,13 +247,23 @@ export default function RegistrationForm({
             setLoading(true);
             setError("");
 
-            // 1. Check UTR Uniqueness in Firestore
+            // 1. Check UTR Uniqueness globally without requiring a Collection Group Index
             const registrationsRef = collection(db, "registrations", eventId, "teams");
-            const utrQuery = query(registrationsRef, where("utrNumber", "==", utrNumber.trim()));
-            const utrSnapshot = await getDocs(utrQuery);
+            
+            let utrFound = false;
+            // We check each event individually. This avoids the COLLECTION_GROUP index error.
+            for (const evt of allEvents) {
+                const evtTeamsRef = collection(db, "registrations", evt.id, "teams");
+                const utrQuery = query(evtTeamsRef, where("utrNumber", "==", utrNumber.trim()));
+                const utrSnapshot = await getDocs(utrQuery);
+                if (!utrSnapshot.empty) {
+                    utrFound = true;
+                    break;
+                }
+            }
 
-            if (!utrSnapshot.empty) {
-                setError("This UTR number has already been used for registration.");
+            if (utrFound) {
+                setError("This UTR number has already been used for registration in an event.");
                 setLoading(false);
                 return;
             }

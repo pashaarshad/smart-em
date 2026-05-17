@@ -1,8 +1,4 @@
-// Email service using Resend
-// Set your Resend API key and domain in environment variables or replace below
-
-const RESEND_API_KEY = process.env.NEXT_PUBLIC_RESEND_API_KEY || "re_YOUR_API_KEY_HERE";
-const FROM_EMAIL = process.env.NEXT_PUBLIC_FROM_EMAIL || "events@shreshta2026.com";
+// Email service to trigger backend route
 
 interface SendQREmailParams {
     to: string;
