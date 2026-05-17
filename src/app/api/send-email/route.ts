@@ -3,10 +3,10 @@ import { Resend } from "resend";
 import nodemailer from "nodemailer";
 
 const resend = new Resend(process.env.RESEND_API_KEY || "re_YOUR_API_KEY_HERE");
-const FROM_EMAIL = process.env.FROM_EMAIL || "SHRESHTA 2026 <events@arshadpasha.tech>";
+const FROM_EMAIL = process.env.FROM_EMAIL || "SHRESHTA 2026 <arshad@arshadpasha.tech>";
 
 const transporter = nodemailer.createTransport({
-    host: process.env.ZOHO_HOST || "smtppro.zoho.in",
+    host: process.env.ZOHO_HOST || "smtp.zoho.in",
     port: 465,
     secure: true,
     auth: {
