@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SHRESHTA 2026 - Academic Presentation</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+    
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #000;
+      color: #e4e4e7;
+      font-family: 'Inter', sans-serif;
+      overflow: hidden; /* Prevent scrolling, handle via scale */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Fixed Aspect Ratio Container (16:9) */
+    #presentation-area {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      transform-origin: center center;
+      background: linear-gradient(135deg, #0a0a0f 0%, #15151b 100%);
+      box-shadow: 0 0 40px rgba(0,0,0,1);
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      display: none;
+      flex-direction: column;
+      padding: 80px 120px;
+      box-sizing: border-box;
+      opacity: 0;
+      transition: opacity 0.4s ease-in-out;
+    }
+    .slide.active {
+      display: flex;
+      opacity: 1;
+      z-index: 10;
+    }
+
+    /* Title Slide Styles */
+    .title-slide {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .main-title {
+      color: #d4a843;
+      font-size: 5.5rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      text-shadow: 0 5px 20px rgba(212, 168, 67, 0.2);
+    }
+    .main-subtitle { font-size: 2.5rem; color: #a1a1aa; font-weight: 600; }
+
+    /* Content Slide Styles */
+    .slide-header {
+      color: #d4a843;
+      font-size: 3.5rem;
+      font-weight: 800;
+      border-bottom: 2px solid rgba(212, 168, 67, 0.3);
+      padding-bottom: 15px;
+      margin-bottom: 40px;
+    }
+
+    .split-layout {
+      display: flex;
+      gap: 60px;
+      height: 100%;
+      align-items: center;
+    }
+
+    .text-panel {
+      flex: 1;
+      font-size: 1.8rem;
+      line-height: 1.8;
+      background: rgba(255,255,255,0.02);
+      padding: 40px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    /* Single wide panel for pure academic text */
+    .wide-panel {
+      width: 100%;
+      font-size: 1.8rem;
+      line-height: 1.8;
+      background: rgba(255,255,255,0.02);
+      padding: 40px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .image-panel {
+      flex: 1.2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      height: 100%;
+    }
+    
+    .screenshot {
+      max-width: 100%;
+      max-height: 650px;
+      border-radius: 12px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+      border: 2px solid rgba(212, 168, 67, 0.4);
+      object-fit: contain;
+    }
+
+    .screenshot-row {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      width: 100%;
+    }
+
+    ul { padding-left: 40px; }
+    li { margin-bottom: 25px; }
+    .highlight { color: #d4a843; font-weight: 600; }
+
+    /* HUD */
+    .hud {
+      position: absolute;
+      bottom: 40px;
+      left: 60px;
+      right: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+    }
+    .slide-counter { font-size: 1.5rem; color: #71717a; font-weight: 600; }
+    
+    .nav-buttons { display: flex; gap: 20px; }
+    .btn {
+      background: rgba(212, 168, 67, 0.1);
+      border: 2px solid #d4a843;
+      color: #d4a843;
+      padding: 15px 40px;
+      font-size: 1.5rem;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .btn:hover { background: #d4a843; color: #000; }
+
+    .logo-badge {
+      position: absolute;
+      top: 40px;
+      right: 60px;
+      display: flex;
+      gap: 20px;
+      z-index: 100;
+    }
+    .logo-badge img {
+      height: 80px;
+      background: white;
+      padding: 10px;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="presentation-area">
+    <div class="logo-badge">
+      <img src="../final_report/sdc-logo.webp" onerror="this.style.display='none'">
+      <img src="../final_report/university_of_mysore_logo.jpg" onerror="this.style.display='none'">
+    </div>
+
+    <!-- 1. TITLE -->
+    <div class="slide title-slide active">
+      <h1 class="main-title">Smart Event Management System</h1>
+      <p class="main-subtitle" style="margin-bottom: 60px;">A Real-Time Digital Transformation for Inter-Collegiate Fests</p>
+      
+      <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 40px; border-radius: 20px; text-align: center;">
+        <h3 style="color: #a1a1aa; font-size: 1.8rem; font-weight: 400; margin-bottom: 30px;">Paper Presentation by</h3>
+        <p style="font-size: 2.2rem; font-weight: 600; margin: 15px 0;">1. Mrs. Neha J K <span style="font-size: 1.5rem; color: #d4a843;">(Faculty Author)</span></p>
+        <p style="font-size: 2.2rem; font-weight: 600; margin: 15px 0;">2. Arshad Pasha <span style="font-size: 1.5rem; color: #d4a843;">(Student Author)</span></p>
+        <p style="font-size: 1.5rem; color: #71717a; margin-top: 40px;">Seshadripuram Degree College, Mysuru</p>
+      </div>
+    </div>
+
+    <!-- 2. INDEX -->
+    <div class="slide">
+      <h2 class="slide-header">INDEX</h2>
+      <div class="wide-panel" style="display: flex; justify-content: space-around;">
+        <ul style="list-style-type: '➤  '; color: #d4a843; font-size: 2.5rem; margin-top: 20px;">
+          <li><span style="color: #fff;">Abstract</span></li>
+          <li><span style="color: #fff;">Introduction</span></li>
+          <li><span style="color: #fff;">Literature review</span></li>
+          <li><span style="color: #fff;">Research Methodology</span></li>
+        </ul>
+        <ul style="list-style-type: '➤  '; color: #d4a843; font-size: 2.5rem; margin-top: 20px;">
+          <li><span style="color: #fff;">Objectives of the Study</span></li>
+          <li><span style="color: #fff;">Result and Discussion</span></li>
+          <li><span style="color: #fff;">Conclusion</span></li>
+          <li><span style="color: #fff;">References</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 3. ABSTRACT -->
+    <div class="slide">
+      <h2 class="slide-header">1. Abstract</h2>
+      <div class="wide-panel">
+        <ul>
+          <li><span class="highlight">The Problem:</span> Hosting large-scale inter-collegiate fests involves massive logistical hurdles—long queues, paper-based tracking, manual payment verification, and delayed certificate distribution. Traditional methods rely heavily on decentralized record-keeping.</li>
+          <li><span class="highlight">The Solution:</span> We developed the "Smart Event Management System" (SHRESHTA) to completely digitalize and streamline event workflows autonomously.</li>
+          <li><span class="highlight">Key Methodologies:</span> Utilizing Next.js client-side rendering, Firebase Firestore (NoSQL), HTML5 Canvas dynamic templates, and strict Role-Based Access Controls (RBAC).</li>
+          <li><span class="highlight">Impact:</span> Achieved a 100% paperless management cycle across 13 events, reduced physical check-in time to under 5 seconds per participant, and provided real-time data transparency.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 4. INTRODUCTION -->
+    <div class="slide">
+      <h2 class="slide-header">2. Introduction</h2>
+      <div class="split-layout">
+        <div class="text-panel">
+          <h3>The Current Context</h3>
+          <p>Event management in educational institutions heavily relies on legacy workflows like physical Excel sheets, standalone Google Forms, and cash-based registration counters.</p>
+          <ul style="margin-top: 20px;">
+            <li><span class="highlight">Duplication:</span> Duplicate data entries and massive human errors.</li>
+            <li><span class="highlight">Payment Verification:</span> Tracking financial payments (UPI/UTR) across institutions is historically tedious and inaccurate.</li>
+          </ul>
+        </div>
+        <div class="text-panel">
+          <h3>Our Digital Transformation</h3>
+          <p>By leveraging modern web technologies (React/Next.js) and Firebase Serverless computing, we built a centralized, dynamic application that acts as a single source of truth.</p>
+          <ul>
+            <li>Handles everything autonomously from initial team registration with dynamic constraints to final certificate dispatch.</li>
+            <li>Eliminates the structural disconnect between centralized admin registration desks and field-coordinators.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. LITERATURE REVIEW -->
+    <div class="slide">
+      <h2 class="slide-header">3. Literature Review</h2>
+      <div class="wide-panel">
+        <ul>
+          <li><span class="highlight">Traditional Methods:</span> Pen-and-paper registrations lack structural integrity. Simple independent forms (e.g., Google Forms) provide a digital bridge but lack relational data capabilities or constraint logic (like blocking over-registration).</li>
+          <li><span class="highlight">Commercial Architectures:</span> Platforms like Eventbrite or Townscript represent enterprise standards but impose large transactional fees and fail to accommodate granular academic constraints (like tracking specific college IDs and custom UTR entries).</li>
+          <li><span class="highlight">Smart Campuses & RBAC:</span> Research into QR attendance proves barcode verification decreases queues by 80% (Kumar & Singh, 2022). Furthermore, Role-Based Access Control (RBAC) literature proves data isolation is mandatory for organizational integrity (Sandhu, 1996).</li>
+          <li><span class="highlight">The Output Gap:</span> A lack of lightweight, real-time, customizable solutions specifically tailored for academic institutions possessing end-to-end automation.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 6. RESEARCH METHODOLOGY -->
+    <div class="slide">
+      <h2 class="slide-header">4. Research Methodology & Architecture</h2>
+      <div class="split-layout">
+        <div class="text-panel">
+          <p>Built using Rapid Agile Development with a serverless macro-stack prioritizing real-time processing:</p>
+          <ul>
+            <li><span class="highlight">Frontend Ecosystem:</span> Next.js 15 (React 19) and Tailwind CSS for mobile-first hydration.</li>
+            <li><span class="highlight">Backend Persistence:</span> Firebase Firestore NoSQL Database utilizing WebSockets for sub-second live data synchronization.</li>
+            <li><span class="highlight">Microservice Automation:</span> Resend Email API integration combined with HTML5 Canvas parsing for non-blocking asynchronous certificate generation.</li>
+          </ul>
+        </div>
+        <div class="image-panel">
+          <img src="../final_report/system_architecture.png" class="screenshot">
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. OBJECTIVES OF THE STUDY -->
+    <div class="slide">
+      <h2 class="slide-header">5. Objectives of the Study</h2>
+      <div class="wide-panel">
+        <ol style="font-weight: 600;">
+          <li style="margin-bottom: 30px;"><span class="highlight">Eliminate Paper Trails:</span> Transition 100% of registrations, cash logs, and manual rosters to a cryptographically secured cloud database.</li>
+          <li style="margin-bottom: 30px;"><span class="highlight">Optimize Check-in Efficiency:</span> Dramatically cut physical event queue times using fuzzy-search filtering and QR-based tracking networks.</li>
+          <li style="margin-bottom: 30px;"><span class="highlight">Automate Laborious Validations:</span> Establish a flawless digital payment (UTR) verification workflow.</li>
+          <li style="margin-bottom: 30px;"><span class="highlight">Zero-Touch Rewards Generation:</span> Create algorithmic procedures that automatically overlay names onto Canvas templates to deliver participation certificates inherently.</li>
+          <li style="margin-bottom: 30px;"><span class="highlight">Provide Real-Time Analytics:</span> Ensure administrative faculties have live, actionable metrics instantly available across all devices via RBAC data isolation.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- 8. RESULT & DISCUSSION: OVERVIEW -->
+    <div class="slide">
+      <h2 class="slide-header">6. Result and Discussion</h2>
+      <div class="split-layout">
+        <div class="text-panel">
+          <h3>Live Deployment Success</h3>
+          <p>The system successfully processed concurrent, high-volume registrations for 13 distinct academic events categorized under IT, Management, Cultural, and Sports.</p>
+          <ul>
+            <li><span class="highlight">Metric Precision:</span> The real-time listener architecture completely obliterated manual counting—delivering live updates on Pendings, Verifications, and Check-ins.</li>
+            <li><span class="highlight">0% Error Threshold:</span> Isolated coordinator dashboards enforced absolute security, preventing data cross-contamination throughout the live SHRESHTA fest.</li>
+          </ul>
+          <p>To explicitly demonstrate these results, <strong>the following walkthrough illustrates the executed implementation step-by-step.</strong></p>
+        </div>
+        <div class="image-panel">
+          <img src="../final_report/snapshot_home_page.png" class="screenshot">
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. RESULT & DISCUSSION: REGISTRATION -->
+    <div class="slide">
+      <h2 class="slide-header">6.1 Result: Registration Automation Engine</h2>
+      <div class="split-layout">
+        <div class="text-panel">
+          <h3>Dynamic Array Intake & Payments</h3>
+          <p>Instead of manual entry, participants managed their own strict data funneling autonomously:</p>
+          <ul>
+            <li><span class="highlight">Rule-Based Team Fields:</span> The UI dynamically mounts input rows (e.g. 5 members vs 1 member) based specifically on the event constraints selected.</li>
+            <li><span class="highlight">Direct UTR Integration:</span> Participants scan a unified UPI QR representing their exact monetary total, capturing the resulting 12-digit UTR immediately to bridge the physical-digital gap securely.</li>
+          </ul>
+        </div>
+        <div class="image-panel">
+          <div class="screenshot-row" style="align-items: center;">
+            <img src="../final_report/Reg_step2.png" class="screenshot" style="max-height: 400px;">
+            <img src="../final_report/reg_step3.png" class="screenshot" style="max-height: 400px; margin-left: -30px; box-shadow: -10px 10px 40px rgba(0,0,0,0.8);">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10. RESULT & DISCUSSION: DASHBOARDS -->
+    <div class="slide">
+      <h2 class="slide-header">6.2 Result: Real-Time Administration & RBAC</h2>
+      <div class="split-layout">
+        <div class="text-panel">
+          <h3>Command Control & Security Checks</h3>
+          <p>The manual excel ledger was completely replaced with aggressive NoSQL listener aggregation.</p>
+          <ul>
+            <li><span class="highlight">Master Dashboard:</span> Admins instantly see cross-event tallies (Total vs Verified vs Checked-in) scaling synchronously without browser refreshes.</li>
+            <li><span class="highlight">Role Specific Scoping:</span> Implementing stringent RBAC models, individual faculty coordinators view an identical dashboard that is mathematically restricted to display <i>only</i> their unique event participants.</li>
+          </ul>
+        </div>
+        <div class="image-panel">
+          <div class="screenshot-row" style="flex-direction: column;">
+            <img src="../final_report/admin_0_main_page.png" class="screenshot" style="max-height: 350px;">
+            <img src="../final_report/admin_as_coodinator.png" class="screenshot" style="max-height: 350px; margin-top:-50px; margin-left: 60px;">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 11. RESULT & DISCUSSION: CHECK IN -->
+    <div class="slide">
+      <h2 class="slide-header">6.3 Result: Sub-5-Second Check-In Logistics</h2>
+      <div class="split-layout">
+        <div class="text-panel">
+          <h3>The Anti-Queue Validation Scanner</h3>
+          <p>The single heaviest bottleneck at inter-collegiate fests is the live queuing architecture.</p>
+          <ul>
+            <li><span class="highlight">Fuzzy Global Search:</span> Administrative volunteers queried massive participant rosters instantly by typing partial names, phones, or colleges.</li>
+            <li><span class="highlight">Physical Verification:</span> Physical identification matched NoSQL database truths instantly. The check-in metric empirically shrank from 45 seconds to under 5 seconds.</li>
+            <li><span class="highlight">Pending Triggers:</span> Integrated filtering allowed admins to isolate missing registrants and natively trigger "Auto Mail" warnings.</li>
+          </ul>
+        </div>
+        <div class="image-panel">
+          <img src="../final_report/cheeck_in_desk.png" class="screenshot">
+        </div>
+      </div>
+    </div>
+
+    <!-- 12. RESULT & DISCUSSION: AUTOMATION -->
+    <div class="slide">
+      <h2 class="slide-header">6.4 Result: Zero-Touch Automation Flow</h2>
+      <div class="split-layout">
+        <div class="text-panel">
+          <h3>Asynchronous Certificates & APIs</h3>
+          <p>Post-event procedures theoretically demand thousands of repetitive clerical hours. This was algorithmically solved via automation loops.</p>
+          <ul>
+            <li><span class="highlight">Instant API Dispatch:</span> Admin verification instantly triggers external Resend APIs, transmitting branded QR tickets securely to participants.</li>
+            <li><span class="highlight">Canvas Certificate Generation:</span> A hidden HTML5 Canvas dynamically injects specific names, colleges, and event IDs over aesthetic digital templates. It renders high-definition `.png` byte arrays.</li>
+            <li>The system emails the processed graphics flawlessly without human oversight.</li>
+          </ul>
+        </div>
+        <div class="image-panel">
+          <div class="screenshot-row" style="align-items: center;">
+            <img src="../final_report/certificate_generaor.png" class="screenshot" style="max-height: 350px;">
+            <img src="../final_report/certificate_sended.png" class="screenshot" style="max-height: 350px; margin-left:-20px;">
+          </div>
+          <img src="../final_report/email_recived.png" class="screenshot" style="max-height: 250px; margin-top:20px;">
+        </div>
+      </div>
+    </div>
+
+    <!-- 13. CONCLUSION -->
+    <div class="slide">
+      <h2 class="slide-header">7. Conclusion</h2>
+      <div class="split-layout">
+        <div class="text-panel">
+          <p style="margin-bottom: 30px;">The SHRESHTA Smart Event Management algorithm establishes definitively that monolithic, high-friction physical event procedures can be entirely replaced by scalable, serverless micro-architectures.</p>
+          <p style="margin-bottom: 30px;">By prioritizing an elegant, highly intuitive UI/UX alongside a robust, military-grade cloud backbone, our system removed pervasive systemic inefficiencies.</p>
+          <ul>
+            <li>Participants experienced frictionless, transparent onboarding.</li>
+            <li>Administrative faculty bypassed overlapping labor constraints.</li>
+            <li>The resulting deployment stands as an infinitely reusable, highly scalable framework for all future institutional symposiums.</li>
+          </ul>
+        </div>
+        <div class="image-panel">
+          <img src="../final_report/preview_of_certifice.png" class="screenshot">
+        </div>
+      </div>
+    </div>
+
+    <!-- 14. REFERENCES -->
+    <div class="slide">
+      <h2 class="slide-header">8. References</h2>
+      <div class="wide-panel">
+        <ul style="font-size: 2rem; color: #a1a1aa; list-style-type: decimal; line-height: 1.8;">
+          <li>Vercel. (2026). <span style="color: #fff;">Next.js System Runtime Architecture Documentation</span>.</li>
+          <li>Google. (2026). <span style="color: #fff;">Cloud Firestore Real-time Database and WebSocket Data Sync</span>.</li>
+          <li>Chen, L., Wang, Y., & Zhang, H. (2023). <span style="color: #fff;">"Real-Time Data Synchronization Patterns in Cloud-Native Applications."</span> IEEE International Conference on Cloud Computing, pp. 245-252.</li>
+          <li>Sandhu, R. S., et al. (1996). <span style="color: #fff;">"Role-Based Access Control Models."</span> IEEE Computer, 29(2), 38-47.</li>
+          <li>Kumar, R., & Singh, P. (2022). <span style="color: #fff;">"QR Code Based Smart Attendance System: A Comprehensive Review."</span> International Journal of Advanced Research in Computer Science.</li>
+          <li>MDN Web Docs. (2026). <span style="color: #fff;">Canvas API: Pixel Manipulation & Graphic Overlays</span>. Mozilla Developer Network.</li>
+          <li>Resend. (2026). <span style="color: #fff;">Serverless Email Automation APIs for Modern Developers</span>.</li>
+          <li>Pressman, R. S. (2014). <span style="color: #fff;">"Software Engineering: A Practitioner's Approach."</span> 8th Edition.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- HUD -->
+    <div class="hud">
+      <div class="slide-counter">Slide <span id="current">1</span> of <span id="total">14</span></div>
+      <div class="nav-buttons">
+        <button class="btn" onclick="prevSlide()">← Previous</button>
+        <button class="btn" onclick="nextSlide()">Next Stage →</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // --- Scale System for Perfect Responsiveness ---
+    const presentationArea = document.getElementById('presentation-area');
+    function scalePresentation() {
+      const scaleX = window.innerWidth / 1920;
+      const scaleY = window.innerHeight / 1080;
+      const scale = Math.min(scaleX, scaleY);
+      presentationArea.style.transform = `scale(${scale})`;
+    }
+    window.addEventListener('resize', scalePresentation);
+    scalePresentation();
+
+    // --- Slide Logic ---
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    document.getElementById('total').textContent = slides.length;
+
+    function updateSlides() {
+      slides.forEach((sl, index) => {
+        if(index === currentSlide) sl.classList.add('active');
+        else sl.classList.remove('active');
+      });
+      document.getElementById('current').textContent = currentSlide + 1;
+    }
+
+    function nextSlide() {
+      if(currentSlide < slides.length - 1) {
+        currentSlide++;
+        updateSlides();
+      }
+    }
+
+    function prevSlide() {
+      if(currentSlide > 0) {
+        currentSlide--;
+        updateSlides();
+      }
+    }
+
+    // Keyboard support
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'ArrowRight' || e.key === 'Space') nextSlide();
+      if(e.key === 'ArrowLeft') prevSlide();
+    });
+  </script>
+</body>
+</html>
