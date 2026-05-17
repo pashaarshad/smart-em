@@ -155,7 +155,7 @@ export async function POST(req: NextRequest) {
                             </div>
                             
                             <div style="background: rgba(212,168,67,0.1); border: 1px solid rgba(212,168,67,0.2); border-radius: 12px; padding: 16px; text-align: center;">
-                                <p style="color: #d4a843; font-weight: 600; margin: 0;">📅 May 15, 2026 | ⏰ Reporting: 8:30 AM</p>
+                                <p style="color: #d4a843; font-weight: 600; margin: 0;">📅 May 25, 2026 | ⏰ Reporting: 8:30 AM</p>
                                 <p style="color: #a1a1aa; font-size: 13px; margin: 8px 0 0;">SDC Campus, Hebbal Ring Road, Mysuru</p>
                             </div>
                         </div>
