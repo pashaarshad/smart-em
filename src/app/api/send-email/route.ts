@@ -3,7 +3,9 @@ import { Resend } from "resend";
 import nodemailer from "nodemailer";
 
 const resend = new Resend(process.env.RESEND_API_KEY || "re_YOUR_API_KEY_HERE");
-const FROM_EMAIL = process.env.FROM_EMAIL || "SHRESHTA 2026 <arshad@arshadpasha.tech>";
+const FROM_EMAIL = ""; // Handled automatically by sendEmailHandler
+const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "SHRESHTA 2026 <events@arshadpasha.tech>";
+const ZOHO_FROM_EMAIL = process.env.ZOHO_FROM_EMAIL || "SHRESHTA 2026 <arshad@arshadpasha.tech>";
 
 const transporter = nodemailer.createTransport({
     host: process.env.ZOHO_HOST || "smtp.zoho.in",
@@ -19,7 +21,7 @@ async function sendEmailHandler(options: any) {
     if (process.env.ZOHO_PASSWORD) {
         try {
             const info = await transporter.sendMail({
-                from: options.from || FROM_EMAIL,
+                from: ZOHO_FROM_EMAIL,
                 to: options.to,
                 subject: options.subject,
                 html: options.html,
@@ -29,7 +31,14 @@ async function sendEmailHandler(options: any) {
             console.error("Zoho SMTP Error, falling back to Resend:", err);
         }
     }
-    return await resend.emails.send(options);
+    
+    // Override the "from" to use Resend's specifically verified address
+    return await resend.emails.send({
+        from: RESEND_FROM_EMAIL,
+        to: options.to,
+        subject: options.subject,
+        html: options.html
+    });
 }
 
 export async function POST(req: NextRequest) {
